@@ -1,0 +1,30 @@
+ARG UBUNTU_VER=18.04
+ARG MY_REGISTRY=daisukeiot
+ARG OPENVINO_VER=2019.3.376
+
+FROM ${MY_REGISTRY}/openvino-toolkit:${UBUNTU_VER}_${OPENVINO_VER}
+
+USER root
+
+RUN apt-get update && \
+    apt install -y --no-install-recommends sudo && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN adduser --home /home/openvinoverify --disabled-password --gecos '' openvinoverify && \
+    usermod -aG sudo openvinoverify && \
+    echo "%sudo  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/nopasswd && \
+    usermod -aG video openvinoverify
+
+COPY ./dockerfile/verify.sh /home/openvinoverify/verify.sh
+RUN chmod a+x /home/openvinoverify/verify.sh
+
+USER openvinoverify
+ENV USER openvinoverify
+WORKDIR /home/openvinoverify
+ENV TARGET=CPU
+
+RUN /opt/intel/openvino/bin/setupvars.sh && \
+    cd /opt/intel/openvino/deployment_tools/demo && \
+    ./demo_squeezenet_download_convert_run.sh
+
+ENTRYPOINT ["/home/openvinoverify/verify.sh"]
