@@ -39,6 +39,7 @@ RUN apt-get update && \
 RUN useradd -ms /bin/bash -G video,users openvino && \
    chown openvino -R /home/openvino
 
+ENV USER=openvino
 USER openvino
 WORKDIR /home/openvino
 
