@@ -15,7 +15,6 @@ WORKDIR /
 RUN apt-get update && \
     apt install -y --no-install-recommends \
                 autoconf \
-                autoconf \
                 automake \
                 build-essential \
                 cmake \
@@ -37,13 +36,14 @@ RUN apt-get update && \
 #
 # Create user `openvino`
 #
-RUN useradd -ms /bin/bash openvino && \
+RUN useradd -ms /bin/bash -G video,users openvino && \
    chown openvino -R /home/openvino
 
-#
-# Add openvino to Video Group to access GPU
-#
-RUN usermod -aG video openvino
+USER openvino
+WORKDIR /home/openvino
+
+USER root
+WORKDIR /
 
 #
 # Download and install OpenCL etc
@@ -57,3 +57,5 @@ RUN cd /tmp/ && \
     dpkg -i ./*.deb && \
     ldconfig && \
     rm ./*
+
+ENTRYPOINT []
