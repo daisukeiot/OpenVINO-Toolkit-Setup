@@ -22,7 +22,8 @@ RUN apt-get update && \
 #    usermod -aG video openvino
 
 COPY ./dockerfile/verify.sh /home/openvino/verify.sh
-RUN chmod a+x /home/openvino/verify.sh
+RUN chmod a+x /home/openvino/verify.sh && \
+    echo "%sudo  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/nopasswd
 
 USER openvino
 WORKDIR /home/openvino
