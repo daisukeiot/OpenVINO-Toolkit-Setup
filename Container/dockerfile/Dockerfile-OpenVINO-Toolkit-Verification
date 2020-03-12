@@ -4,27 +4,34 @@ ARG OPENVINO_VER=2019.3.376
 
 FROM ${MY_REGISTRY}/openvino-toolkit:${UBUNTU_VER}_${OPENVINO_VER}
 
+#
+# Run as root
+#
 USER root
 
+#
+# Install sudo
+#
 RUN apt-get update && \
     apt install -y --no-install-recommends sudo && \
     rm -rf /var/lib/apt/lists/*
 
-RUN adduser --home /home/openvinoverify --disabled-password --gecos '' openvinoverify && \
-    usermod -aG sudo openvinoverify && \
-    echo "%sudo  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/nopasswd && \
-    usermod -aG video openvinoverify
+# RUN adduser --home /home/openvino --disabled-password --gecos '' openvino && \
+#    usermod -aG sudo openvino && \
+#    echo "%sudo  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/nopasswd && \
+#    usermod -aG video openvino
 
-COPY ./dockerfile/verify.sh /home/openvinoverify/verify.sh
-RUN chmod a+x /home/openvinoverify/verify.sh
+COPY ./dockerfile/verify.sh /home/openvino/verify.sh
+RUN chmod a+x /home/openvino/verify.sh
 
-USER openvinoverify
-ENV USER openvinoverify
-WORKDIR /home/openvinoverify
-ENV TARGET=CPU
+# USER openvino
+# ENV USER openvino
+# WORKDIR /home/openvino
+# ENV TARGET=CPU
 
-RUN /opt/intel/openvino/bin/setupvars.sh && \
-    cd /opt/intel/openvino/deployment_tools/demo && \
-    ./demo_squeezenet_download_convert_run.sh
+# RUN /opt/intel/openvino/bin/setupvars.sh && \
+#    cd /opt/intel/openvino/deployment_tools/demo && \
+#    ./demo_squeezenet_download_convert_run.sh
 
-ENTRYPOINT ["/home/openvinoverify/verify.sh"]
+# ENTRYPOINT ["/home/openvino/verify.sh"]
+ENTRYPOINT []
