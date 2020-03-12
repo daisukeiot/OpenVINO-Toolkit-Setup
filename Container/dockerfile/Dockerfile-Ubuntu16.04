@@ -1,7 +1,7 @@
 #
-# Use Ubuntu 16.04
+# Ubuntu 18.04
 #
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 #
 # Run as root user
@@ -14,7 +14,6 @@ WORKDIR /
 #
 RUN apt-get update && \
     apt install -y --no-install-recommends \
-                autoconf \
                 autoconf \
                 automake \
                 build-essential \
@@ -37,11 +36,10 @@ RUN apt-get update && \
 #
 # Create user `openvino`
 #
-RUN useradd -ms /bin/bash openvino && \
+RUN useradd -ms /bin/bash -G video,users openvino && \
    chown openvino -R /home/openvino
 
+USER openvino
+WORKDIR /home/openvino
 
-#
-# Add openvino to Video Group to access GPU
-#
-RUN usermod -aG video openvino
+ENTRYPOINT []

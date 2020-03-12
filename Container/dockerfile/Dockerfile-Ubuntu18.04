@@ -42,9 +42,6 @@ RUN useradd -ms /bin/bash -G video,users openvino && \
 USER openvino
 WORKDIR /home/openvino
 
-USER root
-WORKDIR /
-
 #
 # Download and install OpenCL etc
 #
