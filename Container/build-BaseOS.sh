@@ -1,14 +1,16 @@
-if [ $# -eq 0 ]
+if [ $# -ne 2 ]
   then
     echo "======================================="
-    echo "Please specify Ubuntu Version"
-    echo "18.04 or 16.04"
+    echo "Please specify Ubuntu Version and reistry"
+    echo "  Ubuntu Version : 18.04 or 16.04"
+    echo "  Registry       : Your registry"
+    echo "  Example ./build-BaseOS.sh 18.04 myregistry"
     echo "======================================="
     exit
 fi
 
 UBUNTU_VER=$1
-MY_REGISTRY=daisukeiot
+MY_REGISTRY=$2
 
 #
 # Build Ubuntu Base Image
