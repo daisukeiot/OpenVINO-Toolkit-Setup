@@ -1,6 +1,5 @@
 #!/bin/bash
 
-source /opt/intel/openvino/bin/setupvars.sh
 cd /home/${USER}/inference_engine_samples_build/intel64/Release
 echo ''
 echo '###############################################################################'
