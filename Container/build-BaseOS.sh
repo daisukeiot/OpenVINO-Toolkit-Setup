@@ -1,3 +1,10 @@
+if [ $# -eq 0 ]
+  then
+    echo "Please specify Ubuntu Version"
+    echo "18.04 or 16.04"
+    exit
+fi
+
 UBUNTU_VER=$1
 MY_REGISTRY=daisukeiot
 
