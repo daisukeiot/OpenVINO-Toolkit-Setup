@@ -1,8 +1,10 @@
 #
-# Ubuntu 18.04
+# Ubuntu Version
 #
-FROM ubuntu:18.04
+ARG UBUNTU_VER=18.04
+FROM ubuntu:${UBUNTU_VER}
 
+ARG UBUNTU_VER=18.04
 #
 # Run as root user
 #
@@ -43,15 +45,19 @@ RUN useradd -ms /bin/bash -G video,users openvino && \
 #
 # Download and install OpenCL etc
 #
-RUN cd /tmp/ && \
-    curl -L "https://github.com/intel/compute-runtime/releases/download/20.09.15980/intel-gmmlib_19.4.1_amd64.deb" --output "intel-gmmlib_19.4.1_amd64.deb" && \
-    curl -L "https://github.com/intel/compute-runtime/releases/download/20.09.15980/intel-igc-core_1.0.3445_amd64.deb" --output "intel-igc-core_1.0.3445_amd64.deb" && \
-    curl -L "https://github.com/intel/compute-runtime/releases/download/20.09.15980/intel-igc-opencl_1.0.3445_amd64.deb" --output "intel-igc-opencl_1.0.3445_amd64.deb" && \
-    curl -L "https://github.com/intel/compute-runtime/releases/download/20.09.15980/intel-opencl_20.09.15980_amd64.deb" --output "intel-opencl_20.09.15980_amd64.deb" && \
-    curl -L "https://github.com/intel/compute-runtime/releases/download/20.09.15980/intel-ocloc_20.09.15980_amd64.deb" --output "intel-ocloc_20.09.15980_amd64.deb" && \
-    dpkg -i ./*.deb && \
-    ldconfig && \
-    rm ./*
+RUN if [ "${UBUNTU_VER}" = "18.04" ] ; then \
+    ( \
+        cd /tmp/ && \
+        curl -L "https://github.com/intel/compute-runtime/releases/download/20.09.15980/intel-gmmlib_19.4.1_amd64.deb" --output "intel-gmmlib_19.4.1_amd64.deb" && \
+        curl -L "https://github.com/intel/compute-runtime/releases/download/20.09.15980/intel-igc-core_1.0.3445_amd64.deb" --output "intel-igc-core_1.0.3445_amd64.deb" && \
+        curl -L "https://github.com/intel/compute-runtime/releases/download/20.09.15980/intel-igc-opencl_1.0.3445_amd64.deb" --output "intel-igc-opencl_1.0.3445_amd64.deb" && \
+        curl -L "https://github.com/intel/compute-runtime/releases/download/20.09.15980/intel-opencl_20.09.15980_amd64.deb" --output "intel-opencl_20.09.15980_amd64.deb" && \
+        curl -L "https://github.com/intel/compute-runtime/releases/download/20.09.15980/intel-ocloc_20.09.15980_amd64.deb" --output "intel-ocloc_20.09.15980_amd64.deb" && \
+        dpkg -i ./*.deb && \
+        ldconfig && \
+        rm ./* \
+    ); \
+    fi
 #
 # Change user to openvino
 #
