@@ -5,6 +5,7 @@ ARG UBUNTU_VER=18.04
 FROM ubuntu:${UBUNTU_VER}
 
 ARG UBUNTU_VER=18.04
+RUN echo 'Ubuntu Version ' ${UBUNTUVER}
 #
 # Run as root user
 #
