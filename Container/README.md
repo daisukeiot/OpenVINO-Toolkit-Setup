@@ -291,3 +291,26 @@ cd ~/OpenVINO-Toolkit-Setup/Container
 ./verify-container.sh
 ```
 
+### Sample Output from Benchmark Tool
+
+On UP2 + Myriad X
+
+```bash
+CPU
+Count:      1276 iterations
+Duration:   60172.85 ms
+Latency:    182.87 ms
+Throughput: 21.21 FPS
+
+GPU
+Count:      3136 iterations
+Duration:   60094.18 ms
+Latency:    76.45 ms
+Throughput: 52.18 FPS
+
+MyriadX
+Count:      3628 iterations
+Duration:   60078.82 ms
+Latency:    66.17 ms
+Throughput: 60.39 FPS
+```
