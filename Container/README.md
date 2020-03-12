@@ -89,10 +89,10 @@ cd ~/OpenVINO-Toolkit-Setup/Container
 
 This will create container with Ubuntu + libraries
 
-|Tag                                    | OS           | Size (MB) | Notes               |
+|Tag                                    | OS           | Size (GB) | Notes               |
 |---------------------------------------|--------------|-----------|---------------------|
-|openvino-toolkit:baseos-ubuntu_16.04   | Ubuntu 16.04 | 577       |                     |
-|openvino-toolkit:baseos-ubuntu_18.04   | Ubuntu 18.04 | 581       | With [Latest Intel OpenCL](https://github.com/intel/compute-runtime) |
+|openvino-toolkit:baseos-ubuntu_16.04   | Ubuntu 16.04 | 1.57      |                     |
+|openvino-toolkit:baseos-ubuntu_18.04   | Ubuntu 18.04 | 1.68      | With [Latest Intel OpenCL](https://github.com/intel/compute-runtime) |
 
 ### Verify Base OS Container
 
@@ -175,7 +175,7 @@ This will create container with Ubuntu + libraries
 |Tag                               | OS           | OpenVINO Toolkit |Size (GB) | Notes    |
 |----------------------------------|--------------|------------------|----------|----------|
 |openvino-toolkit:16.04_2019.3.376 | Ubuntu 16.04 | 2019.3.376       |1.57      |          |
-|openvino-toolkit:18.04_2019.3.376 | Ubuntu 18.04 | 2019.3.376       |    |          |
+|openvino-toolkit:18.04_2019.3.376 | Ubuntu 18.04 | 2019.3.376       |1.68      |          |
 
 https://docs.openvinotoolkit.org/latest/_docs_install_guides_installing_openvino_docker_linux.html
 
