@@ -31,11 +31,14 @@ RUN chmod a+x /home/openvino/*.sh && \
 USER openvino
 WORKDIR /home/openvino
 
+#
+# Image Classification Sample
+#
 RUN cd /opt/intel/openvino/deployment_tools/demo && \
     ./demo_squeezenet_download_convert_run.sh
 
 #
-# Build benchmark app
+# Build Benchmark C++ Tool
 #
 RUN cd ${INSTALLDIR}/deployment_tools/tools/model_downloader && \
     ./downloader.py --name alexnet --output /home/openvino/openvino_models/ && \
