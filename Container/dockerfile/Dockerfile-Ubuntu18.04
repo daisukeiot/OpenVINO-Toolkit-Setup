@@ -39,10 +39,6 @@ RUN apt-get update && \
 RUN useradd -ms /bin/bash -G video,users openvino && \
    chown openvino -R /home/openvino
 
-ENV USER=openvino
-USER openvino
-WORKDIR /home/openvino
-
 #
 # Download and install OpenCL etc
 #
@@ -55,5 +51,11 @@ RUN cd /tmp/ && \
     dpkg -i ./*.deb && \
     ldconfig && \
     rm ./*
+#
+# Change user to openvino
+#
+ENV USER=openvino
+USER openvino
+WORKDIR /home/openvino
 
 ENTRYPOINT []
