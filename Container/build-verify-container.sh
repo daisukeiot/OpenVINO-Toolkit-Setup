@@ -4,7 +4,7 @@ if [ $# -ne 2 ]
     echo "Please specify Ubuntu Version and reistry"
     echo "  Ubuntu Version : 18.04 or 16.04"
     echo "  Registry       : Your registry"
-    echo "  Example ./build-BaseOS.sh 18.04 myregistry"
+    echo "  Example ./build-verify-container.sh 18.04 myregistry"
     echo "======================================="
     exit
 fi
