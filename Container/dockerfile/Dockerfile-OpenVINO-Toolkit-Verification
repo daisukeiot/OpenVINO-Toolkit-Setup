@@ -25,7 +25,7 @@ USER openvino
 WORKDIR /home/openvino
 
 COPY ./dockerfile/verify.sh /home/openvino/verify.sh
-RUN chmod a+x /home/openvino/verify.sh
+RUN sudo chmod a+x /home/openvino/verify.sh
 
 RUN /opt/intel/openvino/bin/setupvars.sh && \
    cd /opt/intel/openvino/deployment_tools/demo && \
