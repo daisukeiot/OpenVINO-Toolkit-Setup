@@ -29,9 +29,9 @@ RUN chmod a+x /home/openvino/verify.sh
 # WORKDIR /home/openvino
 # ENV TARGET=CPU
 
-# RUN /opt/intel/openvino/bin/setupvars.sh && \
-#    cd /opt/intel/openvino/deployment_tools/demo && \
-#    ./demo_squeezenet_download_convert_run.sh
+RUN /opt/intel/openvino/bin/setupvars.sh && \
+   cd /opt/intel/openvino/deployment_tools/demo && \
+   ./demo_squeezenet_download_convert_run.sh
 
 # ENTRYPOINT ["/home/openvino/verify.sh"]
 ENTRYPOINT []
