@@ -17,36 +17,36 @@ This involves:
 1. OpenVINO Toolkit installed to `BaseOS` (OpenVINOToolKit)
 1. Your app installed to `OpenVINOToolKit`
 
-Once you have `OpenVINOToolKit` container, you can just install your app instead of building the container from scratch every time.
+Once you have `OpenVINOToolKit` container, you can just install your app instead of building the images from scratch every time.
 
 Let's get tactical (-:
 
-## Use pre-built containers
+## Use pre-built images
 
-You may use container image from my registry
+You may use pre-built images from my registry
 
-- If you just want to add your app, then you can `OpenVINOToolKit` container as your base image (FROM line)
-- If you would like to change some settings, you can still use `BaseOS` container and customize `Dockerfile-OpenVINO-ToolKit`
+- If you just want to add your app, then you can `OpenVINOToolKit` image as your base image (FROM line)
+- If you would like to change some settings, you can still use `BaseOS` image and customize `Dockerfile-OpenVINO-ToolKit`
 
 > [!IMPORTANT]  
 > You may need to build your own CPU Extension library for your CPU
 
 |Tag                                          | OS           | OpenVINO Toolkit |Size (MB) |
 |---------------------------------------------|--------------|------------------|----------|
-|daisukeiot/openvino-toolkit:16.04_2019.3.376 | Ubuntu 16.04 | 2019.3.376       |625.99    |
+|daisukeiot/openvino-toolkit:16.04_2019.3.376 | Ubuntu 16.04 | 2019.3.376       |    |
 |daisukeiot/openvino-toolkit:18.04_2019.3.376 | Ubuntu 18.04 | 2019.3.376       |          |
 
-## Build your own containers
+## Build your own images
 
-Follow instructions below to build containers
+Follow instructions below to build images
 
-1. Build `BaseOS` container
-1. Build `OpenVINOToolKit` container by installing OpenVINO Toolkit to `BaseOS` container
-1. Build your own container with your OpenVINO application to `OpenVINOToolKit` container
+1. Build `BaseOS` image
+1. Build `OpenVINOToolKit` image by installing OpenVINO Toolkit to `BaseOS` image
+1. Build your own image by installing your OpenVINO application to `OpenVINOToolKit` image
 
-## Build OS Base Image (#1)
+## Build `BaseOS` Image (#1)
 
-Builds a container with :
+Builds a container image with :
 
 - Ubuntu OS
 - A new user `openvino`
@@ -80,7 +80,7 @@ docker build --squash --rm -f ./dockerfile/Dockerfile-Ubuntu --build-arg UBUNTU_
 docker push ${MY_REGISTRY}/openvino-toolkit:baseos-ubuntu_${UBUNTU_VER}
 ```
 
-or run `build-BaseOS.sh` script to built both Ubuntu 16.04 and 18.04
+or run `build-BaseOS.sh` script to built `Base OS` container image
 
 ```bash
 cd ~/OpenVINO-Toolkit-Setup/Container
@@ -90,12 +90,12 @@ cd ~/OpenVINO-Toolkit-Setup/Container
 
 This will create container with Ubuntu + libraries
 
-|Tag                                    | OS           | Size (GB) | Notes               |
+|Tag                                    | OS           | Size (MB) | Notes               |
 |---------------------------------------|--------------|-----------|---------------------|
-|openvino-toolkit:baseos-ubuntu_16.04   | Ubuntu 16.04 | 1.57      |                     |
-|openvino-toolkit:baseos-ubuntu_18.04   | Ubuntu 18.04 | 1.68      | With [Latest Intel OpenCL](https://github.com/intel/compute-runtime) |
+|openvino-toolkit:baseos-ubuntu_16.04   | Ubuntu 16.04 | 577       |                     |
+|openvino-toolkit:baseos-ubuntu_18.04   | Ubuntu 18.04 | 581       | With [Latest Intel OpenCL](https://github.com/intel/compute-runtime) |
 
-### Verify Base OS Container
+### Verify `BaseOS` Image
 
 Run quick sanity check with :
 
@@ -134,11 +134,11 @@ Release:        18.04
 Codename:       bionic
 ```
 
-## Build OpenVINO Base image (#2)
+## Build `OpenVINOToolKit` image (#2)
 
-Builds a container with :
+Builds a container image with :
 
-- Using `Base OS Image` (#1)
+- From `Base OS Image` (#1)
 - Install OpenVINO Toolkit
 - Push to container registry
 
@@ -174,30 +174,30 @@ cd ~/OpenVINO-Toolkit-Setup/Container
 ./build-OpenVINO-Toolkit.sh 18.04 [Your Registry]
 ```
 
-This will create container with Ubuntu + libraries
+This will create a container image with Ubuntu + OpenVINO Toolkit
 
 |Tag                               | OS           | OpenVINO Toolkit |Size (GB) | Notes    |
 |----------------------------------|--------------|------------------|----------|----------|
 |openvino-toolkit:16.04_2019.3.376 | Ubuntu 16.04 | 2019.3.376       |1.57      |          |
 |openvino-toolkit:18.04_2019.3.376 | Ubuntu 18.04 | 2019.3.376       |1.68      |          |
 
-https://docs.openvinotoolkit.org/latest/_docs_install_guides_installing_openvino_docker_linux.html
+### Reference
 
-## Verify OpenVINO Toolkit Container
+<https://docs.openvinotoolkit.org/latest/_docs_install_guides_installing_openvino_docker_linux.html>
 
-In order to verify the container can run OpenVINO application on different hardware target (CPU, GPU, and/or MYRIAD/VPU), let's build a container with `Sample/Demo` app from OpenVINO Toolkit.
+## Verify `OpenVINOToolKit` image
+
+In order to verify the image can run OpenVINO application on different hardware target (CPU, GPU, and/or MYRIAD/VPU), let's build another image with `Sample/Demo` app and `Benchmark` app from OpenVINO Toolkit.
 
 <https://docs.openvinotoolkit.org/latest/_docs_install_guides_installing_openvino_linux.html#run-the-demos>
 
-Also compile `Benchmark` app.
+### Build an image with demo apps
 
-### Build a container with Verification Script
-
-Verify container using verification script provided by OpenVINO Toolkit by adding script to `OpenVINO Base image` (#2).
+Build a new image by adding sample/demo app to `OpenVINOToolKit` image (#2).
 
 `Dockerfile-OpenVINO-Tooolkit-Verification` adds :
 
-- verify.sh` and `benchmark.sh` to `/home/openvino`
+- `verify.sh` and `benchmark.sh` to `/home/openvino`
 - `sudo` command
 
 > [!WARNING]  
@@ -237,6 +237,10 @@ cd ~/OpenVINO-Toolkit-Setup/Container
 ```
 
 ### Run Verification Script in the Container
+
+- Run `verify.sh` to run [Image Classification Sample](https://docs.openvinotoolkit.org/latest/_inference_engine_samples_classification_sample_async_README.html)
+
+- Run `benchmark.sh` to run [Benchmark C++ Tool](https://docs.openvinotoolkit.org/latest/_inference_engine_samples_benchmark_app_README.html)
 
 ```bash
 export MY_REGISTRY=<Your Registry>
