@@ -30,7 +30,8 @@ RUN apt-get update && \
                 udev \
                 unzip \
                 ocl-icd-libopencl1 \
-                python3-setuptools && \
+                python3-setuptools \
+                python3-wheel && \
     rm -rf /var/lib/apt/lists/*
 
 #
