@@ -6,4 +6,4 @@ echo '##########################################################################
 echo "Running on ${TARGET}"
 echo '###############################################################################'
 
-./classification_sample_async -i ${INSTALLDIR}/deployment_tools/demo/car.png -m /home/${USER}/openvino_models/ir/public/squeezenet1.1/FP16/squeezenet1.1.xml -d ${TARGET}
+./benchmark_app -d ${TARGET} -i ${INSTALLDIR}/deployment_tools/demo/car.png -m /home/${USER}/ir/public/alexnet/FP16/alexnet/FP16/alexnet.xml
