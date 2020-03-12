@@ -41,12 +41,16 @@ RUN curl -LOJ "${OPENVINO_DOWNLOAD}" && \
     sed -i 's/decline/accept/g' silent.cfg && \
     ./install.sh -s silent.cfg && \
     rm -rf /tmp/* && \
+    cd $INSTALL_DIR/install_dependencies && \
     $INSTALL_DIR/install_dependencies/install_openvino_dependencies.sh && \
     echo "source $OPENVINO_INSTALL/bin/setupvars.sh" >> /home/openvino/.bashrc
 
 ENV INSTALLDIR ${INSTALL_DIR}
 
 #
-# Set current directory to /home/openvino
+# Set user to openvino and current directory to /home/openvino
 #
+USER openvino
 WORKDIR /home/openvino
+
+ENTRYPOINT []
