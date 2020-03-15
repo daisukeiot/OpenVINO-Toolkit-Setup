@@ -1,3 +1,5 @@
+#!/bin/bash
+
 sudo apt-get update && \
 sudo add-apt-repository ppa:ubilinux/up && \
 sudo apt update && \

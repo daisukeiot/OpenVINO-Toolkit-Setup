@@ -27,8 +27,10 @@ Verified with :
     > Do not run this if your host machine is not UP2
 
     ```bash
+    sudo apt update && \
+    sudo apt install -y git && \
     git clone https://github.com/daisukeiot/OpenVINO-Toolkit-Setup.git && \
-    cd OpenVINO-Toolkit-Setup\UP2 && \
+    cd ./OpenVINO-Toolkit-Setup/UP2/ && \
     ./setup1.sh
     ```
 

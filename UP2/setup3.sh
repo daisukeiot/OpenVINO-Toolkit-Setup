@@ -1,3 +1,5 @@
+#!/bin/bash
+
 OPENVINO_VER=2019.3.376
 OPENVINO=l_openvino_toolkit_p_${OPENVINO_VER}
 OPENVINO_INSTALL=/opt/intel/openvino_${OPENVINO_VER}

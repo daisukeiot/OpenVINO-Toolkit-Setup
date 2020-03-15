@@ -1,3 +1,5 @@
+#!/bin/bash
+
 sudo apt-get remove -y --purge libreoffice* aisleriot gnome-sudoku *mahjongg ace-of-penguins gnomine gbrainy && \
 sudo apt-get clean && \
 sudo apt-get autoremove -y && \
