@@ -26,7 +26,7 @@ Let's get tactical (-:
 You may use pre-built images from my registry
 
 - If you just want to add your app, then you can `OpenVINOToolKit` image as your base image (FROM line)
-- If you would like to change some settings, you can still use `BaseOS` image and customize `Dockerfile-OpenVINO-ToolKit`
+- If you would like to change some settings, you can still use `BaseOS` image and customize `Dockerfile.OpenVINO-ToolKit`
 
 > [!IMPORTANT]  
 > You may need to build your own CPU Extension library for your CPU
@@ -63,7 +63,7 @@ Builds a container image with :
 export MY_REGISTRY=<Your Registry>
 export UBUNTU_VER=<Ubuntu Version>
 cd ~/OpenVINO-Toolkit-Setup/Container
-docker build --squash --rm -f ./dockerfile/Dockerfile-Ubuntu --build-arg UBUNTU_VER=${UBUNTU_VER} -t ${MY_REGISTRY}/openvino-toolkit:baseos-ubuntu_${UBUNTU_VER} .
+docker build --squash --rm -f ./dockerfile/Dockerfile.Ubuntu --build-arg UBUNTU_VER=${UBUNTU_VER} -t ${MY_REGISTRY}/openvino-toolkit:baseos-ubuntu_${UBUNTU_VER} .
 docker push ${MY_REGISTRY}/openvino-toolkit:baseos-ubuntu_${UBUNTU_VER}
 ```
 
@@ -76,7 +76,7 @@ Example :
 export MY_REGISTRY=myregistry
 export UBUNTU_VER=18.04
 cd ~/OpenVINO-Toolkit-Setup/Container
-docker build --squash --rm -f ./dockerfile/Dockerfile-Ubuntu --build-arg UBUNTU_VER=${UBUNTU_VER} -t ${MY_REGISTRY}/openvino-toolkit:baseos-ubuntu_${UBUNTU_VER} .
+docker build --squash --rm -f ./dockerfile/Dockerfile.Ubuntu --build-arg UBUNTU_VER=${UBUNTU_VER} -t ${MY_REGISTRY}/openvino-toolkit:baseos-ubuntu_${UBUNTU_VER} .
 docker push ${MY_REGISTRY}/openvino-toolkit:baseos-ubuntu_${UBUNTU_VER}
 ```
 
@@ -147,7 +147,7 @@ export MY_REGISTRY=<Your Registry>
 export UBUNTU_VER=<Ubuntu Version>
 export OPENVINO_VER=<OpenVINO Toolkit Version>
 cd ~/OpenVINO-Toolkit-Setup/Container
-docker build --squash --rm -f ./dockerfile/Dockerfile-OpenVINO-Toolkit -t ${MY_REGISTRY}/openvino-toolkit:${UBUNTU_VER}_${OPENVINO_VER} --build-arg UBUNTU_VER=${UBUNTU_VER} --build-arg OPENVINO_VER=${OPENVINO_VER} --build-arg MY_REGISTRY=${MY_REGISTRY} .
+docker build --squash --rm -f ./dockerfile/Dockerfile.OpenVINO-Toolkit -t ${MY_REGISTRY}/openvino-toolkit:${UBUNTU_VER}_${OPENVINO_VER} --build-arg UBUNTU_VER=${UBUNTU_VER} --build-arg OPENVINO_VER=${OPENVINO_VER} --build-arg MY_REGISTRY=${MY_REGISTRY} .
 docker push ${MY_REGISTRY}/openvino-toolkit:${UBUNTU_VER}_${OPENVINO_VER}
 ```
 
@@ -162,7 +162,7 @@ export MY_REGISTRY=myregistry
 export OPENVINO_VER=2019.3.376
 export UBUNTU_VER=18.04
 cd ~/OpenVINO-Toolkit-Setup/Container
-docker build --squash --rm -f ./dockerfile/Dockerfile-OpenVINO-Toolkit -t ${MY_REGISTRY}/openvino-toolkit:${UBUNTU_VER}_${OPENVINO_VER} --build-arg UBUNTU_VER=${UBUNTU_VER} --build-arg OPENVINO_VER=${OPENVINO_VER} --build-arg MY_REGISTRY=${MY_REGISTRY} .
+docker build --squash --rm -f ./dockerfile/Dockerfile.OpenVINO-Toolkit -t ${MY_REGISTRY}/openvino-toolkit:${UBUNTU_VER}_${OPENVINO_VER} --build-arg UBUNTU_VER=${UBUNTU_VER} --build-arg OPENVINO_VER=${OPENVINO_VER} --build-arg MY_REGISTRY=${MY_REGISTRY} .
 docker push ${MY_REGISTRY}/openvino-toolkit:${UBUNTU_VER}_${OPENVINO_VER}
 ```
 
@@ -195,7 +195,7 @@ In order to verify the image can run OpenVINO application on different hardware 
 
 Build a new image by adding sample/demo app to `OpenVINOToolKit` image (#2).
 
-`Dockerfile-OpenVINO-Tooolkit-Verification` adds :
+`Dockerfile.OpenVINO-Tooolkit-Verification` adds :
 
 - `verify.sh` and `benchmark.sh` to `/home/openvino`
 - `sudo` command
@@ -211,7 +211,7 @@ export MY_REGISTRY=<Your Registry>
 export UBUNTU_VER=<Ubuntu Version>
 export OPENVINO_VER=<OpenVINO Toolkit Version>
 cd ~/OpenVINO-Toolkit-Setup/Container
-docker build --squash --rm -f ./dockerfile/Dockerfile-OpenVINO-Toolkit-Verification -t ${MY_REGISTRY}/openvino-toolkit:${UBUNTU_VER}_${OPENVINO_VER}_verify --build-arg UBUNTU_VER=${UBUNTU_VER} --build-arg OPENVINO_VER=${OPENVINO_VER} --build-arg MY_REGISTRY=${MY_REGISTRY} .
+docker build --squash --rm -f ./dockerfile/Dockerfile.OpenVINO-Toolkit-Verification -t ${MY_REGISTRY}/openvino-toolkit:${UBUNTU_VER}_${OPENVINO_VER}_verify --build-arg UBUNTU_VER=${UBUNTU_VER} --build-arg OPENVINO_VER=${OPENVINO_VER} --build-arg MY_REGISTRY=${MY_REGISTRY} .
 ```
 
 Example :
@@ -225,7 +225,7 @@ export MY_REGISTRY=myregistry
 export OPENVINO_VER=2019.3.376
 export UBUNTU_VER=18.04
 cd ~/OpenVINO-Toolkit-Setup/Container
-docker build --squash --rm -f ./dockerfile/Dockerfile-OpenVINO-Toolkit-Verification -t ${MY_REGISTRY}/openvino-toolkit:${UBUNTU_VER}_${OPENVINO_VER}_verify --build-arg UBUNTU_VER=${UBUNTU_VER} --build-arg OPENVINO_VER=${OPENVINO_VER} --build-arg MY_REGISTRY=${MY_REGISTRY} .
+docker build --squash --rm -f ./dockerfile/Dockerfile.OpenVINO-Toolkit-Verification -t ${MY_REGISTRY}/openvino-toolkit:${UBUNTU_VER}_${OPENVINO_VER}_verify --build-arg UBUNTU_VER=${UBUNTU_VER} --build-arg OPENVINO_VER=${OPENVINO_VER} --build-arg MY_REGISTRY=${MY_REGISTRY} .
 ```
 
 or run `build-verify-container.sh` script to built both Ubuntu 16.04 and 18.04
