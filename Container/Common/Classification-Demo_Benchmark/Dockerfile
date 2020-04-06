@@ -7,6 +7,8 @@ FROM ${OPENVINO_IMAGE}
 #
 USER root
 
+ENV INTEL_OPENVINO_DIR=/opt/intel/openvino
+
 #
 # Install sudo
 #
@@ -32,8 +34,6 @@ RUN cd ${INTEL_OPENVINO_DIR}/install_dependencies && \
 USER openvino
 WORKDIR /home/openvino
 
-ENV INTEL_OPENVINO_DIR=/opt/intel/openvino
-#
 # Image Classification Sample
 #
 RUN cd ${INTEL_OPENVINO_DIR}/deployment_tools/demo && \
