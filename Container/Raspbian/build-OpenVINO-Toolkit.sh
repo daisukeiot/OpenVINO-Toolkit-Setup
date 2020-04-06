@@ -9,6 +9,7 @@ if [ $# -ne 2 ]
     exit
 fi
 
+SCRIPT_DIR=$(cd $(dirname $0); pwd)
 #
 # Use OpenVINO Toolkit ver 2020.1.023
 #
@@ -35,9 +36,12 @@ echo ''
 #
 # Install OpenVINO Toolkit to Raspbian Base Image
 #
-docker build --squash --rm -f ./Raspbian/OpenVINO-Toolkit/Dockerfile -t ${TAG} \
+docker build --squash --rm -f \
+  ${SCRIPT_DIR}/Raspbian/OpenVINO-Toolkit/Dockerfile \
+  -t ${TAG} \
   --build-arg OS_VERSION=${OS_VERSION} \
-  --build-arg OPENVINO_VER=${OPENVINO_VER} .
+  --build-arg OPENVINO_VER=${OPENVINO_VER} \
+  ${SCRIPT_DIR}
 
 #
 # Check if the image exists or not
