@@ -20,7 +20,7 @@ RUN apt-get update && \
 #    usermod -aG video openvino
 
 COPY ./verify.sh /home/openvino/verify.sh
-COPY ./Common/benchmark.sh /home/openvino/benchmark.sh
+COPY ./benchmark.sh /home/openvino/benchmark.sh
 
 RUN chmod a+x /home/openvino/*.sh && \
     usermod -aG sudo openvino && \
