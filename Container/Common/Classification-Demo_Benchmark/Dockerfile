@@ -29,8 +29,7 @@ RUN chmod a+x /home/openvino/*.sh && \
 USER openvino
 WORKDIR /home/openvino
 
-RUN /opt/intel/openvino/bin/setupvars.sh
-
+ENV INTEL_OPENVINO_DIR=/opt/intel/openvino
 #
 # Image Classification Sample
 #
