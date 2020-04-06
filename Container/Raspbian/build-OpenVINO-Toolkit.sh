@@ -37,7 +37,7 @@ echo ''
 # Install OpenVINO Toolkit to Raspbian Base Image
 #
 docker build --squash --rm -f \
-  ${SCRIPT_DIR}/Raspbian/OpenVINO-Toolkit/Dockerfile \
+  ${SCRIPT_DIR}/OpenVINO-Toolkit/Dockerfile \
   -t ${TAG} \
   --build-arg OS_VERSION=${OS_VERSION} \
   --build-arg OPENVINO_VER=${OPENVINO_VER} \
