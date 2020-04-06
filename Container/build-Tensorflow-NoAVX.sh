@@ -30,7 +30,7 @@ echo ''
 #
 # Build Ubuntu Base Image
 #
-docker build --squash --rm -f ./Tensorflow/NoAVX/Dockerfile --build-arg OS_VERSION=${OS_VERSION} --build-arg TF_VERSION=${TF_VERSION} -t ${TAG} .
+docker build --squash --rm -f ./Tensorflow/NoAVX/Dockerfile --build-arg OS_VERSION=${OS_VERSION} --build-arg TF_VERSION=${TF_VERSION} -t ${TAG} ./Tensorflow
 
 echo '  ______                           ______             '
 echo ' /_  __/__  ____  _________  _____/ __/ /___ _      __'
