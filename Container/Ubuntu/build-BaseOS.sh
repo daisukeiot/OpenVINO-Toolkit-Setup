@@ -9,10 +9,10 @@ if [ $# -ne 2 ]
     exit
 fi
 
-UBUNTU_VER=$1
+OS_VERSION=$1
 MY_REGISTRY=$2
 
-TAG=${MY_REGISTRY}/openvino-container:baseos-ubuntu_${UBUNTU_VER}
+TAG=${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION}
 
 if docker inspect --type=image $TAG > /dev/null 2>&1; then
     echo "Deleting image"
@@ -30,7 +30,7 @@ echo ''
 #
 # Build Ubuntu Base Image
 #
-docker build --squash --rm -f ./BaseOS/Dockerfile --build-arg UBUNTU_VER=${UBUNTU_VER} -t ${TAG} .
+docker build --squash --rm -f ./BaseOS/Dockerfile --build-arg UBUNTU_VER=${OS_VERSION} -t ${TAG} .
 
 echo '   __  ____                      __ '
 echo '  / / / / /_  __  ______  __  __/ /_'
