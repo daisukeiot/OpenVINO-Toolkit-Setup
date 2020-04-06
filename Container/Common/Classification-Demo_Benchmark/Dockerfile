@@ -32,18 +32,18 @@ WORKDIR /home/openvino
 #
 # Image Classification Sample
 #
-RUN cd /opt/intel/openvino/deployment_tools/demo && \
+RUN cd ${INTEL_OPENVINO_DIR}/deployment_tools/demo && \
     ./demo_squeezenet_download_convert_run.sh
 
 #
 # Build Benchmark C++ Tool
 #
-RUN cd ${INSTALLDIR}/deployment_tools/tools/model_downloader && \
-    ./downloader.py --name alexnet --output /home/openvino/openvino_models/ && \
-    cd ${INSTALLDIR}/deployment_tools/model_optimizer/ && \
-    ./mo.py --data_type=FP16 --input_model /home/openvino/openvino_models/public/alexnet/alexnet.caffemodel -o /home/openvino/openvino_models/ir/public/alexnet/FP16/ && \
-    ./mo.py --data_type=FP32 --input_model /home/openvino/openvino_models/public/alexnet/alexnet.caffemodel -o /home/openvino/openvino_models/ir/public/alexnet/FP32/ && \
-    cd /home/openvino/inference_engine_samples_build/benchmark_app && \
+RUN cd ${INTEL_OPENVINO_DIR}/deployment_tools/tools/model_downloader && \
+    ./downloader.py --name alexnet --output /home/$USER/openvino_models/ && \
+    cd ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/ && \
+    ./mo.py --data_type=FP16 --input_model /home/$USER/openvino_models/public/alexnet/alexnet.caffemodel -o /home/$USER/openvino_models/ir/public/alexnet/FP16/ && \
+    ./mo.py --data_type=FP32 --input_model /home/$USER/openvino_models/public/alexnet/alexnet.caffemodel -o /home/$USER/openvino_models/ir/public/alexnet/FP32/ && \
+    cd /home/$USER/inference_engine_samples_build/benchmark_app && \
     make
 
 # ENTRYPOINT ["/home/openvino/imageclassification.sh"]
