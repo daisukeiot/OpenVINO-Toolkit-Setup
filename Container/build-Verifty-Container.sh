@@ -13,4 +13,4 @@ fi
 #
 TAG=$1
 
-docker build --squash --rm -f ./Common/Classification-Demo_Benchmark/Dockerfile.Benchmark -t ${TAG} --build-arg OPENVINO_IMAGE=${TAG} .
+docker build --squash --rm -f ./Common/Classification-Demo_Benchmark/Dockerfile -t ${TAG} --build-arg OPENVINO_IMAGE=${TAG} .
