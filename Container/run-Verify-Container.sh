@@ -22,5 +22,5 @@ echo '/_____/\___/_/ /_/\___/_/ /_/_/ /_/ /_/\__,_/_/  /_/|_|  '
 echo '                                                         '
 echo ''
 echo 'Running Benchmark Tool on ${TARGET_DEV}'
-
+docker run --rm -it --privileged ${TARGET_TAG} /bin/bash -c "/home/openvino/imageclassification.sh ${TARGET_DEV}"
 docker run --rm -it --privileged ${TARGET_TAG} /bin/bash -c "/home/openvino/benchmark.sh ${TARGET_DEV}"
