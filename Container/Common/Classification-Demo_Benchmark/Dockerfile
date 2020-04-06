@@ -19,7 +19,7 @@ RUN apt-get update && \
 #    echo "%sudo  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/nopasswd && \
 #    usermod -aG video openvino
 
-COPY ./verify.sh /home/openvino/verify.sh
+COPY ./imageclassification.sh /home/openvino/imageclassification.sh
 COPY ./benchmark.sh /home/openvino/benchmark.sh
 
 RUN chmod a+x /home/openvino/*.sh && \
@@ -46,5 +46,5 @@ RUN cd ${INSTALLDIR}/deployment_tools/tools/model_downloader && \
     cd /home/openvino/inference_engine_samples_build/benchmark_app && \
     make
 
-# ENTRYPOINT ["/home/openvino/verify.sh"]
+# ENTRYPOINT ["/home/openvino/imageclassification.sh"]
 ENTRYPOINT []

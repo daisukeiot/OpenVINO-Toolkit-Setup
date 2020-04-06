@@ -254,7 +254,7 @@ Build a new image by adding sample/demo app to `OpenVINOToolKit` image (#2).
 
 `Dockerfile.OpenVINO-Tooolkit-Verification` adds :
 
-- `verify.sh` and `benchmark.sh` to `/home/openvino`
+- `imageclassification.sh` and `benchmark.sh` to `/home/openvino`
 - `sudo` command
 
 > [!WARNING]  
@@ -292,9 +292,9 @@ docker build --squash --rm -f ./Common/Classification-Demo_Benchmark/Dockerfile 
 
 ### Run Verification Script in the Container
 
-The new container contains `verify.sh` and `benchmark.sh` in `/home/openvino/` folder.
+The new container contains `imageclassification.sh` and `benchmark.sh` in `/home/openvino/` folder.
 
-- verify.sh  
+- imageclassification.sh  
   Runs [Image Classification Sample](https://docs.openvinotoolkit.org/latest/_inference_engine_samples_classification_sample_async_README.html)
 
 - benchmark.sh  
@@ -304,7 +304,7 @@ You may run these tools against CPU, GPU, or Myriad.
 
 Specify the target device with `TARGET` environment variable or as a parameter for these scrips
 
-Run `verify.sh` agains CPU with :
+Run `imageclassification.sh` agains CPU with :
 
 #### Examples
 
@@ -312,7 +312,7 @@ Run `verify.sh` agains CPU with :
 cd ~/OpenVINO-Toolkit-Setup/Container
 export TAG=myregistry/openvino-container:ubuntu18.04_openvino2019.3.376
 export TAG_VERIFY=${TAG}_verify
-docker run --rm -it -e "TARGET=CPU" ${TAG_VERIFY} /home/openvino/verify.sh
+docker run --rm -it -e "TARGET=CPU" ${TAG_VERIFY} /home/openvino/imageclassification.sh
 ```
 
 Run 'benchmark.sh` against GPU with :
