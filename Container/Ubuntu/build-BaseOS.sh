@@ -30,7 +30,7 @@ echo ''
 #
 # Build Ubuntu Base Image
 #
-docker build --squash --rm -f ./BaseOS/Dockerfile --build-arg UBUNTU_VER=${OS_VERSION} -t ${TAG} .
+docker build --squash --rm -f ./BaseOS/Dockerfile --build-arg OS_VERSION=${OS_VERSION} -t ${TAG} .
 
 echo '   __  ____                      __ '
 echo '  / / / / /_  __  ______  __  __/ /_'
