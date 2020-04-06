@@ -31,10 +31,10 @@ You may use pre-built images from my registry
 > [!IMPORTANT]  
 > You may need to build your own CPU Extension library for your CPU
 
-|Tag                                          | OS           | OpenVINO Toolkit |Size (MB) |
-|---------------------------------------------|--------------|------------------|----------|
-|daisukeiot/openvino-container:16.04_2019.3.376 | Ubuntu 16.04 | 2019.3.376       |    |
-|daisukeiot/openvino-container:18.04_2019.3.376 | Ubuntu 18.04 | 2019.3.376       |          |
+| Tag                                            | OS           | OpenVINO Toolkit | Size (MB) |
+|------------------------------------------------|--------------|------------------|-----------|
+| daisukeiot/openvino-container:16.04_2019.3.376 | Ubuntu 16.04 | 2019.3.376       |           |
+| daisukeiot/openvino-container:18.04_2019.3.376 | Ubuntu 18.04 | 2019.3.376       |           |
 
 ## Build your own images
 
@@ -59,12 +59,33 @@ Builds a container image with :
 > Make sure to log in to your registry before you push image  
 > docker login -u `<user>` -p `<password>` `<registry>`
 
+### Build Base OS Container with script
+
+Run `./Ubuntu/build-BaseOS.sh` to build a Base OS image with :
+
 ```bash
-export MY_REGISTRY=<Your Registry>
-export OS_VERSION=<Ubuntu Version>
+cd ~/OpenVINO-Toolkit-Setup/Container/Ubuntu
+./build-BaseOS.sh <Ubuntu Version> <Container Registry>
+```
+
+#### Script Parameters
+
+- Ubuntu Version  
+  Currently verified with 16.04 and 18.04
+
+- Container Registry
+  Your Container Registry
+
+### Manually Build Base OS Container
+
+```bash
 cd ~/OpenVINO-Toolkit-Setup/Container
-docker build --squash --rm -f ./dockerfile/Dockerfile.BaseOS-Ubuntu --build-arg OS_VERSION=${OS_VERSION} -t ${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION} .
-docker push ${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION}
+export OS_VERSION=<Ubuntu Version.  18.04 or 16.04>
+export MY_REGISTRY=<Container Registry>
+export TAG=${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION}
+
+docker build --squash --rm -f ./Ubuntu/BaseOS/Dockerfile --build-arg OS_VERSION=${OS_VERSION} -t ${TAG} .
+docker push ${TAG}
 ```
 
 Example :
@@ -73,37 +94,38 @@ Example :
 - Use Ubuntu 18.04
 
 ```bash
+cd ~/OpenVINO-Toolkit-Setup/Container
+
 export MY_REGISTRY=myregistry
 export OS_VERSION=18.04
-cd ~/OpenVINO-Toolkit-Setup/Container
-docker build --squash --rm -f ./dockerfile/Dockerfile.BaseOS-Ubuntu --build-arg OS_VERSION=${OS_VERSION} -t ${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION} .
-docker push ${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION}
-```
+export TAG=${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION}
 
-or run `build-BaseOS.sh` script to built `Base OS` container image
-
-```bash
-cd ~/OpenVINO-Toolkit-Setup/Container
-./build-BaseOS.sh 16.04 [your registry]
-./build-BaseOS.sh 18.04 [your registry]
+docker build --squash --rm -f ./Ubuntu/BaseOS/Dockerfile --build-arg OS_VERSION=${OS_VERSION} -t ${TAG} .
+docker push ${TAG}
 ```
 
 This will create container with Ubuntu + libraries
 
-|Tag                                    | OS           | Size (MB) | Notes               |
-|---------------------------------------|--------------|-----------|---------------------|
-|openvino-container:baseos-ubuntu_16.04   | Ubuntu 16.04 | 577       |                     |
-|openvino-container:baseos-ubuntu_18.04   | Ubuntu 18.04 | 581       | With [Latest Intel OpenCL](https://github.com/intel/compute-runtime) |
+| Tag                 | OS           | Size (MB) | Notes                                                                |
+|---------------------|--------------|-----------|----------------------------------------------------------------------|
+| baseos-ubuntu_16.04 | Ubuntu 16.04 | 577       |                                                                      |
+| baseos-ubuntu_18.04 | Ubuntu 18.04 | 581       | With [Latest Intel OpenCL](https://github.com/intel/compute-runtime) |
+
+Example :
+
+<myregistry/openvino-container:baseos-ubuntu_16.04>
 
 ### Verify `BaseOS` Image
 
 Run quick sanity check with :
 
 ```bash
-export MY_REGISTRY=<Your Registry>
-export OS_VERSION=<Ubuntu Version>
 cd ~/OpenVINO-Toolkit-Setup/Container
-docker run -it --rm ${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION} /bin/bash -c "python3 --version;lsb_release -a"
+export MY_REGISTRY=<Container Registry>
+export OS_VERSION=<Ubuntu Version>
+export TAG=${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION}
+
+docker run -it --rm ${TAG} /bin/bash -c "python3 --version;lsb_release -a"
 ```
 
 Example :
@@ -112,10 +134,12 @@ Example :
 - Use Ubuntu 18.04
 
 ```bash
+cd ~/OpenVINO-Toolkit-Setup/Container
 export MY_REGISTRY=myregistry
 export OS_VERSION=18.04
-cd ~/OpenVINO-Toolkit-Setup/Container
-docker run -it --rm ${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION} /bin/bash -c "python3 --version;lsb_release -a"
+export TAG=${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION}
+
+docker run -it --rm ${TAG} /bin/bash -c "python3 --version;lsb_release -a"
 ```
 
 This should show :
@@ -138,17 +162,36 @@ Codename:       bionic
 
 Builds a container image with :
 
-- From `Base OS Image` (#1)
+- Use `Base OS Image` (#1) as a base image
 - Install OpenVINO Toolkit
-- Push to container registry
+
+> [!IMPORTANT]  
+> Instructions below assumes you have Base OS containers from above
+
+### Build OpenVINO Container with script
+
+Run `./Ubuntu/build-OpenVINO-Toolkit.sh` to build a Base OS image with :
 
 ```bash
+cd ~/OpenVINO-Toolkit-Setup/Container/Ubuntu
+./build-OpenVINO-Toolkit.sh <Ubuntu Version> <Container Registry>
+```
+
+### Manually Build OpenVINO Container
+
+```bash
+cd ~/OpenVINO-Toolkit-Setup/Container
+export OPENVINO_VER=2019.3.376
 export MY_REGISTRY=<Your Registry>
 export OS_VERSION=<Ubuntu Version>
-export OPENVINO_VER=<OpenVINO Toolkit Version>
-cd ~/OpenVINO-Toolkit-Setup/Container
-docker build --squash --rm -f ./dockerfile/Dockerfile.OpenVINO-Toolkit-Ubuntu -t ${MY_REGISTRY}/openvino-container:${OS_VERSION}_${OPENVINO_VER} --build-arg OS_VERSION=${OS_VERSION} --build-arg OPENVINO_VER=${OPENVINO_VER} --build-arg MY_REGISTRY=${MY_REGISTRY} .
-docker push ${MY_REGISTRY}/openvino-container:${OS_VERSION}_${OPENVINO_VER}
+export TAG=${MY_REGISTRY}/openvino-container:ubuntu${OS_VERSION}_openvino${OPENVINO_VER}
+
+docker build --squash --rm -f ./Ubuntu/OpenVINO-Toolkit/Dockerfile -t ${TAG} \
+  --build-arg OS_VERSION=${OS_VERSION} \
+  --build-arg OPENVINO_VER=${OPENVINO_VER} \
+  --build-arg MY_REGISTRY=${MY_REGISTRY} .
+
+docker push ${TAG}
 ```
 
 Example :
@@ -158,28 +201,26 @@ Example :
 - Use Ubuntu 18.04
 
 ```bash
-export MY_REGISTRY=myregistry
+cd ~/OpenVINO-Toolkit-Setup/Container
 export OPENVINO_VER=2019.3.376
+export MY_REGISTRY=myregistry
 export OS_VERSION=18.04
-cd ~/OpenVINO-Toolkit-Setup/Container
-docker build --squash --rm -f ./dockerfile/Dockerfile.OpenVINO-Toolkit-Ubuntu -t ${MY_REGISTRY}/openvino-container:${OS_VERSION}_${OPENVINO_VER} --build-arg OS_VERSION=${OS_VERSION} --build-arg OPENVINO_VER=${OPENVINO_VER} --build-arg MY_REGISTRY=${MY_REGISTRY} .
-docker push ${MY_REGISTRY}/openvino-container:${OS_VERSION}_${OPENVINO_VER}
-```
+export TAG=${MY_REGISTRY}/openvino-container:ubuntu${OS_VERSION}_openvino${OPENVINO_VER}
 
-or run `build-OpenVINO-Toolkit.sh` script to built both Ubuntu 16.04 and 18.04
+docker build --squash --rm -f ./Ubuntu/OpenVINO-Toolkit/Dockerfile -t ${TAG} \
+  --build-arg OS_VERSION=${OS_VERSION} \
+  --build-arg OPENVINO_VER=${OPENVINO_VER} \
+  --build-arg MY_REGISTRY=${MY_REGISTRY} .
 
-```bash
-cd ~/OpenVINO-Toolkit-Setup/Container
-./build-OpenVINO-Toolkit.sh 16.04 [Your Registry]
-./build-OpenVINO-Toolkit.sh 18.04 [Your Registry]
+docker push ${TAG}
 ```
 
 This will create a container image with Ubuntu + OpenVINO Toolkit
 
-|Tag                               | OS           | OpenVINO Toolkit |Size (GB) | Notes    |
-|----------------------------------|--------------|------------------|----------|----------|
-|openvino-container:16.04_2019.3.376 | Ubuntu 16.04 | 2019.3.376       |1.57      |          |
-|openvino-container:18.04_2019.3.376 | Ubuntu 18.04 | 2019.3.376       |1.68      |          |
+| Tag                            | OS    | OpenVINO Toolkit | Size    | Notes |
+|--------------------------------|-------|------------------|---------|-------|
+| ubuntu16.04_openvino2019.3.376 | 16.04 | 2019.3.376       | 1.57 GB |       |
+| ubuntu18.04_openvino2019.3.376 | 18.04 | 2019.3.376       | 1.68 GB |       |
 
 ### Reference
 
@@ -191,7 +232,23 @@ In order to verify the image can run OpenVINO application on different hardware 
 
 <https://docs.openvinotoolkit.org/latest/_docs_install_guides_installing_openvino_linux.html#run-the-demos>
 
-### Build an image with demo apps
+### Build a container with demo apps with a script
+
+Run `./Ubuntu/build-OpenVINO-Toolkit.sh` to build a Base OS image with :
+
+```bash
+cd ~/OpenVINO-Toolkit-Setup/Container
+./build-Verify-Container.sh <OpenVINO Container>
+```
+
+Example :
+
+```bash
+cd ~/OpenVINO-Toolkit-Setup/Container
+./build-Verify-Container.sh myregistry/openvino-container:ubuntu18.04_openvino2019.3.376
+```
+
+### Manually build a container image with demo apps
 
 Build a new image by adding sample/demo app to `OpenVINOToolKit` image (#2).
 
@@ -207,88 +264,73 @@ Build a new image by adding sample/demo app to `OpenVINOToolKit` image (#2).
 Run Verification script with :
 
 ```bash
-export MY_REGISTRY=<Your Registry>
-export OS_VERSION=<Ubuntu Version>
-export OPENVINO_VER=<OpenVINO Toolkit Version>
 cd ~/OpenVINO-Toolkit-Setup/Container
-docker build --squash --rm -f ./dockerfile/Dockerfile.OpenVINO-Toolkit-Verification -t ${MY_REGISTRY}/openvino-container:${OS_VERSION}_${OPENVINO_VER}_verify --build-arg OS_VERSION=${OS_VERSION} --build-arg OPENVINO_VER=${OPENVINO_VER} --build-arg MY_REGISTRY=${MY_REGISTRY} .
+export TAG=<OpenVINO Container built above>
+export TAG_VERIFY=<New Tag for verification>
+
+docker build --squash --rm -f ./Common/Classification-Demo_Benchmark/Dockerfile \
+    -t ${TAG_VERIFY} \
+    --build-arg OPENVINO_IMAGE=${TAG} \
+    ./Common/Classification-Demo_Benchmark
 ```
 
 Example :
 
-- User `myregistry` docker hub registry
-- Use Ubuntu 18.04
-- Use OpenVINO Toolkit ver 2019.3.376
-
-```bash
-export MY_REGISTRY=myregistry
-export OPENVINO_VER=2019.3.376
-export OS_VERSION=18.04
-cd ~/OpenVINO-Toolkit-Setup/Container
-docker build --squash --rm -f ./dockerfile/Dockerfile.OpenVINO-Toolkit-Verification -t ${MY_REGISTRY}/openvino-container:${OS_VERSION}_${OPENVINO_VER}_verify --build-arg OS_VERSION=${OS_VERSION} --build-arg OPENVINO_VER=${OPENVINO_VER} --build-arg MY_REGISTRY=${MY_REGISTRY} .
-```
-
-or run `build-verify-container.sh` script to built both Ubuntu 16.04 and 18.04
+- Use `ubuntu18.04_openvino2019.3.376`
+- Use `ubuntu18.04_openvino2019.3.376_verify` for the new image
 
 ```bash
 cd ~/OpenVINO-Toolkit-Setup/Container
-./build-verify-container.sh 16.04 [your registry]
-./build-verify-container.sh 18.04 [your registry]
+export TAG=myregistry/openvino-container:ubuntu18.04_openvino2019.3.376
+export TAG_VERIFY=${TAG}_verify
+
+docker build --squash --rm -f ./Common/Classification-Demo_Benchmark/Dockerfile \
+    -t ${TAG_VERIFY} \
+    --build-arg OPENVINO_IMAGE=${TAG} \
+    ./Common/Classification-Demo_Benchmark
 ```
 
 ### Run Verification Script in the Container
 
-- Run `verify.sh` to run [Image Classification Sample](https://docs.openvinotoolkit.org/latest/_inference_engine_samples_classification_sample_async_README.html)
+The new container contains `verify.sh` and `benchmark.sh` in `/home/openvino/` folder.
 
-- Run `benchmark.sh` to run [Benchmark C++ Tool](https://docs.openvinotoolkit.org/latest/_inference_engine_samples_benchmark_app_README.html)
+- verify.sh  
+  Runs [Image Classification Sample](https://docs.openvinotoolkit.org/latest/_inference_engine_samples_classification_sample_async_README.html)
+
+- benchmark.sh  
+  Runs [Benchmark C++ Tool](https://docs.openvinotoolkit.org/latest/_inference_engine_samples_benchmark_app_README.html)
+
+You may run these tools against CPU, GPU, or Myriad.
+
+Specify the target device with `TARGET` environment variable or as a parameter for these scrips
+
+Run `verify.sh` agains CPU with :
+
+#### Examples
 
 ```bash
-export MY_REGISTRY=<Your Registry>
-export OS_VERSION=<Ubuntu Version>
-export OPENVINO_VER=<OpenVINO Toolkit Version>
 cd ~/OpenVINO-Toolkit-Setup/Container
-docker run --rm -it -e "TARGET=CPU" ${MY_REGISTRY}/openvino-container:${OS_VERSION}_${OPENVINO_VER}_verify /home/openvino/verify.sh
-docker run --rm -it -e "TARGET=GPU" --device /dev/dri ${MY_REGISTRY}/openvino-container:${OS_VERSION}_${OPENVINO_VER}_verify /home/openvino/verify.sh
-docker run --rm -it -e "TARGET=MYRIAD" --privileged -v /dev:/dev ${MY_REGISTRY}/openvino-container:${OS_VERSION}_${OPENVINO_VER}_verify /home/openvino/verify.sh
+export TAG=myregistry/openvino-container:ubuntu18.04_openvino2019.3.376
+export TAG_VERIFY=${TAG}_verify
+docker run --rm -it -e "TARGET=CPU" ${TAG_VERIFY} /home/openvino/verify.sh
 ```
 
-Example :
-
-- User `myregistry` docker hub registry
-- Use Ubuntu 18.04
-- Use OpenVINO Toolkit ver 2019.3.376
+Run 'benchmark.sh` against GPU with :
 
 ```bash
-export MY_REGISTRY=myregistry
-export OPENVINO_VER=2019.3.376
-export OS_VERSION=18.04
 cd ~/OpenVINO-Toolkit-Setup/Container
-docker run --rm -it -e "TARGET=CPU" ${MY_REGISTRY}/openvino-container:${OS_VERSION}_${OPENVINO_VER}_verify
-docker run --rm -it -e "TARGET=GPU" --device /dev/dri ${MY_REGISTRY}/openvino-container:${OS_VERSION}_${OPENVINO_VER}_verify
-docker run --rm -it -e "TARGET=MYRIAD" --privileged -v /dev:/dev ${MY_REGISTRY}/openvino-container:${OS_VERSION}_${OPENVINO_VER}_verify
+export TAG=myregistry/openvino-container:ubuntu18.04_openvino2019.3.376
+export TAG_VERIFY=${TAG}_verify
+docker run --rm -it -e "TARGET=GPU" ${TAG_VERIFY} /home/openvino/benchmark.sh
 ```
 
-### Run Benchmark App
-
-Verification Container is built with Benchmark app as well.  
-
-To run Benchmark App :
-
-```bash
-export MY_REGISTRY=<Your Registry>
-export OS_VERSION=<Ubuntu Version>
-export OPENVINO_VER=<OpenVINO Toolkit Version>
-cd ~/OpenVINO-Toolkit-Setup/Container
-docker run --rm -it -e "TARGET=CPU" ${MY_REGISTRY}/openvino-container:${OS_VERSION}_${OPENVINO_VER}_verify /home/openvino/benchmark.sh
-docker run --rm -it -e "TARGET=GPU" --device /dev/dri ${MY_REGISTRY}/openvino-container:${OS_VERSION}_${OPENVINO_VER}_verify /home/openvino/benchmark.sh
-docker run --rm -it -e "TARGET=MYRIAD" --privileged -v /dev:/dev ${MY_REGISTRY}/openvino-container:${OS_VERSION}_${OPENVINO_VER}_verify /home/openvino/benchmark.sh
-```
-
-or run `verify-container.sh` to run the Verification script for both Ubuntu 16.04 and 18.04 with all targets
+Run `benchmark.sh` against Myriad with :
 
 ```bash
 cd ~/OpenVINO-Toolkit-Setup/Container
-./verify-container.sh
+export TAG=myregistry/openvino-container:ubuntu18.04_openvino2019.3.376
+export TAG_VERIFY=${TAG}_verify
+docker run --rm -it ${TAG_VERIFY} /home/openvino/benchmark.sh MYRIAD
 ```
 
 ### Sample Output from Benchmark Tool
