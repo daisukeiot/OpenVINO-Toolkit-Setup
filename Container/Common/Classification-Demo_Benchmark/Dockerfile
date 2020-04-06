@@ -26,6 +26,9 @@ RUN chmod a+x /home/openvino/*.sh && \
     usermod -aG sudo openvino && \
     echo "%sudo  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/nopasswd
 
+RUN cd ${INTEL_OPENVINO_DIR}/install_dependencies && \
+    ./install_NCS_udev_rules.sh
+
 USER openvino
 WORKDIR /home/openvino
 
@@ -46,9 +49,6 @@ RUN cd ${INTEL_OPENVINO_DIR}/deployment_tools/tools/model_downloader && \
     ./mo.py --data_type=FP32 --input_model /home/$USER/openvino_models/public/alexnet/alexnet.caffemodel -o /home/$USER/openvino_models/ir/public/alexnet/FP32/ && \
     cd /home/$USER/inference_engine_samples_build/benchmark_app && \
     make
-
-RUN cd ${INTEL_OPENVINO_DIR}/install_dependencies && \
-    ./install_NCS_udev_rules.sh
 
 # ENTRYPOINT ["/home/openvino/imageclassification.sh"]
 ENTRYPOINT []
