@@ -1,6 +1,9 @@
 #!/bin/bash
 
-TARGET=$1
+if [ $# -eq 1 ]
+  then
+    TARGET=$1
+fi
 
 source /opt/intel/openvino/bin/setupvars.sh
 cd /home/${USER}/inference_engine_samples_build/intel64/Release
