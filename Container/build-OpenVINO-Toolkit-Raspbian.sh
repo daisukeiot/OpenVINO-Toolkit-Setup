@@ -9,8 +9,12 @@ if [ $# -ne 2 ]
     exit
 fi
 
+#
+# Use OpenVINO Toolkit ver 2020.1.023
+#
 OPENVINO_VER=2020.1.023
 # https://hub.docker.com/r/balenalib/rpi-raspbian/tags
+
 OS_VERSION=$1
 MY_REGISTRY=$2
 TAG=${MY_REGISTRY}/openvino-container:raspbian-${OS_VERSION}_${OPENVINO_VER}
@@ -29,11 +33,6 @@ echo '/_____/\__,_/_/_/\__,_/   /____/\__/\__,_/_/   \__/  '
 echo ''
 
 #
-# Use OpenVINO Toolkit ver 2020.1.023
-#
-OPENVINO_VER=2020.1.023
-
-#
 # Install OpenVINO Toolkit to Raspbian Base Image
 #
 docker build --squash --rm -f ./Raspbian/OpenVINO-Toolkit/Dockerfile -t ${TAG} \
@@ -48,6 +47,13 @@ if ! docker inspect --type=image $TAG > /dev/null 2>&1; then
     exit
 fi
 
+echo '   ____                 _    _______   ______ '
+echo '  / __ \____  ___  ____| |  / /  _/ | / / __ \'
+echo ' / / / / __ \/ _ \/ __ \ | / // //  |/ / / / /'
+echo '/ /_/ / /_/ /  __/ / / / |/ // // /|  / /_/ / '
+echo '\____/ .___/\___/_/ /_/|___/___/_/ |_/\____/  '
+echo '    /_/                                       '
+echo ''
 echo '    ____                   __    _           '
 echo '   / __ \____ __________  / /_  (_)___ _____ '
 echo '  / /_/ / __ `/ ___/ __ \/ __ \/ / __ `/ __ \'

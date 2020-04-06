@@ -2,23 +2,68 @@ if [ $# -ne 2 ]
   then
     echo "======================================="
     echo "Please specify Ubuntu Version and reistry"
-    echo "  Ubuntu Version : 18.04 or 16.04"
-    echo "  Registry       : Your registry"
-    echo "  Example ./build-OpenVINO-Toolkit.sh 18.04 myregistry"
+    echo "  Raspbian Version : stretch, buster, etc"
+    echo "  Registry         : Your registry"
+    echo "  Example ./build-OpenVINO-Toolkit.sh buster myregistry"
     echo "======================================="
     exit
 fi
 
-UBUNTU_VER=$1
+#
+# Use OpenVINO Toolkit ver 2020.1.023
+#
+OPENVINO_VER=2020.1.023
+# https://hub.docker.com/r/balenalib/rpi-raspbian/tags
+
+OS_VERSION=$1
 MY_REGISTRY=$2
+TAG=${MY_REGISTRY}/openvino-container:raspbian-${OS_VERSION}_${OPENVINO_VER}
+
+if docker inspect --type=image $TAG > /dev/null 2>&1; then
+    echo "Deleting image"
+    docker rmi -f ${TAG}
+fi
+
+echo ''
+echo '    ____        _ __    __   _____ __             __ '
+echo '   / __ )__  __(_) /___/ /  / ___// /_____ ______/ /_'
+echo '  / __  / / / / / / __  /   \__ \/ __/ __ `/ ___/ __/'
+echo ' / /_/ / /_/ / / / /_/ /   ___/ / /_/ /_/ / /  / /_  '
+echo '/_____/\__,_/_/_/\__,_/   /____/\__/\__,_/_/   \__/  '
+echo ''
 
 #
-# Use OpenVINO Toolkit ver 2019.3.376
+# Install OpenVINO Toolkit to Raspbian Base Image
 #
-OPENVINO_VER=2019.3.376
+docker build --squash --rm -f ./Raspbian/OpenVINO-Toolkit/Dockerfile -t ${TAG} \
+  --build-arg OS_VERSION=${OS_VERSION} \
+  --build-arg OPENVINO_VER=${OPENVINO_VER} .
 
 #
-# Install OpenVINO Toolkit to Ubuntu Base Image
+# Check if the image exists or not
 #
-docker build --squash --rm -f ./dockerfile/Dockerfile.OpenVINO-Toolkit-Ubuntu -t ${MY_REGISTRY}/openvino-container:${UBUNTU_VER}_${OPENVINO_VER} --build-arg UBUNTU_VER=${UBUNTU_VER} --build-arg OPENVINO_VER=${OPENVINO_VER} --build-arg MY_REGISTRY=${MY_REGISTRY} .
-docker push ${MY_REGISTRY}/openvino-container:${UBUNTU_VER}_${OPENVINO_VER}
+if ! docker inspect --type=image $TAG > /dev/null 2>&1; then
+    echo "Failed to create image"
+    exit
+fi
+
+echo '   ____                 _    _______   ______ '
+echo '  / __ \____  ___  ____| |  / /  _/ | / / __ \'
+echo ' / / / / __ \/ _ \/ __ \ | / // //  |/ / / / /'
+echo '/ /_/ / /_/ /  __/ / / / |/ // // /|  / /_/ / '
+echo '\____/ .___/\___/_/ /_/|___/___/_/ |_/\____/  '
+echo '    /_/                                       '
+echo ''
+echo '    ____                   __    _           '
+echo '   / __ \____ __________  / /_  (_)___ _____ '
+echo '  / /_/ / __ `/ ___/ __ \/ __ \/ / __ `/ __ \'
+echo ' / _, _/ /_/ (__  ) /_/ / /_/ / / /_/ / / / /'
+echo '/_/ |_|\__,_/____/ .___/_.___/_/\__,_/_/ /_/ '
+echo '                /_/                          '
+echo ''
+echo 
+echo "Container built with OpenVINO Toolkit version : ${OPENVINO_VER}"
+echo ''
+echo "Pushing Image : ${TAG}"
+echo ''
+docker push ${TAG}
