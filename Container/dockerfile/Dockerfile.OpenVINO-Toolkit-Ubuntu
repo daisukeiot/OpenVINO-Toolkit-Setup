@@ -9,7 +9,7 @@ ARG MY_REGISTRY=daisukeiot
 #
 # Use Base image built in the previous step
 #
-FROM ${MY_REGISTRY}/openvino-toolkit:baseos-ubuntu_${UBUNTU_VER}
+FROM ${MY_REGISTRY}/openvino-container:baseos-ubuntu_${UBUNTU_VER}
 
 #
 # Local variables

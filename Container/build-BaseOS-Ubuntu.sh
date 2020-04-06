@@ -15,9 +15,9 @@ MY_REGISTRY=$2
 #
 # Build Ubuntu Base Image
 #
-docker build --squash --rm -f ./dockerfile/Dockerfile.BaseOS-Ubuntu --build-arg UBUNTU_VER=${UBUNTU_VER} -t ${MY_REGISTRY}/openvino-toolkit:baseos-ubuntu_${UBUNTU_VER} .
-docker push ${MY_REGISTRY}/openvino-toolkit:baseos-ubuntu_${UBUNTU_VER}
+docker build --squash --rm -f ./dockerfile/Dockerfile.BaseOS-Ubuntu --build-arg UBUNTU_VER=${UBUNTU_VER} -t ${MY_REGISTRY}/openvino-container:baseos-ubuntu_${UBUNTU_VER} .
+docker push ${MY_REGISTRY}/openvino-container:baseos-ubuntu_${UBUNTU_VER}
 
 echo ''
 echo '###############################################################################'
-docker run -it --rm ${MY_REGISTRY}/openvino-toolkit:baseos-ubuntu_${UBUNTU_VER} /bin/bash -c "python3 --version;lsb_release -a"
+docker run -it --rm ${MY_REGISTRY}/openvino-container:baseos-ubuntu_${UBUNTU_VER} /bin/bash -c "python3 --version;lsb_release -a"

@@ -20,5 +20,5 @@ OPENVINO_VER=2019.3.376
 #
 # Install OpenVINO Toolkit to Ubuntu Base Image
 #
-docker build --squash --rm -f ./dockerfile/Dockerfile.OpenVINO-Toolkit-Ubuntu -t ${MY_REGISTRY}/openvino-toolkit:${UBUNTU_VER}_${OPENVINO_VER} --build-arg UBUNTU_VER=${UBUNTU_VER} --build-arg OPENVINO_VER=${OPENVINO_VER} --build-arg MY_REGISTRY=${MY_REGISTRY} .
-docker push ${MY_REGISTRY}/openvino-toolkit:${UBUNTU_VER}_${OPENVINO_VER}
+docker build --squash --rm -f ./dockerfile/Dockerfile.OpenVINO-Toolkit-Ubuntu -t ${MY_REGISTRY}/openvino-container:${UBUNTU_VER}_${OPENVINO_VER} --build-arg UBUNTU_VER=${UBUNTU_VER} --build-arg OPENVINO_VER=${OPENVINO_VER} --build-arg MY_REGISTRY=${MY_REGISTRY} .
+docker push ${MY_REGISTRY}/openvino-container:${UBUNTU_VER}_${OPENVINO_VER}
