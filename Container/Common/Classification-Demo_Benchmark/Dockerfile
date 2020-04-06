@@ -29,7 +29,7 @@ RUN chmod a+x /home/openvino/*.sh && \
 USER openvino
 WORKDIR /home/openvino
 
-RUN soruce /opt/intel/openvino/bin/setupvars.sh
+RUN /opt/intel/openvino/bin/setupvars.sh
 
 #
 # Image Classification Sample
