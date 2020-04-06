@@ -9,9 +9,9 @@ if [ $# -ne 2 ]
     exit
 fi
 
+SCRIPT_DIR=$(cd $(dirname $0); pwd)
 OS_VERSION=$1
 MY_REGISTRY=$2
-
 TAG=${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION}
 
 if docker inspect --type=image $TAG > /dev/null 2>&1; then
@@ -30,7 +30,11 @@ echo ''
 #
 # Build Ubuntu Base Image
 #
-docker build --squash --rm -f ./BaseOS/Dockerfile --build-arg OS_VERSION=${OS_VERSION} -t ${TAG} .
+docker build --squash --rm \
+  -f ${SCRIPT_DIR}/BaseOS/Dockerfile \
+  --build-arg OS_VERSION=${OS_VERSION} \
+  -t ${TAG} \
+  ${SCRIPT_DIR}
 
 echo '   __  ____                      __ '
 echo '  / / / / /_  __  ______  __  __/ /_'

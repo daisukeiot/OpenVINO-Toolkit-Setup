@@ -8,6 +8,7 @@ if [ $# -ne 2 ]
     echo "======================================="
     exit
 fi
+SCRIPT_DIR=$(cd $(dirname $0); pwd)
 
 OS_VERSION=$1
 MY_REGISTRY=$2
@@ -30,7 +31,12 @@ echo ''
 #
 # Build Ubuntu Base Image
 #
-docker build --squash --rm -f ./Tensorflow/NoAVX/Dockerfile --build-arg OS_VERSION=${OS_VERSION} --build-arg TF_VERSION=${TF_VERSION} -t ${TAG} .
+docker build --squash --rm \
+  -f ${SCRIPT_DIR}/Tensorflow/NoAVX/Dockerfile \
+  --build-arg OS_VERSION=${OS_VERSION} \
+  --build-arg TF_VERSION=${TF_VERSION} \
+  -t ${TAG} \
+  ${SCRIPT_DIR}
 
 echo '  ______                           ______             '
 echo ' /_  __/__  ____  _________  _____/ __/ /___ _      __'

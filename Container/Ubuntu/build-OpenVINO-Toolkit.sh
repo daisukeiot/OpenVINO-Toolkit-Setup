@@ -10,6 +10,8 @@ if [ $# -ne 2 ]
 fi
 
 [ "$DEBUG" ] && set -x
+SCRIPT_DIR=$(cd $(dirname $0); pwd)
+
 #
 # Use OpenVINO Toolkit ver 2019.3.376
 #
@@ -37,10 +39,11 @@ echo ''
 #
 # Install OpenVINO Toolkit to Ubuntu Base Image
 #
-docker build --squash --rm -f ./OpenVINO-Toolkit/Dockerfile -t ${TAG} \
+docker build --squash --rm -f ${SCRIPT_DIR}/OpenVINO-Toolkit/Dockerfile -t ${TAG} \
   --build-arg OS_VERSION=${OS_VERSION} \
   --build-arg OPENVINO_VER=${OPENVINO_VER} \
-  --build-arg MY_REGISTRY=${MY_REGISTRY} .
+  --build-arg MY_REGISTRY=${MY_REGISTRY} \
+  ${SCRIPT_DIR}
 
 #
 # Check if the image exists or not
