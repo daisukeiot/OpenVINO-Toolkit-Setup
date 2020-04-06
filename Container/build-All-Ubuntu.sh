@@ -9,6 +9,9 @@ if [ $# -ne 2 ]
     exit
 fi
 
-docker system prune -a -f
-./build-BaseOS.sh $1 $2
-./build-OpenVINO-Toolkit.sh $1 $2 "2019.3.376"
+OS_VERSION=$1
+REPOSITORY=$2
+
+./build-BaseOS.sh ${OS_VERSION} ${REPOSITORY}
+./build-Tensorflow-NoAVX.sh ${OS_VERSION} ${REPOSITORY}
+./build-OpenVINO-Toolkit.sh ${OS_VERSION} ${REPOSITORY}
