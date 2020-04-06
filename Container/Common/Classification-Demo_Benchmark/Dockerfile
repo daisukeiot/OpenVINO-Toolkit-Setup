@@ -47,7 +47,7 @@ RUN cd ${INTEL_OPENVINO_DIR}/deployment_tools/tools/model_downloader && \
     cd /home/$USER/inference_engine_samples_build/benchmark_app && \
     make
 
-RUN cd cd ${INTEL_OPENVINO_DIR}/install_dependencies && \
+RUN cd ${INTEL_OPENVINO_DIR}/install_dependencies && \
     ./install_NCS_udev_rules.sh
 
 # ENTRYPOINT ["/home/openvino/imageclassification.sh"]
