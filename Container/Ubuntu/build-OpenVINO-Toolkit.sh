@@ -1,3 +1,4 @@
+@@ -1,65 +0,0 @@
 if [ $# -ne 2 ]
   then
     echo "======================================="
@@ -60,6 +61,6 @@ echo ''
 echo 
 echo "Container built with OpenVINO Toolkit version : ${OPENVINO_VER}"
 echo ''
-echo "Pushing Image : ${TAG}"
-echo ''
-docker push ${TAG}
+# echo "Pushing Image : ${TAG}"
+# echo ''
+# docker push ${TAG}

@@ -4,15 +4,15 @@ if [ $# -ne 2 ]
     echo "Please specify Ubuntu Version and reistry"
     echo "  Ubuntu Version : 18.04 or 16.04"
     echo "  Registry       : Your registry"
-    echo "  Example ./build-Tensorflow.sh 18.04 myregistry"
+    echo "  Example ./build-BaseOS.sh 18.04 myregistry"
     echo "======================================="
     exit
 fi
 
-OS_VERSION=$1
+UBUNTU_VER=$1
 MY_REGISTRY=$2
-TF_VERSION=r1.14
-TAG=${MY_REGISTRY}/openvino-container:tf_${TF_VERSION}
+
+TAG=${MY_REGISTRY}/openvino-container:baseos-ubuntu_${UBUNTU_VER}
 
 if docker inspect --type=image $TAG > /dev/null 2>&1; then
     echo "Deleting image"
@@ -30,20 +30,22 @@ echo ''
 #
 # Build Ubuntu Base Image
 #
-docker build --squash --rm -f ./Tensorflow/NoAVX/Dockerfile --build-arg OS_VERSION=${OS_VERSION} --build-arg TF_VERSION=${TF_VERSION} -t ${TAG} ./Tensorflow
+docker build --squash --rm -f ./dockerfile/Dockerfile.BaseOS-Ubuntu --build-arg UBUNTU_VER=${UBUNTU_VER} -t ${TAG} .
 
-echo '  ______                           ______             '
-echo ' /_  __/__  ____  _________  _____/ __/ /___ _      __'
-echo '  / / / _ \/ __ \/ ___/ __ \/ ___/ /_/ / __ \ | /| / /'
-echo ' / / /  __/ / / (__  ) /_/ / /  / __/ / /_/ / |/ |/ / '
-echo '/_/  \___/_/ /_/____/\____/_/  /_/ /_/\____/|__/|__/  '
-echo '                                                      '
-echo "Container built with Ubuntu ${OS_VERSION}"
+echo '   __  ____                      __ '
+echo '  / / / / /_  __  ______  __  __/ /_'
+echo ' / / / / __ \/ / / / __ \/ / / / __/'
+echo '/ /_/ / /_/ / /_/ / / / / /_/ / /_  '
+echo '\____/_.___/\__,_/_/ /_/\__,_/\__/  '
+echo '                                    '
 echo ''
-echo "Pushing Image : ${TAG}"
+echo 
+echo "Container built with OpenVINO Toolkit version : ${OPENVINO_VER}"
 echo ''
-docker push ${TAG}
+# echo "Pushing Image : ${TAG}"
+# echo ''
+# docker push ${TAG}
 
 echo ''
 echo '###############################################################################'
-docker run -it --rm ${TAG} /bin/bash
+docker run -it --rm $TAG} /bin/bash -c "python3 --version;lsb_release -a"

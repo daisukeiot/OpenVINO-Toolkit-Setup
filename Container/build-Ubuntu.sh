@@ -12,6 +12,5 @@ fi
 OS_VERSION=$1
 REPOSITORY=$2
 
-./build-BaseOS-Ubuntu.sh ${OS_VERSION} ${REPOSITORY}
-./build-Tensorflow-NoAVX.sh ${OS_VERSION} ${REPOSITORY}
-./build-OpenVINO-Toolkit-Ubuntu.sh ${OS_VERSION} ${REPOSITORY}
+./Ubuntu/build-BaseOS.sh ${OS_VERSION} ${REPOSITORY}
+./Ubuntu/build-OpenVINO-Toolkit.sh ${OS_VERSION} ${REPOSITORY}
