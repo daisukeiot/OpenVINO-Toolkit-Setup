@@ -121,8 +121,6 @@ ENV TF_NEED_CUDA=0 \
     TF_NEED_IGNITE=0 \
     TF_NEED_ROCM=0
 
-RUN ./configure
-
 #
 # Compiler options
 #
@@ -140,8 +138,11 @@ ENV CC_OPT_FLAGS="--copt=-march=silvermont --copt=-mcx16 --copt=-mssse3 --copt=-
       --copt=-Wno-strict-aliasing \
       --copt=-Wno-comment \
       --copt=-Wno-unused-function \
-      --copt=-Wno-un
+      --copt=-Wno-un"
+
 ENV tag="silvermont"
+
+RUN ./configure
 
 RUN  bazel build -c opt ${CC_OPT_FLAGS} \
                  --linkopt="-lrt" \
