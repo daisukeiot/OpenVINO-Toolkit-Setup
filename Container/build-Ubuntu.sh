@@ -12,5 +12,6 @@ fi
 OS_VERSION=$1
 REPOSITORY=$2
 
-./Ubuntu/build-BaseOS.sh ${OS_VERSION} ${REPOSITORY}
-./Ubuntu/build-OpenVINO-Toolkit.sh ${OS_VERSION} ${REPOSITORY}
+cd ./Ubuntu
+./build-BaseOS.sh ${OS_VERSION} ${REPOSITORY}
+./build-OpenVINO-Toolkit.sh ${OS_VERSION} ${REPOSITORY}
