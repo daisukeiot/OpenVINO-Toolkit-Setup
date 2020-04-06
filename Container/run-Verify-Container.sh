@@ -23,4 +23,4 @@ echo '                                                         '
 echo ''
 echo 'Running Benchmark Tool on ${TARGET_DEV}'
 
-docker run --rm -it ${TARGET_TAG} /bin/bash -c "/home/openvino/benchmark.sh ${TARGET_DEV}"
+docker run --rm -it --privileged ${TARGET_TAG} /bin/bash -c "/home/openvino/benchmark.sh ${TARGET_DEV}"
