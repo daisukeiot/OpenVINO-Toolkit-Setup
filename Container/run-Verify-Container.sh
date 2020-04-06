@@ -11,7 +11,7 @@ fi
 # Build Container with verification script
 # Built container but do not push to registry
 #
-TARGET_TAG=$1_verify
+TARGET_TAG=$1
 TARGET_DEV=$2
 
 echo '    ____                  __                         __  '
