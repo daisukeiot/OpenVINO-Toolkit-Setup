@@ -1,4 +1,4 @@
-# Docker Container with OpenVINO
+# Docker Container with OpenVINO for Ubuntu
 
 There are a few steps involved in containerize OpenVINO application
 
@@ -288,6 +288,18 @@ docker build --squash --rm -f ./Common/Classification-Demo_Benchmark/Dockerfile 
     -t ${TAG_VERIFY} \
     --build-arg OPENVINO_IMAGE=${TAG} \
     ./Common/Classification-Demo_Benchmark
+```
+
+### Check Available Hardware devices
+
+Run python script in the container to check available hardware devices with :
+
+```bash
+cd ~/OpenVINO-Toolkit-Setup/Container
+export TAG=<OpenVINO Container built above>
+export TAG_VERIFY=<New Tag for verification>
+
+docker run --rm -it --privileged -v /dev:/dev --network=host ${TAG_VERIFY} /home/openvino/hello_device.sh
 ```
 
 ### Run Verification Script in the Container
