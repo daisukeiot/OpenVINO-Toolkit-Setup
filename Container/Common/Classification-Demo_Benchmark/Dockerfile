@@ -39,7 +39,7 @@ WORKDIR /home/openvino
 #
 # Image Classification Sample
 #
-RUN if [ "${CONTAINER_OS}" == "Ubuntu" ] ; then \
+RUN if [ "${CONTAINER_OS}" = "Ubuntu" ] ; then \
     ( \
         cd ${INTEL_OPENVINO_DIR}/deployment_tools/demo && \
         ./demo_squeezenet_download_convert_run.sh \
@@ -49,7 +49,7 @@ RUN if [ "${CONTAINER_OS}" == "Ubuntu" ] ; then \
 #
 # Build Benchmark C++ Tool
 #
-RUN if [ "${CONTAINER_OS}" == "Ubuntu" ] ; then \
+RUN if [ "${CONTAINER_OS}" = "Ubuntu" ] ; then \
     ( \
         cd ${INTEL_OPENVINO_DIR}/deployment_tools/tools/model_downloader && \
         ./downloader.py --name alexnet --output /home/$USER/openvino_models/ && \
