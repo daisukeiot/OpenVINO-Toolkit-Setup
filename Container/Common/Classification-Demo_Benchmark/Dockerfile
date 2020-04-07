@@ -54,7 +54,10 @@ RUN cd ${INTEL_OPENVINO_DIR}/deployment_tools/tools/model_downloader && \
 RUN cd ${INTEL_OPENVINO_DIR}/bin && \
     ./setupvars.sh && \
     cd ${INTEL_OPENVINO_DIR}/inference_engine/samples/python_samples && \
-    pip3 install -r ./requirements.txt && \
+    sudo pip3 install -r ./requirements.txt
+
+RUN cd ${INTEL_OPENVINO_DIR}/bin && \
+    ./setupvars.sh && \
     cd ${INTEL_OPENVINO_DIR}/inference_engine/samples/python_samples/hello_query_device && \
     python3 ./hello_query_device.py
 
