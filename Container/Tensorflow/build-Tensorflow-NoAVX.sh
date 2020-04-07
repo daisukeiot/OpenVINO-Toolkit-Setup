@@ -1,10 +1,11 @@
-if [ $# -ne 2 ]
+if [ $# -ne 3 ]
   then
     echo "======================================="
     echo "Please specify Ubuntu Version and reistry"
     echo "  Ubuntu Version : 18.04 or 16.04"
     echo "  Registry       : Your registry"
-    echo "  Example ./build-Tensorflow.sh 18.04 myregistry"
+    echo "  Tensorflow     : Tensorflow Version"
+    echo "  Example ./build-Tensorflow.sh 18.04 myregistry r1.14"
     echo "======================================="
     exit
 fi
@@ -12,13 +13,14 @@ SCRIPT_DIR=$(cd $(dirname $0); pwd)
 
 OS_VERSION=$1
 MY_REGISTRY=$2
-TF_VERSION=r1.14
+TF_VERSION=$3
+
 TAG=${MY_REGISTRY}/openvino-container:tf_${TF_VERSION}
 
-if docker inspect --type=image $TAG > /dev/null 2>&1; then
-    echo "Deleting image"
-    docker rmi -f ${TAG}
-fi
+# if docker inspect --type=image $TAG > /dev/null 2>&1; then
+#     echo "Deleting image"
+#     docker rmi -f ${TAG}
+# fi
 
 echo ''
 echo '    ____        _ __    __   _____ __             __ '
@@ -52,4 +54,4 @@ echo ''
 
 echo ''
 echo '###############################################################################'
-docker run -it --rm ${TAG} /bin/bash
+# docker run -it --rm ${TAG} /bin/bash

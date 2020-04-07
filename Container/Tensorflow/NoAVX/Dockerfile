@@ -155,6 +155,9 @@ RUN  bazel build -c opt ${CC_OPT_FLAGS} \
 ARG PACKAGE_NAME=tensorflow-atom
 ARG SUBFOLDER_NAME="${TF_VERSION}-py${PYTHON_VERSION}"
 
-RUN mkdir -p "/wheels/${SUBFOLDER_NAME}" && \
-    bazel-bin/tensorflow/tools/pip_package/build_pip_package "/wheels/${SUBFOLDER_NAME}" --project_name "${PACKAGE_NAME}" && \
+# RUN mkdir -p "/wheels/${SUBFOLDER_NAME}" && \
+#     bazel-bin/tensorflow/tools/pip_package/build_pip_package "/wheels/${SUBFOLDER_NAME}" --project_name "${PACKAGE_NAME}" && \
+#     chmod -R 777 /wheels/
+
+RUN bazel-bin/tensorflow/tools/pip_package/build_pip_package "/wheels" --project_name "${PACKAGE_NAME}" && \
     chmod -R 777 /wheels/
