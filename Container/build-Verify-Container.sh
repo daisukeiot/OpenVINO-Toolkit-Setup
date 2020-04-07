@@ -22,3 +22,9 @@ docker build --squash --rm -f \
     --build-arg OPENVINO_IMAGE=${TAG} \
     --build-arg CONTAINER_OS=${CONTAINER_OS} \
     ${SCRIPT_DIR}/Common/Classification-Demo_Benchmark
+
+echo ''
+echo 'Container Built'
+echo 'Run Hello World to check available hardware'
+echo "docker run --rm ${TARGET_TAG} /home/openvino/hello_world.sh"
+echo ''
