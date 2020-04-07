@@ -32,7 +32,9 @@ echo '  / __  / / / / / / __  /   \__ \/ __/ __ `/ ___/ __/'
 echo ' / /_/ / /_/ / / / /_/ /   ___/ / /_/ /_/ / /  / /_  '
 echo '/_____/\__,_/_/_/\__,_/   /____/\__/\__,_/_/   \__/  '
 echo ''
-
+echo ''
+echo "Image Tag : ${TAG}"
+echo ''
 #
 # Install OpenVINO Toolkit to Raspbian Base Image
 #
@@ -66,7 +68,8 @@ echo '/_/ |_|\__,_/____/ .___/_.___/_/\__,_/_/ /_/ '
 echo '                /_/                          '
 echo ''
 echo 
-echo "Container built with OpenVINO Toolkit version : ${OPENVINO_VER}"
+echo "Container built with Raspbian version : ${OS_VERSION}"
+echo "Container built with OpenVINO Toolkit : ${OPENVINO_VER}"
 echo ''
 #echo "Pushing Image : ${TAG}"
 #echo ''
