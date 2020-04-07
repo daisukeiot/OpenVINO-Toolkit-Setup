@@ -32,7 +32,7 @@ echo ''
 # Build Ubuntu Base Image
 #
 docker build --squash --rm \
-  -f ${SCRIPT_DIR}/Tensorflow/NoAVX/Dockerfile \
+  -f ${SCRIPT_DIR}/NoAVX/Dockerfile \
   --build-arg OS_VERSION=${OS_VERSION} \
   --build-arg TF_VERSION=${TF_VERSION} \
   -t ${TAG} \
