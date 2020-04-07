@@ -44,7 +44,7 @@ echo '\____/_.___/\__,_/_/ /_/\__,_/\__/  '
 echo '                                    '
 echo ''
 echo 
-echo "Container built with OpenVINO Toolkit version : ${OPENVINO_VER}"
+echo "Container built with Ubuntu version : ${OS_VERSION}"
 echo ''
 # echo "Pushing Image : ${TAG}"
 # echo ''
