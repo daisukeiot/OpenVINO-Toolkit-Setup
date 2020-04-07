@@ -26,5 +26,5 @@ docker build --squash --rm -f \
 echo ''
 echo 'Container Built'
 echo 'Run Hello World to check available hardware'
-echo "docker run --rm ${TARGET_TAG} /home/openvino/hello_world.sh"
+echo "docker run --rm --privileged -v /dev:/dev --network=host ${TARGET_TAG} /home/openvino/hello_device.sh"
 echo ''
