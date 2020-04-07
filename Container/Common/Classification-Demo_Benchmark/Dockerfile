@@ -23,6 +23,7 @@ RUN apt-get update && \
 
 COPY ./imageclassification.sh /home/openvino/imageclassification.sh
 COPY ./benchmark.sh /home/openvino/benchmark.sh
+COPY ./hello_device.sh /home/openvino/hello_device.sh
 
 RUN chmod a+x /home/openvino/*.sh && \
     usermod -aG sudo openvino && \
