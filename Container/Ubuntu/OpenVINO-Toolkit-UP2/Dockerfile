@@ -35,12 +35,13 @@ USER root
 WORKDIR /tmp
 # COPY --from=TensorFlow /wheels/r1.14-py3.6.9/tensorflow_atom-1.14.1-cp36-cp36m-linux_x86_64.whl .
 COPY --from=TensorFlow /wheels/r1.14-py3.6.9/*.whl .
-RUN pip3 install ./*.whl
+
 #
 # Download OpenVINO Toolkit
 # Run silent install
 # Setup environment variable
-RUN curl -LOJ "${OPENVINO_DOWNLOAD}" && \
+RUN pip3 install ./*.whl && \
+    curl -LOJ "${OPENVINO_DOWNLOAD}" && \
     tar -xzf ./*.tgz && \
     cd l_openvino_toolkit* && \
     ./install.sh --list_components && \

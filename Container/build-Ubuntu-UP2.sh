@@ -19,8 +19,7 @@ TAG_OS=${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION}
 if docker inspect --type=image $TAG_OS > /dev/null 2>&1; then
     echo "${TAG_OS} exists"
   else
-    echo "Building Base OS Container" \
-    # ./Ubuntu/build-BaseOS.sh ${OS_VERSION} ${MY_REGISTRY}
+    ./Ubuntu/build-BaseOS.sh ${OS_VERSION} ${MY_REGISTRY}
 fi
 
 TAG_TF=${MY_REGISTRY}/openvino-container:tf_${TF_VERSION}
@@ -29,8 +28,7 @@ echo ${TAG_TF}
 if docker inspect --type=image $TAG_TF > /dev/null 2>&1; then
     echo "${TAG_TF} exists"
   else
-    echo "Building Tensorflow" \
-    #./Tensorflow/build-Tensorflow-NoAVX.sh ${OS_VERSION} ${MY_REGISTRY} ${TF_VERSION}
+    ./Tensorflow/build-Tensorflow-NoAVX.sh ${OS_VERSION} ${MY_REGISTRY} ${TF_VERSION}
 fi
 
 ./Ubuntu/build-OpenVINO-Toolkit-UP2.sh ${OS_VERSION} ${MY_REGISTRY} ${TF_VERSION}
