@@ -14,6 +14,13 @@ fi
 TARGET_TAG=$1
 TARGET_DEV=$2
 
+if [ "${TARGET_DEV}" == "MYRIAD" ]
+  then
+    DOCKER_OPTION='-v /dev:/dev --network=host'
+  else
+    DOCKER_OPTION=""
+fi
+
 echo '    ____                  __                         __  '
 echo '   / __ )___  ____  _____/ /_  ____ ___  ____ ______/ /__'
 echo '  / __  / _ \/ __ \/ ___/ __ \/ __ `__ \/ __ `/ ___/ //_/'
@@ -22,5 +29,5 @@ echo '/_____/\___/_/ /_/\___/_/ /_/_/ /_/ /_/\__,_/_/  /_/|_|  '
 echo '                                                         '
 echo ''
 echo 'Running Benchmark Tool on ${TARGET_DEV}'
-docker run --rm -it --privileged ${TARGET_TAG} /bin/bash -c "/home/openvino/imageclassification.sh ${TARGET_DEV}"
-docker run --rm -it --privileged ${TARGET_TAG} /bin/bash -c "/home/openvino/benchmark.sh ${TARGET_DEV}"
+docker run --rm -it ${DOCKER_OPTION} --privileged ${TARGET_TAG} /bin/bash -c "/home/openvino/imageclassification.sh ${TARGET_DEV}"
+docker run --rm -it ${DOCKER_OPTION} --privileged ${TARGET_TAG} /bin/bash -c "/home/openvino/benchmark.sh ${TARGET_DEV}"
