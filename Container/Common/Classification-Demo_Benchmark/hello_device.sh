@@ -18,5 +18,6 @@ echo '##########################################################################
 echo "Running on ${TARGET}"
 echo '###################################################################################################'
 
-cd ${INSTALLDIR}/inference_engine/samples/python_samples/hello_query_device
-python3 ./hello_query_device.py
+cd ${INSTALLDIR}/inference_engine/samples/python_samples
+pip3 install -r ./requirements.txt
+python3 ./hello_query_device/hello_query_device.py
