@@ -20,10 +20,6 @@ OS_VERSION=$1
 MY_REGISTRY=$2
 TAG=${MY_REGISTRY}/openvino-container:ubuntu${OS_VERSION}_openvino${OPENVINO_VER}
 
-echo ''
-echo "Image Tag : ${TAG}"
-echo ''
-
 if docker inspect --type=image $TAG > /dev/null 2>&1; then
     echo "Deleting image"
     docker rmi -f ${TAG}
@@ -35,6 +31,9 @@ echo '   / __ )__  __(_) /___/ /  / ___// /_____ ______/ /_'
 echo '  / __  / / / / / / __  /   \__ \/ __/ __ `/ ___/ __/'
 echo ' / /_/ / /_/ / / / /_/ /   ___/ / /_/ /_/ / /  / /_  '
 echo '/_____/\__,_/_/_/\__,_/   /____/\__/\__,_/_/   \__/  '
+echo ''
+echo ''
+echo "Image Tag : ${TAG}"
 echo ''
 #
 # Install OpenVINO Toolkit to Ubuntu Base Image
