@@ -47,7 +47,7 @@ RUN useradd -ms /bin/bash -G video,users openvino && \
 #
 # Download and install OpenCL etc
 #
-RUN if [ "${OS_VERSION}" = "18.04" ] ; then \
+RUN if [ "${OS_VERSION}" == "18.04" ] ; then \
     ( \
         cd /tmp/ && \
         curl -L "https://github.com/intel/compute-runtime/releases/download/20.09.15980/intel-gmmlib_19.4.1_amd64.deb" --output "intel-gmmlib_19.4.1_amd64.deb" && \
