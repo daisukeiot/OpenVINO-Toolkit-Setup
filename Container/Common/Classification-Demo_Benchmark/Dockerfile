@@ -51,10 +51,8 @@ RUN cd ${INTEL_OPENVINO_DIR}/deployment_tools/tools/model_downloader && \
     cd /home/$USER/inference_engine_samples_build/benchmark_app && \
     make
 
-RUN cd ${INTEL_OPENVINO_DIR}/bin && \
-    ./setupvars.sh && \
-    cd ${INTEL_OPENVINO_DIR}/inference_engine/samples/python_samples && \
-    sudo pip3 install -r ./requirements.txt
+RUN cd ${INTEL_OPENVINO_DIR}/inference_engine/samples/python_samples && \
+    pip3 install -r ./requirements.txt
 
 RUN cd ${INTEL_OPENVINO_DIR}/bin && \
     ./setupvars.sh && \
