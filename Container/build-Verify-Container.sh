@@ -7,6 +7,8 @@ if [ $# -ne 1 ]
     exit
 fi
 
+CONTAINER_OS=$(lsb_release -si)
+
 #
 # Build Container with verification script
 # Built container but do not push to registry
@@ -18,4 +20,5 @@ docker build --squash --rm -f \
     ${SCRIPT_DIR}/Common/Classification-Demo_Benchmark/Dockerfile \
     -t ${TARGET_TAG} \
     --build-arg OPENVINO_IMAGE=${TAG} \
+    --build-arg CONTAINER_OS=${CONTAINER_OS} \
     ${SCRIPT_DIR}/Common/Classification-Demo_Benchmark
