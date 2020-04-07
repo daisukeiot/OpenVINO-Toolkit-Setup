@@ -23,7 +23,6 @@ if docker inspect --type=image $TAG_OS > /dev/null 2>&1; then
 fi
 
 TAG_TF=${MY_REGISTRY}/openvino-container:tf_${TF_VERSION}
-echo ${TAG_TF}
 
 if docker inspect --type=image $TAG_TF > /dev/null 2>&1; then
     echo "${TAG_TF} exists"
