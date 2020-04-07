@@ -1,23 +1,26 @@
-if [ $# -ne 2 ]
+if [ $# -ne 3 ]
   then
     echo "======================================="
     echo "Please specify Ubuntu Version and reistry"
     echo "  Ubuntu Version : 18.04 or 16.04"
     echo "  Registry       : Your registry"
-    echo "  Example ./build-BaseOS.sh 18.04 myregistry"
+    echo "  Tensorflow     : Tensorflow Version"
+    echo "  Example ./build-Ubuntu-UP2.sh 18.04 myregistry r1.14"
     echo "======================================="
     exit
 fi
 
 OS_VERSION=$1
-REPOSITORY=$2
-TF_VERSION=r1.14
+MY_REGISTRY=$2
+TF_VERSION=$3
 
-if docker inspect --type=image $TAG_TF > /dev/null 2>&1; then
-    echo "${TAG_TF} exists"
+TAG_OS=${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION}
+
+if docker inspect --type=image $TAG_OS > /dev/null 2>&1; then
+    echo "${TAG_OS} exists"
   else
     echo "Building Base OS Container" \
-    # ./Ubuntu/build-BaseOS.sh ${OS_VERSION} ${REPOSITORY}
+    # ./Ubuntu/build-BaseOS.sh ${OS_VERSION} ${MY_REGISTRY}
 fi
 
 TAG_TF=${MY_REGISTRY}/openvino-container:tf_${TF_VERSION}
@@ -27,7 +30,7 @@ if docker inspect --type=image $TAG_TF > /dev/null 2>&1; then
     echo "${TAG_TF} exists"
   else
     echo "Building Tensorflow" \
-    #./Tensorflow/build-Tensorflow-NoAVX.sh ${OS_VERSION} ${REPOSITORY} ${TF_VERSION}
+    #./Tensorflow/build-Tensorflow-NoAVX.sh ${OS_VERSION} ${MY_REGISTRY} ${TF_VERSION}
 fi
 
-./Ubuntu/build-OpenVINO-Toolkit-UP2.sh ${OS_VERSION} ${REPOSITORY} ${TF_VERSION}
+./Ubuntu/build-OpenVINO-Toolkit-UP2.sh ${OS_VERSION} ${MY_REGISTRY} ${TF_VERSION}
