@@ -16,12 +16,17 @@
         width: 100vw;
       }
 
-      .main-content, .main-label {
+      .main-content, .main-label, .main-text{
         display: block;
       }
 
       .main-label {
         color: whitesmoke;
+      }
+
+      .main-text {
+        color: whitesmoke;
+        font-weight: normal;
       }
 
       .videoView, .liveVideo {
@@ -132,10 +137,6 @@
         font-weight: bold;
       }
 
-      .modal-text {
-        font-weight: normal;
-      }
-
       .modal-Sublabel {
         font-size : 1rem;
       }
@@ -190,7 +191,7 @@
             <label class="main-label" style="float: left">:</label>
           </td>
           <td>
-            <label class="main-label"  id="textVideoPath"></label>
+            <label class="main-text"  id="textVideoPath"></label>
           </td>
         </tr>
         <tr>
@@ -201,7 +202,7 @@
             <label class="main-label" style="float: left">:</label>
           </td>
           <td>
-            <label class="main-label"  id="textFps"></label>
+            <label class="main-text"  id="textFps"></label>
           </td>
         </tr>
         <tr>
@@ -232,7 +233,7 @@
             <label class="main-label" style="float: left">:</label>
           </td>
           <td>
-            <label class="main-label"  id="textStatus">Current Setting</label>
+            <label class="main-text"  id="textStatus">Current Setting</label>
           </td>
         </tr>
       </table>
