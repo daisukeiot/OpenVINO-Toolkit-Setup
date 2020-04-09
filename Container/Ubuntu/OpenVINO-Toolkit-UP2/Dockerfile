@@ -33,8 +33,7 @@ USER root
 # Use /tmp folder
 #
 WORKDIR /tmp
-# COPY --from=TensorFlow /wheels/r1.14-py3.6.9/tensorflow_atom-1.14.1-cp36-cp36m-linux_x86_64.whl .
-COPY --from=TensorFlow /wheels/r1.14-py3.6.9/*.whl .
+COPY --from=TensorFlow /wheels/*.whl .
 
 #
 # Download OpenVINO Toolkit
