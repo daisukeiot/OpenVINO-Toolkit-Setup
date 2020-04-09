@@ -84,6 +84,12 @@ class ImageStreamHandler(websocket.WebSocketHandler):
             #
             self.message_writer('{{\"DevicePath\":\"{0}\"}}'.format(self.videoProcessor.devicePath))
 
+        elif msg == 'getVideoRes':
+            #
+            # Return path to video source
+            #
+            self.videoProcessor.get_video_resolution()
+
         elif 'VideoRes' in msg:
             self.videoProcessor.set_video_resolution(msg)
 

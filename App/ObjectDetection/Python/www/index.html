@@ -259,6 +259,7 @@
             StatusLine.innerHTML = "";
             StatusLine.innerHTML = "Connected to " + document.URL;
             StatusLine.style.color = 'lightgray'
+            ws.send("getVideoRes");
             ws.send("getVideoPath");
             ws.send("nextFrame");
         };

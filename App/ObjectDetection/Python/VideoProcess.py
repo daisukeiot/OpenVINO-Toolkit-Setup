@@ -158,29 +158,32 @@ class VideoProcessor(object):
             self.videoStream.set_video_stream_state(VideoStreamState.Pause)
             self.videoStream.set_video_stream_property(cv2.CAP_PROP_FRAME_WIDTH, w)
             self.videoStream.set_video_stream_property(cv2.CAP_PROP_FRAME_HEIGHT, h)
-
-            w = self.videoStream.get_video_stream_property(cv2.CAP_PROP_FRAME_WIDTH)
-            h = self.videoStream.get_video_stream_property(cv2.CAP_PROP_FRAME_HEIGHT)
-
-            logging.info('>> {0}:{1}() : New Resolution {2}x{3}'.format(self.__class__.__name__, sys._getframe().f_code.co_name, w, h))
-
-            if w == 640 and h == 480:
-                res = "vga"
-            elif w == 1024 and h == 768:
-                res = "xga"
-            elif w == 1280 and h == 720:
-                res = "hd"
-            elif w == 1280 and h == 800:
-                res = "wxga"
-            elif w == 1920 and h == 1080:
-                res = "fhd"
-            
-            if self.imageStreamHandler:
-                self.imageStreamHandler.message_writer('{{\"VideoRes\":\"{0}\"}}'.format(res))
-
+            self.get_video_resolution()
             self.videoStream.set_video_stream_state(VideoStreamState.Initialized)
             self._state = VideoProcessorState.Initialized
 
+    #
+    # Get Video Resolution
+    #
+    def get_video_resolution(self):
+        w = self.videoStream.get_video_stream_property(cv2.CAP_PROP_FRAME_WIDTH)
+        h = self.videoStream.get_video_stream_property(cv2.CAP_PROP_FRAME_HEIGHT)
+
+        logging.info('>> {0}:{1}() : New Resolution {2}x{3}'.format(self.__class__.__name__, sys._getframe().f_code.co_name, w, h))
+
+        if w == 640 and h == 480:
+            res = "vga"
+        elif w == 1024 and h == 768:
+            res = "xga"
+        elif w == 1280 and h == 720:
+            res = "hd"
+        elif w == 1280 and h == 800:
+            res = "wxga"
+        elif w == 1920 and h == 1080:
+            res = "fhd"
+        
+        if self.imageStreamHandler:
+            self.imageStreamHandler.message_writer('{{\"VideoRes\":\"{0}\"}}'.format(res))
     #
     # Set Video Stream Property
     #
