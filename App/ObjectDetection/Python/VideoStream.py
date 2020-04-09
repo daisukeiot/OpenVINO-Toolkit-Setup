@@ -54,25 +54,13 @@ class VideoStream(object):
             self.cv2_Capture = cv2.VideoCapture(self.videoProcessor.devicePath)
 
             if (self.cv2_Capture.isOpened()):
-                w = self.cv2_Capture.get(cv2.CAP_PROP_FRAME_WIDTH)
-                h = self.cv2_Capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
-                logging.info('>> Resolution {0}x{1}'.format(w, h))
-                
                 if (videoW != 0):
                     self.cv2_Capture.set(cv2.CAP_PROP_FRAME_WIDTH, videoW)
 
                 if (videoH != 0):
                     self.cv2_Capture.set(cv2.CAP_PROP_FRAME_HEIGHT, videoH)
 
-                logging.info('>> Resolution {0}x{1}'.format(videoW, videoH))
-
-                w = self.cv2_Capture.get(cv2.CAP_PROP_FRAME_WIDTH)
-                h = self.cv2_Capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
-                logging.info('>> Resolution {0}x{1}'.format(w, h))
-
                 self.cv2_Capture.set(cv2.CAP_PROP_FPS, 30)
-
-                time.sleep(1)
 
                 # read 1 frame to be sure
 
@@ -81,7 +69,7 @@ class VideoStream(object):
                 if ret or frame.size == 0:
                     self._state = VideoStreamState.Initialized
                 else:
-                    logging.error('Failed to grap frame from {0}'.format(self.videoProcessor.devicePath))
+                    logging.error('Failed to grab frame from {0}'.format(self.videoProcessor.devicePath))
             else:
                 self._state = VideoStreamState.VideoSourceErr
                 logging.error('Failed to open capture device {0}'.format(self.videoProcessor.devicePath))
