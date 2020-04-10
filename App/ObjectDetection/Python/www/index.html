@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Live Camera View</title>
+    <meta http-equiv="content-type" charset="utf-8">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="http://code.jquery.com/jquery-2.0.0.js"></script>
+    <style>
+      body {
+        font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+        font-size: 2.5em;
+        font-weight: bold;
+        margin: 2;
+        background-color: #0078d4;
+        height: 100vh;
+        width: 100vw;
+      }
+
+      .main-content, .main-label, .main-text{
+        display: block;
+      }
+
+      .main-label {
+        color: whitesmoke;
+      }
+
+      .main-text {
+        color: whitesmoke;
+        font-weight: normal;
+      }
+
+      .videoView, .liveVideo {
+        vertical-align: top;
+      }
+      
+      .videoView {
+        position: relative;
+        vertical-align: middle;
+        padding-top: 2px;
+        padding-left: 2px;
+        padding-bottom: 2px;
+      }
+
+      .liveVideo {
+        max-height: 75vh;
+        max-width: 100%;
+        display: block;
+        object-fit: scale-down;
+        border:gray;
+        border-style: solid;
+        border-width: 2px;
+      }
+
+      .footer {
+        text-align: left;
+        display: inline-block;
+        font-size: 0.5em;
+        color: whitesmoke;
+        vertical-align: bottom;
+        border:lightgray;
+        border-style: solid;
+        border-top-width: 2px;
+        border-left-width: 0;
+        border-right-width: 0;
+        border-bottom-width: 0;
+        padding-top: 2px;
+      }
+
+      .footer-div {
+        padding-left: 3px;
+        padding-top: 0;
+        padding-bottom: 3px;
+        vertical-align: bottom;
+      }
+
+      .main-button {
+        color : rgb(65, 64, 64);
+        background-color:lightgray;
+        width : 13rem;
+        max-width: 13rem;
+        font-size:1rem;
+        font-weight: bold;
+        margin-right: 0.3rem;
+      }
+
+      .modal-setting {
+        display: none;
+        position: absolute;
+        float: left;
+        overflow: auto;
+        z-index: 1;
+        left:0;
+        top:0;
+        width: 100%;
+        height: 100%;
+        -webkit-animation-name: zoom;
+        -webkit-animation-duration: 1s;
+        animation-name: zoom;
+        animation-duration: 0.8s;
+        background-color: white;
+      }
+
+      @-webkit-keyframes zoom {
+        from {-webkit-transform:scale(0)} 
+        to {-webkit-transform:scale(1)}
+      }
+
+      @keyframes zoom {
+        from {transform:scale(0)} 
+        to {transform:scale(1)}
+      }
+      
+      .modal-content, .modal-label, .modal-Sublabel {
+        color : white;
+        font-weight: normal;
+      }
+
+      .modal-content {
+        overflow: auto;
+        position: absolute;
+        float: left;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%); 
+        max-height: 90vh;
+        max-width : 90vw;
+        height : 90%;
+        width : 90%;
+        background-color:#0078d4 ;
+        padding: 2rem;
+      }
+
+      .modal-label, .modal-text {
+        display:block;
+        width:100%;
+        font-size: 1.3rem;
+        font-weight: bold;
+      }
+
+      .modal-Sublabel {
+        font-size : 1rem;
+      }
+
+      .modal-desc-group {
+        /* display:block; */
+        width:100%;
+        border-width: 1px;
+        border-style: solid;
+        border-color: lightgray;
+        padding: 0.3rem;
+        font-size: 1rem;
+        font-weight: bold;
+        vertical-align: bottom;
+        height: auto;
+      }
+
+      .modal-label-Desc {
+        display:block;
+        width:100%;
+        font-weight: normal;
+      }
+
+      .modalSetting-input {
+        font-size: 0.9rem;
+        font-weight: bold;
+        display:block;
+        width:100%;
+        margin-bottom: 0.3rem;
+      }
+
+      .modal-button-group {
+        padding-top: 1rem;
+        display: flex;
+        vertical-align: bottom;
+        flex-grow: 1;
+      }
+  </style>
+  </head>
+  
+  <body class="main-content">
+    <div class="videoView">
+      <img class="liveVideo" id="liveVideo" src="./WP-InitializingSystem.png">
+    </div>
+    <div class="footer" style="display: block;">
+      <table>
+        <tr>
+          <td>
+            <label class="main-label" style="float: left">Video Source</label>
+          </td>
+          <td>
+            <label class="main-label" style="float: left">:</label>
+          </td>
+          <td>
+            <label class="main-text"  id="textVideoPath"></label>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label class="main-label" style="float: left">Frame Rate</label>
+          </td>
+          <td>
+            <label class="main-label" style="float: left">:</label>
+          </td>
+          <td>
+            <label class="main-text"  id="textFps"></label>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label class="main-label" style="float: left">Resolution</label>
+          </td>
+          <td>
+            <label class="main-label" style="float: left">:</label>
+          </td>
+          <td>
+            <form>
+              <select id="videoResItem">
+                <option value="vga">640x480</option>
+                <option value="xga">1024x768</option>
+                <option value="hd">1280x720</option>
+                <option value="wxga">1280x800</option>
+                <option value="fhd">1920x1080</option>
+              </select>
+              <input class="main-button" type="button" value="Set Resolution" id="btnCameraResolution">
+            </form>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label class="main-label" style="float: left">Status</label>
+          </td>
+          <td>
+            <label class="main-label" style="float: left">:</label>
+          </td>
+          <td>
+            <label class="main-text"  id="textStatus">Current Setting</label>
+          </td>
+        </tr>
+      </table>
+
+      <!-- <div class="footer-div">
+        <label class="main-label" style="float: left">FPS :&nbsp</label>
+        <label class="main-label"  id="textFps"></label>
+      </div>
+      <div class="footer-div">
+        <label class="main-label" style="float: left">Status :&nbsp</label>
+        <label class="main-label"  id="textStatus">Current Setting</label>
+      </div> -->
+    </div>
+
+    <script>
+      var liveViewVideo    = document.getElementById("liveVideo");
+      var VideoPath        = document.getElementById("textVideoPath");
+      var Fps              = document.getElementById("textFps");
+      var btnVideoRes      = document.getElementById("btnCameraResolution");
+      var videoResItem     = document.getElementById("videoResItem");
+      var StatusLine       = document.getElementById("textStatus");
+
+      var url = document.URL.replace('http','ws');
+      var ws = null;
+      if (document.URL.startsWith('http'))
+      {
+
+        var ws = new WebSocket(url + "stream");
+
+        ws.onopen = function() {
+            console.log("Connection Established to " + document.URL);
+            StatusLine.innerHTML = "";
+            StatusLine.innerHTML = "Connected to " + document.URL;
+            StatusLine.style.color = 'lightgray'
+            ws.send("getVideoRes");
+            ws.send("getVideoPath");
+            ws.send("nextFrame");
+        };
+
+        ws.onclose = function() {
+          console.log("ws.onclose");
+          StatusLine.innerHTML = "Disconnected";
+          StatusLine.style.color = 'red'
+        };
+
+        ws.onmessage = function(msg) {
+
+          if (typeof(msg.data) === 'string')
+          {
+            var json = JSON.parse(msg.data);
+
+            // Received Image to Display (Live View)
+            if (json.Image)
+            {
+              //console.log("Live View Image Received")
+              liveViewVideo.src = 'data:image/png;base64, ' + json.Image;
+              Fps.innerHTML = json.FPS;
+            }
+            else if (json.DevicePath)
+            {
+              console.log("Device Path %s", json.DevicePath);
+              VideoPath.innerHTML = json.DevicePath;
+            }
+            else if (json.VideoRes)
+            {
+              console.log("Video Resolution %s", json.VideoRes);
+              videoResItem.value = json.VideoRes;
+            }
+            else if (json.DeviceType)
+            {
+              // from VideoCapture.py, CaptureDevice Class
+              if (json.deviceType == 3)
+              {
+                isHololens = True
+              }
+              else{
+                isHololens = False
+              }
+            }
+            else if (json.DeviceStatus)
+            {
+
+              StatusLine.innerHTML = json.DeviceStatus;
+              if (json.isSuccess)
+              {
+                StatusLine.style.color = 'lightgray'
+              }
+              else{
+                StatusLine.style.color = 'red'
+              }
+            }
+            else
+            {
+              console.log("Msg Received %s", msg);
+            }
+          }
+        };
+      }
+
+      liveViewVideo.onload = function() {
+        // console.log("liveViewVideo.onload");
+        if (ws.readyState == 1)
+        {
+          ws.send("nextFrame");
+        }
+      }
+
+      btnVideoRes.onclick = function(evt) {
+        console.log("btnResolution");
+        selection = videoResItem.value
+        ws.send('{\"VideoRes\":\"' + selection + '\"}')
+      }
+
+    </script>
+  </body>
+</html>
