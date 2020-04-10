@@ -152,7 +152,7 @@ RUN  bazel build -c opt ${CC_OPT_FLAGS} \
                  --action_env="LD_LIBRARY_PATH=${LD_LIBRARY_PATH}" \
                  //tensorflow/tools/pip_package:build_pip_package
 
-ARG PACKAGE_NAME=tensorflow-noavx
+ARG PACKAGE_NAME=tensorflow
 ARG SUBFOLDER_NAME="${TF_VERSION}-py${PYTHON_VERSION}"
 
 # RUN mkdir -p "/wheels/${SUBFOLDER_NAME}" && \
