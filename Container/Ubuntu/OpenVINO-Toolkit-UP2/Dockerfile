@@ -46,7 +46,7 @@ RUN pip3 install ./*.whl && \
     ./install.sh --list_components && \
     sed -i 's/decline/accept/g' silent.cfg && \
     ./install.sh -s silent.cfg && \
-    # rm -rf /tmp/* && \
+    rm -rf /tmp/l_openvino_toolkit* && \
     cd $INSTALL_DIR/install_dependencies && \
     $INSTALL_DIR/install_dependencies/install_openvino_dependencies.sh && \
     echo "source $OPENVINO_INSTALL/bin/setupvars.sh" >> /home/openvino/.bashrc
