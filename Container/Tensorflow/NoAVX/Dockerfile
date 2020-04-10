@@ -137,8 +137,7 @@ ENV CC_OPT_FLAGS="--copt=-march=silvermont --copt=-mcx16 --copt=-mssse3 --copt=-
       --copt=-Wno-return-type \
       --copt=-Wno-strict-aliasing \
       --copt=-Wno-comment \
-      --copt=-Wno-unused-function \
-      --copt=-Wno-un"
+      --copt=-Wno-unused-function"
 
 ENV tag="silvermont"
 
