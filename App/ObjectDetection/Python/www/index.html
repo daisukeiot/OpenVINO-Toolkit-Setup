@@ -4,12 +4,13 @@
     <title>Live Camera View</title>
     <meta http-equiv="content-type" charset="utf-8">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <!-- <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"> -->
+    <link rel="stylesheet" href="./css/all.css">
     <script src="http://code.jquery.com/jquery-2.0.0.js"></script>
     <style>
       body {
         font-family: "Segoe UI", Arial, Helvetica, sans-serif;
-        font-size: 2.5em;
-        font-weight: bold;
+        font-size: 2.2rem;
         margin: 2;
         background-color: #0078d4;
         height: 100vh;
@@ -20,8 +21,23 @@
         display: block;
       }
 
-      .main-label {
+      .main-label, .child-label {
         color: whitesmoke;
+        border-width:2px;
+        font-weight: bold;
+        padding:1px;
+        float:left;
+      }
+
+      .main-label {
+        font-size:1.2em;
+      }
+
+      .child-label {
+        padding-left:1em;
+        font-size:1.2em;
+        font-weight: normal;
+        width:max-content;
       }
 
       .main-text {
@@ -76,103 +92,79 @@
       .main-button {
         color : rgb(65, 64, 64);
         background-color:lightgray;
-        width : 13rem;
-        max-width: 13rem;
-        font-size:1rem;
-        font-weight: bold;
-        margin-right: 0.3rem;
+        padding-top: 0;
+        padding-bottom: 0;
       }
 
-      .modal-setting {
-        display: none;
-        position: absolute;
-        float: left;
-        overflow: auto;
-        z-index: 1;
-        left:0;
-        top:0;
-        width: 100%;
-        height: 100%;
-        -webkit-animation-name: zoom;
-        -webkit-animation-duration: 1s;
-        animation-name: zoom;
-        animation-duration: 0.8s;
-        background-color: white;
+      .main-list, .main-button, .child-list {
+        min-width: 5rem;
       }
 
-      @-webkit-keyframes zoom {
-        from {-webkit-transform:scale(0)} 
-        to {-webkit-transform:scale(1)}
+      .icon-button {
+        min-width: 4rem;
       }
 
-      @keyframes zoom {
-        from {transform:scale(0)} 
-        to {transform:scale(1)}
-      }
-      
-      .modal-content, .modal-label, .modal-Sublabel {
-        color : white;
-        font-weight: normal;
-      }
-
-      .modal-content {
-        overflow: auto;
-        position: absolute;
-        float: left;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%); 
-        max-height: 90vh;
-        max-width : 90vw;
-        height : 90%;
-        width : 90%;
-        background-color:#0078d4 ;
-        padding: 2rem;
-      }
-
-      .modal-label, .modal-text {
-        display:block;
+      .child-table {
+        padding-left:0;
+        border-spacing: 0;
         width:100%;
-        font-size: 1.3rem;
-        font-weight: bold;
       }
 
-      .modal-Sublabel {
-        font-size : 1rem;
+      .child-list {
+        /* width:auto; */
+        min-width: 7em;
       }
 
-      .modal-desc-group {
-        /* display:block; */
-        width:100%;
-        border-width: 1px;
-        border-style: solid;
-        border-color: lightgray;
-        padding: 0.3rem;
-        font-size: 1rem;
-        font-weight: bold;
-        vertical-align: bottom;
-        height: auto;
+      td {
+        padding:0;
+        padding-right: 0.3rem;
+        height: 2.2rem;
+        width:auto;
       }
 
-      .modal-label-Desc {
-        display:block;
-        width:100%;
-        font-weight: normal;
-      }
-
-      .modalSetting-input {
-        font-size: 0.9rem;
-        font-weight: bold;
-        display:block;
-        width:100%;
-        margin-bottom: 0.3rem;
-      }
-
-      .modal-button-group {
-        padding-top: 1rem;
-        display: flex;
-        vertical-align: bottom;
+      input, button {
+        border:1px;
         flex-grow: 1;
+      }
+
+      select {
+        height: 1.8rem;
+      }
+
+      option {
+        padding-right:0;
+      }
+
+      button:disabled,
+      button[disabled]{
+        border: 1px solid #999999;
+        background-color: #cccccc;
+        color: #666666;
+      }
+
+      .range-confidence {
+        /* -webkit-appearance: none; */
+        width:100%;
+        float:right;
+        height: 1rem;
+        cursor: pointer;
+        outline:none;
+      }
+
+      .range-confidence::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 1rem;
+        height: 1rem;
+        background: gray;
+        cursor: pointer;
+      }
+
+      .range-confidence::-moz-range-thumb {
+        width: 1rem;
+        height: 1rem;
+        background: gray;
+        cursor: pointer;
       }
   </style>
   </head>
@@ -185,76 +177,175 @@
       <table>
         <tr>
           <td>
-            <label class="main-label" style="float: left">Video Source</label>
+            <label class="main-label" style="float: left">Inference Engine</label>
           </td>
           <td>
-            <label class="main-label" style="float: left">:</label>
-          </td>
-          <td>
-            <label class="main-text"  id="textVideoPath"></label>
+            <table class="child-table">
+              <tr>
+                <td style="width: 8em;">
+                  <label class="main-label" style="float: left; margin-right: 0;color: yellow;padding-left: 0;" id="textFps">00.0</label>
+                  <label class="main-label" style="float: left;color: yellow;">&nbspFPS</label>
+                </td>
+                <td>
+                  <label class="main-text"  style="min-width:5rem" id="textIE"></label>
+                </td>
+              </tr>
+            </table>
           </td>
         </tr>
         <tr>
           <td>
-            <label class="main-label" style="float: left">Frame Rate</label>
+            <label for="textVideoPath" class="main-label">Video Source</label>
           </td>
           <td>
-            <label class="main-label" style="float: left">:</label>
-          </td>
+            <input class="main-list" type="text" id="textVideoPath" style="min-width: 33rem;padding-left: 0.3rem;padding-right:0.3rem"></input>
+          </dt>
           <td>
-            <label class="main-text"  id="textFps"></label>
+            <button class="icon-button" id="btnVideoConfig"><i class="fa fa-cogs"></i></button>
+            <button class="icon-button" id="btnVideoWait" style="display: none;"><i class="fas fa-spinner fa-spin"></i></button>
+            <button class="icon-button" id="btnVideoPlay" style="display: none;"><i class="fa fa-play"></i></button>
+            <button class="icon-button" id="btnVideoPause" style="display: none;"><i class="fa fa-pause"></i></button>
+            <button class="icon-button" id="btnVideoSync" style="display: none;"><i class="fas fa-sync"></i></button>
+            <button class="icon-button" id="btnVideoPerf" style="display: none;"><i class="fas fa-bolt"></i></button>
           </td>
         </tr>
         <tr>
           <td>
-            <label class="main-label" style="float: left">Resolution</label>
+            <label class="child-label">Resolution</label>
           </td>
           <td>
-            <label class="main-label" style="float: left">:</label>
+            <select  class="child-list" id="videoResItem">
+              <option value="vga">640x480</option>
+              <option value="xga">1024x768</option>
+              <option value="hd">1280x720</option>
+              <option value="wxga">1280x800</option>
+              <option value="fhd">1920x1080</option>
+            </select>
+            <!-- <table class="child-table">
+                <tr>
+                  <td>
+                    <label class="child-label" style="float:right">Camera Resolution :</label>
+                  </td>
+                  <td style="padding:0;width: 7rem;">
+                    <select  class="child-list" id="videoResItem">
+                      <option value="vga">640x480</option>
+                      <option value="xga">1024x768</option>
+                      <option value="hd">1280x720</option>
+                      <option value="wxga">1280x800</option>
+                      <option value="fhd">1920x1080</option>
+                    </select>
+                  </td>
+                </tr>
+            </table> -->
           </td>
           <td>
-            <form>
-              <select id="videoResItem">
-                <option value="vga">640x480</option>
-                <option value="xga">1024x768</option>
-                <option value="hd">1280x720</option>
-                <option value="wxga">1280x800</option>
-                <option value="fhd">1920x1080</option>
-              </select>
-              <input class="main-button" type="button" value="Set Resolution" id="btnCameraResolution">
-            </form>
+            <!-- <button class="icon-button" id="btnSyncResolution" disabled=true><i class="fas fa-sync"></i></button> -->
+        </td>
+      </tr>
+        <tr>
+          <td>
+            <label class="main-label">Model List</label>
+          </td>
+          <td>
+            <select class="main-list" id="modelList" style="min-width: 33rem;">
+          </td>
+          <td>
+            <button class="icon-button" id="btnInferenceSpin" style="display: none;"><i class="fas fa-spinner fa-spin"></i></button>
+            <button class="icon-button" id="btnInferenceStart" disabled=true><i class="fa fa-play"></i></button>
+            <button class="icon-button" id="btnInferencePause" disabled=true><i class="fa fa-pause"></i></button>
           </td>
         </tr>
+        <tr>
+          <td>
+            <label class="child-label">Target HW</label>
+          </td>
+          <td>
+            <select class="child-list" id="targetDeviceItem">
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label class="child-label">Precision</label>
+          </td>
+          <td>
+            <select class="child-list" id="precisionItem" style="width: 4em;">
+              <option value="FP16">FP16</option>
+              <option value="FP32">FP32</option>
+            </select>
+          </td>
+        </tr>
+        <!-- <tr>
+          <td></td>
+          <td>
+            <table class="child-table">
+              <tr>
+                <td>
+                  <label class="child-label" style="float:right">Hardware :</label>
+                </td>
+                <td style="width:7rem">
+                  <select class="child-list" id="targetDeviceItem">
+                  </select>
+                </td>
+                <td style="width:6rem">
+                  <label class="child-label" style="float:right">Precision :</label>
+                </td>
+                <td style="padding:0;width: 4em;">
+                  <select class="child-list" id="precisionItem" style="width: 4em;">
+                    <option value="FP16">FP16</option>
+                    <option value="FP32">FP32</option>
+                  </select>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td>
+            <button class="icon-button" id="btnSyncDevice" disabled=true><i class="fas fa-sync"></i></button>
+          </td>
+        </tr> -->
+        <tr>
+          <td>
+            <label class="child-label" style="float: left">Confidence %</label>
+          </td>
+          <td>
+            <table class="child-table">
+              <tr>
+                <td style="padding:0;width:10%">
+                  <label class="child-label" id="textConfidence" style="padding-left:0;float:left;">0%</label>
+                </td>
+                <td style="padding-left:1rem;padding-right:0;">
+                  <input type="range" id="rangeConfidence" class="range-confidence" min="0" max="100" value="0">
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td>
+            <!-- <button class="icon-button" id="btnSyncConfidence"><i class="fas fa-sync"></i></button> -->
+          </td>
         <tr>
           <td>
             <label class="main-label" style="float: left">Status</label>
           </td>
-          <td>
-            <label class="main-label" style="float: left">:</label>
+          <td colspan="2">
+            <div id="textStatus" style="color:white;float:left; word-wrap:break-word; font-weight:normal; white-space:wrap"></div>
+            <!-- <label class="main-label" style="float:left;word-wrap: break-word;font-weight: normal;white-space:wrap" id="textStatus">Current Setting</label> -->
           </td>
           <td>
-            <label class="main-text"  id="textStatus">Current Setting</label>
           </td>
         </tr>
-      </table>
-
-      <!-- <div class="footer-div">
-        <label class="main-label" style="float: left">FPS :&nbsp</label>
-        <label class="main-label"  id="textFps"></label>
-      </div>
-      <div class="footer-div">
-        <label class="main-label" style="float: left">Status :&nbsp</label>
-        <label class="main-label"  id="textStatus">Current Setting</label>
-      </div> -->
     </div>
 
     <script>
-      var liveViewVideo    = document.getElementById("liveVideo");
-      var VideoPath        = document.getElementById("textVideoPath");
-      var Fps              = document.getElementById("textFps");
-      var btnVideoRes      = document.getElementById("btnCameraResolution");
-      var videoResItem     = document.getElementById("videoResItem");
-      var StatusLine       = document.getElementById("textStatus");
+      var _debug = false
+      var liveViewVideo     = document.getElementById("liveVideo");
+      var textFps               = document.getElementById("textFps");
+      var textIe                = document.getElementById("textIE");
+      var textVideoPath     = document.getElementById("textVideoPath");
+      var modelList         = document.getElementById("modelList")
+      var precisionList     = document.getElementById("precisionItem");
+      var targetDeviceList  = document.getElementById("targetDeviceItem");
+      var ieRunning         = 0
+      var StatusLine        = document.getElementById("textStatus");
 
       var url = document.URL.replace('http','ws');
       var ws = null;
@@ -268,8 +359,15 @@
             StatusLine.innerHTML = "";
             StatusLine.innerHTML = "Connected to " + document.URL;
             StatusLine.style.color = 'lightgray'
-            ws.send("getVideoRes");
-            ws.send("getVideoPath");
+
+            ws.send("get_inference_engine_info")
+            ws.send("get_video_path");
+            ws.send("get_video_resolution");
+            ws.send("get_model_list");
+            ws.send("get_precision");
+            ws.send("get_target_device");
+            ws.send("get_confidence_level");
+            ws.send("get_inference_state");
             ws.send("nextFrame");
         };
 
@@ -281,70 +379,450 @@
 
         ws.onmessage = function(msg) {
 
+          // console.log(String(msg.data))
+
           if (typeof(msg.data) === 'string')
           {
             var json = JSON.parse(msg.data);
+            var isError = false
+
+            if (json.isFailure) {
+              isError = true
+            }
 
             // Received Image to Display (Live View)
             if (json.Image)
             {
-              //console.log("Live View Image Received")
-              liveViewVideo.src = 'data:image/png;base64, ' + json.Image;
-              Fps.innerHTML = json.FPS;
-            }
-            else if (json.DevicePath)
-            {
-              console.log("Device Path %s", json.DevicePath);
-              VideoPath.innerHTML = json.DevicePath;
-            }
-            else if (json.VideoRes)
-            {
-              console.log("Video Resolution %s", json.VideoRes);
-              videoResItem.value = json.VideoRes;
-            }
-            else if (json.DeviceType)
-            {
-              // from VideoCapture.py, CaptureDevice Class
-              if (json.deviceType == 3)
-              {
-                isHololens = True
-              }
-              else{
-                isHololens = False
-              }
-            }
-            else if (json.DeviceStatus)
-            {
 
-              StatusLine.innerHTML = json.DeviceStatus;
-              if (json.isSuccess)
+              // console.log("Live View Image Received")
+              liveViewVideo.src = 'data:image/png;base64, ' + json.Image;
+              if (json.FPS)
               {
-                StatusLine.style.color = 'lightgray'
+                textFps.innerHTML = json.FPS;
               }
-              else{
-                StatusLine.style.color = 'red'
+
+            } else {
+
+              if (_debug)
+                console.log(String(msg.data))
+              console.log(String(msg.data))
+              // ------------------------------------------------------------------
+              // Can be a part of other messages
+              if (json.playback_mode)
+              {
+
+                if (json.playback_mode == "0") // sync mode
+                {
+                  if (_debug)
+                    console.log("playback_mode  : sync")
+                  
+                  btnVideoPerf.style.display = "inherit"
+                  btnVideoSync.style.display = "none"
+                } else if (json.playback_mode == "1") {
+                  if (_debug)
+                    console.log("playback_mode  : perf")
+
+                  btnVideoPerf.style.display = "none"
+                  btnVideoSync.style.display = "inherit"
+                }
               }
-            }
-            else
-            {
-              console.log("Msg Received %s", msg);
+
+              if (json.get_inference_state)
+              {
+                console.log("get_inference_state : %s", json.get_inference_state);
+                inference_state_ui(json.get_inference_state)
+              }
+
+              // Received Inference Engine State including :
+              // Supported HW to run inference on
+              // Current Inference State
+              if (json.get_inference_engine_info)
+              {
+                // {"get_inference_engine_info":"OpenVINO 2.1.42025","devices":["CPU", "GPU", "MYRIAD"],"get_inference_state":"Off"}
+                console.log("get_inference_engine_info : %s", msg.data);
+                textIe.innerHTML = json.get_inference_engine_info;
+
+                if (json.devices)
+                {
+                  targetDeviceList.innerHTML = ""
+                  json.devices.forEach(element => addTargetDevice(element))
+                  // btnSyncDevice.disabled = false
+                }
+              }
+              // received video playback state
+              else if (json.get_video_playback)
+              {
+                if (json.get_video_playback == "0")
+                {
+                  // video is paused
+                  btnVideoPlay.style.display = "inherit"
+                  btnVideoPause.style.display = "none"
+                } else if (json.get_video_playback == 1) {
+                  btnVideoPlay.style.display = "none"
+                  btnVideoPause.style.display = "inherit"
+                }
+              }
+              // Received video path
+              else if (json.get_video_path)
+              {
+                // {"get_video_path":"/dev/video0", "video_type":0, "playback_mode":"perf"}
+                console.log("get_video_path : %s", json.get_video_path);
+                textVideoPath.value = json.get_video_path;
+                console.log("video_type     : %s", json.video_type);
+                set_video_state_ui(json.video_type, json.state)
+              }
+              // Received current video resolution
+              else if (json.get_video_resolution)
+              {
+                // {"get_video_resolution":"hd", "resolution":"1280x720"}
+                var ResItem;
+                console.log("get_video_resolution : %s %s", json.get_video_resolution, json.resolution);
+                for (var i = 0; i < videoResItem.length; i++)
+                {
+                  resItem = videoResItem[i];
+                  if (resItem.value == json.get_video_resolution)
+                  {
+                    videoResItem.value = json.get_video_resolution;
+                    return;
+                  }
+                }
+
+                if (videoResItem.value != json.get_video_resolution)
+                {
+                  videoResItem.innerHTML += '<option value=' + json.get_video_resolution + '>' + json.resolution + '</option>';
+                  videoResItem.value = json.get_video_resolution;
+                }
+                // btnSyncResolution.disabled = false;
+              }
+              // Received Model List and display in list box
+              else if (json.get_model_list)
+              {
+                // {"get_model_list": [{"modelName": "face-detection-0100"}, {"modelName" ...
+                console.log("get_model_list : %s models", json.get_model_list.length)
+                json.get_model_list.forEach(element => addModelList(element))
+              }
+              // Set current target device list
+              else if (json.get_target_device)
+              {
+                // {"get_target_device":"MYRIAD"}
+                console.log("get_target_device : %s", json.get_target_device);
+                targetDeviceList.value = json.get_target_device
+                if (targetDeviceList.value == 'CPU')
+                {
+                  precisionList.value = 'FP32'
+                }
+                else if (targetDeviceList.value == 'GPU')
+                {
+                  precisionList.value = 'FP16'
+                }
+                else if (targetDeviceList.value == 'MYRIAD')
+                {
+                  precisionList.value = 'FP16'
+                }
+              }
+              // Set current precision list box
+              else if (json.get_precision)
+              {
+                // {"get_precision":"FP32"}
+                console.log("get_precision : %s", json.get_precision)
+                precisionList.value = json.get_precision
+              }
+              // Set current confidence slider
+              else if (json.get_confidence_level)
+              {
+                // {"get_precision":"FP32"}
+                console.log("get_confidence_level : %s", json.get_confidence_level)
+                rangeConfidence.value = json.get_confidence_level
+                textConfidence.innerHTML = rangeConfidence.value + '%';
+              }
+              // Received ai model settting callbacks
+              else if (json.set_ai_model)
+              {
+                console.log("set_ai_model %s", String(msg.data));
+                console.log("set_ai_model %s", json.set_ai_model);
+                if (isError) {
+                  StatusLine.style.color = 'red'
+                } else {
+                  StatusLine.style.color = 'lightgray'
+                }
+                StatusLine.innerHTML = json.set_ai_model;
+
+                if (json.isComplete || isError) 
+                {
+                  setAiModel_Finish();
+                }
+
+                if (json.isComplete)
+                {
+                  ws.send('{\"set_inference_state\":1}')
+                }
+              }
+              else if (json.set_target_device)
+              {
+                console.log("set_target_device %s", json.set_target_device);
+                if (isError) {
+                  StatusLine.innerHTML = json.set_target_device;
+                  StatusLine.style.color = 'red'
+                } else {
+                  StatusLine.style.color = 'lightgray'
+                }
+              }
+              else if (json.set_inference_state)
+              {
+                console.log("set_inference_state %s", json.set_inference_state);
+                if (isError) {
+                  StatusLine.innerHTML = json.set_inference_state;
+                  StatusLine.style.color = 'red'
+                } else {
+                  StatusLine.style.color = 'lightgray'
+                }
+              }
+              else
+              {
+                console.log("Msg Received %s", String(msg.data));
+              }
             }
           }
         };
       }
 
+      // frame data is loaded, ask for the next frame
       liveViewVideo.onload = function() {
-        // console.log("liveViewVideo.onload");
         if (ws.readyState == 1)
         {
           ws.send("nextFrame");
         }
       }
 
-      btnVideoRes.onclick = function(evt) {
-        console.log("btnResolution");
-        selection = videoResItem.value
-        ws.send('{\"VideoRes\":\"' + selection + '\"}')
+// ------------------------
+      // start video playback
+      btnVideoConfig.onclick= function(evt) {
+        console.log("btnVideoPlay");
+        ws.send('{\"set_video_path\":\"' + textVideoPath.value + '\"}')
+        set_video_state_ui(0, 2);
+      }
+
+      // start video playback
+      btnVideoPlay.onclick= function(evt) {
+        console.log("btnVideoPlay");
+        ws.send('{\"set_video_playback\":\"1\"}')
+      }
+
+      // stop (pause) video playback
+      btnVideoPause.onclick= function(evt) {
+        ws.send('{\"set_video_playback\":\"0\"}')
+      }
+
+      // set video playback to sync mode, meaning playback will be adjusted to movie file's frame rate
+      btnVideoSync.onclick= function(evt) {
+        console.log("set_video_sync");
+        ws.send('{\"playback_mode\":\"0\"}')
+      }
+
+      // playback video as fast as possible
+      btnVideoPerf.onclick= function(evt) {
+        console.log("btnVideoPerf");
+        ws.send('{\"playback_mode\":\"1\"}')
+      }
+
+      // set camera's resolution
+      videoResItem.onchange= function(evt) {
+        console.log("videoResItem Onchange");
+        ws.send('{\"set_video_resolution\":\"' + document.getElementById("videoResItem").value + '\"}')
+      }
+
+      // start inference
+      btnInferenceStart.onclick= function(evt) {
+        console.log("btnInferenceStart");
+        setAiModel_Start()
+        ws.send('{\"set_ai_model\":\"' + document.getElementById("modelList").value + '\", \"set_precision\":\"' + document.getElementById("precisionItem").value + '\", \"set_target_device\":\"' + targetDeviceList.value + '\"}')
+      }
+
+      // pause inference
+      btnInferencePause.onclick= function(evt) {
+        console.log("btnInferencePause");
+        ws.send('{\"set_inference_state\":0}')
+      }
+
+      targetDeviceList.onchange = function() {
+        if (targetDeviceList.value == 'CPU')
+        {
+          precisionList.value = 'FP32'
+        }
+        else if (targetDeviceList.value == 'GPU')
+        {
+          precisionList.value = 'FP16'
+        }
+        else if (targetDeviceList.value == 'MYRIAD')
+        {
+          precisionList.value = 'FP16'
+        }
+        ws.send('{\"set_target_device\":\"' + targetDeviceList.value + '\", \"set_precision\":\"' + precisionList.value + '\"}')
+      }
+
+      // precision
+      precisionList.onchange = function() {
+        ws.send('{\"set_target_device\":\"' + targetDeviceList.value + '\", \"set_precision\":\"' + precisionList.value + '\"}')
+      }
+
+      // confidence level slider
+      rangeConfidence.oninput = function() {
+        textConfidence.innerHTML = this.value + '%';
+      }
+
+      rangeConfidence.onchange = function() {
+        textConfidence.innerHTML = this.value + '%';
+        ws.send('{\"set_confidence_level\":\"' + textConfidence.innerHTML + '\"}')
+      }
+
+      // Set UI components based on video state and type
+      function set_video_state_ui(video_type, state)
+      {
+        console.log("set_video_state_ui type %s state %s", video_type, state)
+
+        if (state < 2)
+        {
+          // unknown or error
+          textVideoPath.style.color = "red"
+          textVideoPath.style.fontWeight = "bold"
+        }
+        else
+        {
+          textVideoPath.style.color = "black"
+          textVideoPath.style.fontWeight = "inherit"
+        }
+
+        if (video_type == 0)
+        {
+          // unknown.  Just show play button
+          console.log("Unknown video source")
+          btnVideoPlay.style.display = "none"
+          btnVideoPause.style.display = "none"
+          btnVideoSync.style.display = "none"
+          btnVideoPerf.style.display = "none"
+          btnVideoWait.style.display = "none"
+        } else if (video_type == 1) {
+          console.log("Camera")
+          // Camera.  Just show play button
+          btnVideoPlay.style.display = "none"
+          btnVideoPause.style.display = "none"
+          btnVideoSync.style.display = "none"
+          btnVideoPerf.style.display = "none"
+          btnVideoWait.style.display = "none"
+          videoResItem.disabled = false
+          // btnSyncResolution.disabled = false
+        } else if (video_type == 2 || video_type == 3) {
+          // Video
+          console.log("Video")
+          if (state == 3)
+          {
+            console.log("downloading")
+            btnVideoWait.style.display = "inherit"
+            btnVideoPlay.style.display = "none"
+            btnVideoPause.style.display = "none"
+            btnVideoSync.style.display = "none"
+            btnVideoPerf.style.display = "none"
+            btnVideoConfig.style.display = "none"
+          } else {
+            btnVideoConfig.style.display = "inherit"
+            btnVideoWait.style.display = "none"
+            // btnVideoPlay.style.display = ""
+            btnVideoPause.style.display = "inherit"
+            btnVideoPerf.style.display = "inherit"
+            btnVideoPerf.disabled = false
+            // btnSyncResolution.disabled = true
+          }
+
+          videoResItem.disabled = true
+        }
+      }
+
+      // Set UI components based on inference state
+      function inference_state_ui(state)
+      {
+        if (state == '1')
+        {
+          btnInferencePause.disabled = false
+        }
+        else
+        {
+          btnInferencePause.disabled = true
+        }
+      }
+
+      // add supported HW to the list box
+      function addTargetDevice(item) {
+        targetDeviceList.innerHTML += '<option value=' + item + '>' + item + '</option>'
+      }
+
+      // add model to model list box
+      function addModelList(item) {
+        // console.log(item)
+        // console.log(item["modelName"])
+        modelList.innerHTML += '<option value=' + item.modelName.trim() + '>' + item.modelName.trim() + '</option>'
+        btnInferenceStart.disabled = false
+      }
+
+      function setAiModel_Start() {
+        console.log('setAiModel_Start')
+        color = "gray";
+        disable = true
+
+        modelList.disabled = disable
+        modelList.style.color = color;
+
+        precisionList.disabled = disable;
+        precisionList.style.color = color;
+
+        targetDeviceList.disabled = disable;
+        targetDeviceList.style.color = color;
+
+        btnInferenceStart.disabled = true
+        btnInferencePause.disabled = true
+        // btnSyncDevice.disabled = true
+        btnInferenceSpin.style.display = "Inherit"
+        btnInferenceStart.style.display = "None"
+      }
+
+      function setAiModel_Finish() {
+        console.log('setAiModel_Finish')
+        color = "black";
+        disable = false
+
+        modelList.disabled = disable
+        modelList.style.color = color;
+
+        precisionList.disabled = disable;
+        precisionList.style.color = color;
+
+        targetDeviceList.disabled = disable;
+        targetDeviceList.style.color = color;
+
+        btnInferenceStart.disabled = false
+        btnInferencePause.disabled = false
+        // btnSyncDevice.disabled = false
+        btnInferenceSpin.style.display = "None"
+        btnInferenceStart.style.display = "Inherit"
+      }
+
+      function setBtnState(on) {
+        if (on)
+        {
+          color = "gray";
+        } else {
+          color = "lightgray";
+        }
+        btnModelList.disabled = on;
+        btnModelList.style.color = color;
+
+        btnTargetHw.disabled = on;
+        btnTargetHw.style.color = color;
+
+        btnVideoRes.disabled = on;
+        btnVideoRes.style.color = color;
+
+        btnIeState.disabled = on;
+        btnIeState.style.color = color;
       }
 
     </script>

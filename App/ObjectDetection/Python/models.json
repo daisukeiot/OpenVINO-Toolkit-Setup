@@ -1,0 +1,6845 @@
+{
+  "Models": [
+    {
+      "name": "Sphereface",
+      "path": "/home/cdsiot/models/ir/public/Sphereface/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              112,
+              96
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "fc5",
+            "layout": "NC",
+            "shape": [
+              1,
+              512
+            ],
+            "type": "FullyConnected"
+          }
+        ]
+      }
+    },
+    {
+      "name": "action-recognition-0001-decoder",
+      "path": "/home/cdsiot/models/models/intel/action-recognition-0001-decoder/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "0",
+            "layout": "CHW",
+            "shape": [
+              1,
+              16,
+              512
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "674",
+            "layout": "NC",
+            "shape": [
+              1,
+              400
+            ],
+            "type": "Reshape"
+          }
+        ]
+      }
+    },
+    {
+      "name": "action-recognition-0001-encoder",
+      "path": "/home/cdsiot/models/models/intel/action-recognition-0001-encoder/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "0",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "371",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              512,
+              1,
+              1
+            ],
+            "type": "Pooling"
+          }
+        ]
+      }
+    },
+    {
+      "name": "age-gender-recognition-retail-0013",
+      "path": "/home/cdsiot/models/models/intel/age-gender-recognition-retail-0013/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              62,
+              62
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "age_conv3",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "type": "Convolution"
+          },
+          {
+            "name": "prob",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              2,
+              1,
+              1
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "alexnet",
+      "path": "/home/cdsiot/models/ir/public/alexnet/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              227,
+              227
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "prob",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "asl-recognition-0004",
+      "path": "/home/cdsiot/models/models/intel/asl-recognition-0004/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input",
+            "layout": "NCDHW",
+            "shape": [
+              1,
+              3,
+              16,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "output",
+            "layout": "NC",
+            "shape": [
+              1,
+              100
+            ],
+            "type": "FullyConnected"
+          }
+        ]
+      }
+    },
+    {
+      "name": "brain-tumor-segmentation-0001",
+      "path": "/home/cdsiot/models/ir/public/brain-tumor-segmentation-0001/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data_crop",
+            "layout": "NCDHW",
+            "shape": [
+              1,
+              4,
+              128,
+              128,
+              128
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "softmax_lbl3",
+            "layout": "NCDHW",
+            "shape": [
+              1,
+              4,
+              128,
+              128,
+              128
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "brain-tumor-segmentation-0002",
+      "path": "/home/cdsiot/models/ir/public/brain-tumor-segmentation-0002/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "0",
+            "layout": "NCDHW",
+            "shape": [
+              1,
+              4,
+              128,
+              128,
+              128
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "304",
+            "layout": "NCDHW",
+            "shape": [
+              1,
+              3,
+              128,
+              128,
+              128
+            ],
+            "type": "Sigmoid"
+          }
+        ]
+      }
+    },
+    {
+      "name": "caffenet",
+      "path": "/home/cdsiot/models/ir/public/caffenet/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              227,
+              227
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "prob",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "colorization-v2",
+      "path": "/home/cdsiot/models/ir/public/colorization-v2/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data_l",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "class8_313_rh",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              313,
+              56,
+              56
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "colorization-v2-norebal",
+      "path": "/home/cdsiot/models/ir/public/colorization-v2-norebal/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data_l",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "class8_313_rh",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              313,
+              56,
+              56
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ctdet_coco_dlav0_384",
+      "path": "/home/cdsiot/models/ir/public/ctdet_coco_dlav0_384/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input.1",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              384,
+              384
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 3,
+        "blobs": [
+          {
+            "name": "508",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              80,
+              96,
+              96
+            ],
+            "type": "Convolution"
+          },
+          {
+            "name": "511",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              2,
+              96,
+              96
+            ],
+            "type": "Convolution"
+          },
+          {
+            "name": "514",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              2,
+              96,
+              96
+            ],
+            "type": "Convolution"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ctdet_coco_dlav0_512",
+      "path": "/home/cdsiot/models/ir/public/ctdet_coco_dlav0_512/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input.1",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              512,
+              512
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 3,
+        "blobs": [
+          {
+            "name": "508",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              80,
+              128,
+              128
+            ],
+            "type": "Convolution"
+          },
+          {
+            "name": "511",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              2,
+              128,
+              128
+            ],
+            "type": "Convolution"
+          },
+          {
+            "name": "514",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              2,
+              128,
+              128
+            ],
+            "type": "Convolution"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ctpn",
+      "path": "/home/cdsiot/models/ir/public/ctpn/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "Placeholder",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              600,
+              600
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "Reshape_2/Transpose",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              20,
+              37,
+              37
+            ],
+            "type": "Permute"
+          },
+          {
+            "name": "rpn_bbox_pred/Reshape_1/Transpose",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              40,
+              37,
+              37
+            ],
+            "type": "Permute"
+          }
+        ]
+      }
+    },
+    {
+      "name": "deeplabv3",
+      "path": "/home/cdsiot/models/ir/public/deeplabv3/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "mul_1/placeholder_port_1",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              513,
+              513
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "ArgMax/Squeeze",
+            "layout": "CHW",
+            "shape": [
+              1,
+              513,
+              513
+            ],
+            "type": "Squeeze"
+          }
+        ]
+      }
+    },
+    {
+      "name": "densenet-121",
+      "path": "/home/cdsiot/models/ir/public/densenet-121/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "fc6",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1000,
+              1,
+              1
+            ],
+            "type": "Convolution"
+          }
+        ]
+      }
+    },
+    {
+      "name": "densenet-121-tf",
+      "path": "/home/cdsiot/models/ir/public/densenet-121-tf/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "Placeholder",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "densenet121/predictions/Reshape_1/Transpose",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1000,
+              1,
+              1
+            ],
+            "type": "Permute"
+          }
+        ]
+      }
+    },
+    {
+      "name": "densenet-161",
+      "path": "/home/cdsiot/models/ir/public/densenet-161/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "fc6",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1000,
+              1,
+              1
+            ],
+            "type": "Convolution"
+          }
+        ]
+      }
+    },
+    {
+      "name": "densenet-161-tf",
+      "path": "/home/cdsiot/models/ir/public/densenet-161-tf/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "Placeholder",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "densenet161/predictions/Reshape_1/Transpose",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1000,
+              1,
+              1
+            ],
+            "type": "Permute"
+          }
+        ]
+      }
+    },
+    {
+      "name": "densenet-169",
+      "path": "/home/cdsiot/models/ir/public/densenet-169/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "fc6",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1000,
+              1,
+              1
+            ],
+            "type": "Convolution"
+          }
+        ]
+      }
+    },
+    {
+      "name": "densenet-169-tf",
+      "path": "/home/cdsiot/models/ir/public/densenet-169-tf/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "Placeholder",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "densenet169/predictions/Reshape_1/Transpose",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1000,
+              1,
+              1
+            ],
+            "type": "Permute"
+          }
+        ]
+      }
+    },
+    {
+      "name": "densenet-201",
+      "path": "/home/cdsiot/models/ir/public/densenet-201/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "fc6",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1000,
+              1,
+              1
+            ],
+            "type": "Convolution"
+          }
+        ]
+      }
+    },
+    {
+      "name": "driver-action-recognition-adas-0002-decoder",
+      "path": "/home/cdsiot/models/models/intel/driver-action-recognition-adas-0002-decoder/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "0",
+            "layout": "CHW",
+            "shape": [
+              1,
+              16,
+              512
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "804",
+            "layout": "NC",
+            "shape": [
+              1,
+              9
+            ],
+            "type": "Reshape"
+          }
+        ]
+      }
+    },
+    {
+      "name": "driver-action-recognition-adas-0002-encoder",
+      "path": "/home/cdsiot/models/models/intel/driver-action-recognition-adas-0002-encoder/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "0",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "513",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              512,
+              1,
+              1
+            ],
+            "type": "Pooling"
+          }
+        ]
+      }
+    },
+    {
+      "name": "efficientnet-b0",
+      "path": "/home/cdsiot/models/ir/public/efficientnet-b0/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "sub/placeholder_port_0",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "efficientnet-b0/model/head/dense/BiasAdd/Add",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "FullyConnected"
+          }
+        ]
+      }
+    },
+    {
+      "name": "efficientnet-b0_auto_aug",
+      "path": "/home/cdsiot/models/ir/public/efficientnet-b0_auto_aug/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "sub/placeholder_port_0",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "efficientnet-b0/model/head/dense/BiasAdd/Add",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "FullyConnected"
+          }
+        ]
+      }
+    },
+    {
+      "name": "efficientnet-b5",
+      "path": "/home/cdsiot/models/ir/public/efficientnet-b5/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "sub/placeholder_port_0",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              456,
+              456
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "efficientnet-b5/model/head/dense/BiasAdd/Add",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "FullyConnected"
+          }
+        ]
+      }
+    },
+    {
+      "name": "efficientnet-b7_auto_aug",
+      "path": "/home/cdsiot/models/ir/public/efficientnet-b7_auto_aug/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "sub/placeholder_port_0",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              600,
+              600
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "efficientnet-b7/model/head/dense/BiasAdd/Add",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "FullyConnected"
+          }
+        ]
+      }
+    },
+    {
+      "name": "emotions-recognition-retail-0003",
+      "path": "/home/cdsiot/models/models/intel/emotions-recognition-retail-0003/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              64,
+              64
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "prob_emotion",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              5,
+              1,
+              1
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "face-detection-0100",
+      "path": "/home/cdsiot/models/models/intel/face-detection-0100/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "image",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              256,
+              256
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "detection_out",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              200,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "face-detection-0102",
+      "path": "/home/cdsiot/models/models/intel/face-detection-0102/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "image",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              384,
+              384
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "detection_out",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              200,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "face-detection-0104",
+      "path": "/home/cdsiot/models/models/intel/face-detection-0104/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "image",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              448,
+              448
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "detection_out",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              200,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "face-detection-0105",
+      "path": "/home/cdsiot/models/models/intel/face-detection-0105/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "image",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              416,
+              416
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 4,
+        "blobs": [
+          {
+            "name": "1746.0",
+            "layout": "C",
+            "shape": [
+              200
+            ]
+          },
+          {
+            "name": "boxes/Split.0",
+            "layout": "NC",
+            "shape": [
+              200,
+              5
+            ]
+          },
+          {
+            "name": "boxes/Split.1",
+            "layout": "NC",
+            "shape": [
+              200,
+              1
+            ]
+          },
+          {
+            "name": "labels",
+            "layout": "C",
+            "shape": [
+              200
+            ],
+            "type": "Reshape"
+          }
+        ]
+      }
+    },
+    {
+      "name": "face-detection-0106",
+      "path": "/home/cdsiot/models/models/intel/face-detection-0106/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "image",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              640,
+              640
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 4,
+        "blobs": [
+          {
+            "name": "3488.0",
+            "layout": "C",
+            "shape": [
+              750
+            ]
+          },
+          {
+            "name": "boxes/Split.0",
+            "layout": "NC",
+            "shape": [
+              750,
+              5
+            ]
+          },
+          {
+            "name": "boxes/Split.1",
+            "layout": "NC",
+            "shape": [
+              750,
+              1
+            ]
+          },
+          {
+            "name": "labels",
+            "layout": "C",
+            "shape": [
+              750
+            ],
+            "type": "Reshape"
+          }
+        ]
+      }
+    },
+    {
+      "name": "face-detection-adas-0001",
+      "path": "/home/cdsiot/models/models/intel/face-detection-adas-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              384,
+              672
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "detection_out",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              200,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "face-detection-retail-0004",
+      "path": "/home/cdsiot/models/models/intel/face-detection-retail-0004/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              300,
+              300
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "detection_out",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              200,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "face-detection-retail-0005",
+      "path": "/home/cdsiot/models/models/intel/face-detection-retail-0005/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input.1",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              300,
+              300
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "527",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              200,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "face-detection-retail-0044",
+      "path": "/home/cdsiot/models/ir/public/face-detection-retail-0044/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              300,
+              300
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "detection_out",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              200,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "face-recognition-mobilefacenet-arcface",
+      "path": "/home/cdsiot/models/ir/public/face-recognition-mobilefacenet-arcface/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              112,
+              112
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "pre_fc1/Fused_Add_",
+            "layout": "NC",
+            "shape": [
+              1,
+              128
+            ],
+            "type": "FullyConnected"
+          }
+        ]
+      }
+    },
+    {
+      "name": "face-recognition-resnet100-arcface",
+      "path": "/home/cdsiot/models/ir/public/face-recognition-resnet100-arcface/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              112,
+              112
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "pre_fc1/Fused_Add_",
+            "layout": "NC",
+            "shape": [
+              1,
+              512
+            ],
+            "type": "FullyConnected"
+          }
+        ]
+      }
+    },
+    {
+      "name": "face-recognition-resnet34-arcface",
+      "path": "/home/cdsiot/models/ir/public/face-recognition-resnet34-arcface/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              112,
+              112
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "pre_fc1/Fused_Add_",
+            "layout": "NC",
+            "shape": [
+              1,
+              512
+            ],
+            "type": "FullyConnected"
+          }
+        ]
+      }
+    },
+    {
+      "name": "face-recognition-resnet50-arcface",
+      "path": "/home/cdsiot/models/ir/public/face-recognition-resnet50-arcface/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              112,
+              112
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "pre_fc1/Fused_Add_",
+            "layout": "NC",
+            "shape": [
+              1,
+              512
+            ],
+            "type": "FullyConnected"
+          }
+        ]
+      }
+    },
+    {
+      "name": "face-reidentification-retail-0095",
+      "path": "/home/cdsiot/models/models/intel/face-reidentification-retail-0095/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "0",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              128,
+              128
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "658",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              256,
+              1,
+              1
+            ],
+            "type": "Convolution"
+          }
+        ]
+      }
+    },
+    {
+      "name": "facenet-20180408-102900",
+      "path": "/home/cdsiot/models/ir/public/facenet-20180408-102900/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "image_batch/placeholder_port_0",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              160,
+              160
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "embeddings",
+            "layout": "NC",
+            "shape": [
+              1,
+              512
+            ],
+            "type": "Normalize"
+          }
+        ]
+      }
+    },
+    {
+      "name": "facial-landmarks-35-adas-0002",
+      "path": "/home/cdsiot/models/models/intel/facial-landmarks-35-adas-0002/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              60,
+              60
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "align_fc3",
+            "layout": "NC",
+            "shape": [
+              1,
+              70
+            ],
+            "type": "Reshape"
+          }
+        ]
+      }
+    },
+    {
+      "name": "faster-rcnn-resnet101-coco-sparse-60-0001",
+      "path": "/home/cdsiot/models/models/intel/faster-rcnn-resnet101-coco-sparse-60-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "image",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              800,
+              1280
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "image_info",
+            "layout": "NC",
+            "shape": [
+              1,
+              3
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "detection_output",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              100,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 81
+          }
+        ]
+      }
+    },
+    {
+      "name": "faster_rcnn_inception_resnet_v2_atrous_coco",
+      "path": "/home/cdsiot/models/ir/public/faster_rcnn_inception_resnet_v2_atrous_coco/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "image_info",
+            "layout": "NC",
+            "shape": [
+              1,
+              3
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "image_tensor",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              600,
+              1024
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "detection_output",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              100,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 91
+          }
+        ]
+      }
+    },
+    {
+      "name": "faster_rcnn_inception_v2_coco",
+      "path": "/home/cdsiot/models/ir/public/faster_rcnn_inception_v2_coco/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "image_info",
+            "layout": "NC",
+            "shape": [
+              1,
+              3
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "image_tensor",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              600,
+              1024
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "detection_output",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              100,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 91
+          }
+        ]
+      }
+    },
+    {
+      "name": "faster_rcnn_resnet101_coco",
+      "path": "/home/cdsiot/models/ir/public/faster_rcnn_resnet101_coco/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "image_info",
+            "layout": "NC",
+            "shape": [
+              1,
+              3
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "image_tensor",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              600,
+              1024
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "detection_output",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              100,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 91
+          }
+        ]
+      }
+    },
+    {
+      "name": "faster_rcnn_resnet50_coco",
+      "path": "/home/cdsiot/models/ir/public/faster_rcnn_resnet50_coco/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "image_info",
+            "layout": "NC",
+            "shape": [
+              1,
+              3
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "image_tensor",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              600,
+              1024
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "detection_output",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              100,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 91
+          }
+        ]
+      }
+    },
+    {
+      "name": "gaze-estimation-adas-0002",
+      "path": "/home/cdsiot/models/models/intel/gaze-estimation-adas-0002/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 3,
+        "blobs": [
+          {
+            "name": "head_pose_angles",
+            "layout": "NC",
+            "shape": [
+              1,
+              3
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "left_eye_image",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              60,
+              60
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "right_eye_image",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              60,
+              60
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "gaze_vector",
+            "layout": "NC",
+            "shape": [
+              1,
+              3
+            ],
+            "type": "Squeeze"
+          }
+        ]
+      }
+    },
+    {
+      "name": "gmcnn-places2-tf",
+      "path": "/home/cdsiot/models/ir/public/gmcnn-places2-tf/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "Placeholder",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              512,
+              680
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "Placeholder_1",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              512,
+              680
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "Minimum",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              512,
+              680
+            ],
+            "type": "Power"
+          }
+        ]
+      }
+    },
+    {
+      "name": "googlenet-v1",
+      "path": "/home/cdsiot/models/ir/public/googlenet-v1/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "prob",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "googlenet-v1-tf",
+      "path": "/home/cdsiot/models/ir/public/googlenet-v1-tf/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "InceptionV1/Logits/Predictions/Softmax",
+            "layout": "NC",
+            "shape": [
+              1,
+              1001
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "googlenet-v2",
+      "path": "/home/cdsiot/models/ir/public/googlenet-v2/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "prob",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "googlenet-v3",
+      "path": "/home/cdsiot/models/ir/public/googlenet-v3/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              299,
+              299
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "InceptionV3/Predictions/Softmax",
+            "layout": "NC",
+            "shape": [
+              1,
+              1001
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "googlenet-v4-tf",
+      "path": "/home/cdsiot/models/ir/public/googlenet-v4-tf/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              299,
+              299
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "InceptionV4/Logits/Predictions",
+            "layout": "NC",
+            "shape": [
+              1,
+              1001
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "handwritten-japanese-recognition-0001",
+      "path": "/home/cdsiot/models/models/intel/handwritten-japanese-recognition-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "actual_input",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              96,
+              2000
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "output",
+            "layout": "CHW",
+            "shape": [
+              186,
+              1,
+              4442
+            ],
+            "type": "Permute"
+          }
+        ]
+      }
+    },
+    {
+      "name": "handwritten-score-recognition-0003",
+      "path": "/home/cdsiot/models/models/intel/handwritten-score-recognition-0003/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "Placeholder",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              32,
+              64
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "shadow/LSTMLayers/transpose_time_major",
+            "layout": "CHW",
+            "shape": [
+              16,
+              1,
+              13
+            ],
+            "type": "Permute"
+          }
+        ]
+      }
+    },
+    {
+      "name": "head-pose-estimation-adas-0001",
+      "path": "/home/cdsiot/models/models/intel/head-pose-estimation-adas-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              60,
+              60
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 3,
+        "blobs": [
+          {
+            "name": "angle_p_fc",
+            "layout": "NC",
+            "shape": [
+              1,
+              1
+            ],
+            "type": "FullyConnected"
+          },
+          {
+            "name": "angle_r_fc",
+            "layout": "NC",
+            "shape": [
+              1,
+              1
+            ],
+            "type": "FullyConnected"
+          },
+          {
+            "name": "angle_y_fc",
+            "layout": "NC",
+            "shape": [
+              1,
+              1
+            ],
+            "type": "FullyConnected"
+          }
+        ]
+      }
+    },
+    {
+      "name": "human-pose-estimation-0001",
+      "path": "/home/cdsiot/models/models/intel/human-pose-estimation-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              256,
+              456
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "Mconv7_stage2_L1",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              38,
+              32,
+              57
+            ],
+            "type": "Convolution"
+          },
+          {
+            "name": "Mconv7_stage2_L2",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              19,
+              32,
+              57
+            ],
+            "type": "Convolution"
+          }
+        ]
+      }
+    },
+    {
+      "name": "i3d-rgb-tf",
+      "path": "/home/cdsiot/models/ir/public/i3d-rgb-tf/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "Placeholder",
+            "layout": "NCDHW",
+            "shape": [
+              1,
+              3,
+              79,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "Softmax",
+            "layout": "NC",
+            "shape": [
+              1,
+              400
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "icnet-camvid-ava-0001",
+      "path": "/home/cdsiot/models/models/intel/icnet-camvid-ava-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              720,
+              960
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "segmentation_output/Squeeze",
+            "layout": "CHW",
+            "shape": [
+              1,
+              720,
+              960
+            ],
+            "type": "Squeeze"
+          }
+        ]
+      }
+    },
+    {
+      "name": "icnet-camvid-ava-sparse-30-0001",
+      "path": "/home/cdsiot/models/models/intel/icnet-camvid-ava-sparse-30-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              720,
+              960
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "segmentation_output/Squeeze",
+            "layout": "CHW",
+            "shape": [
+              1,
+              720,
+              960
+            ],
+            "type": "Squeeze"
+          }
+        ]
+      }
+    },
+    {
+      "name": "icnet-camvid-ava-sparse-60-0001",
+      "path": "/home/cdsiot/models/models/intel/icnet-camvid-ava-sparse-60-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              720,
+              960
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "segmentation_output/Squeeze",
+            "layout": "CHW",
+            "shape": [
+              1,
+              720,
+              960
+            ],
+            "type": "Squeeze"
+          }
+        ]
+      }
+    },
+    {
+      "name": "image-retrieval-0001",
+      "path": "/home/cdsiot/models/models/intel/image-retrieval-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "Placeholder",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "model/tf_op_layer_l2_normalize/l2_normalize",
+            "layout": "NC",
+            "shape": [
+              1,
+              256
+            ],
+            "type": "Normalize"
+          }
+        ]
+      }
+    },
+    {
+      "name": "inception-resnet-v2-tf",
+      "path": "/home/cdsiot/models/ir/public/inception-resnet-v2-tf/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              299,
+              299
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "InceptionResnetV2/AuxLogits/Logits/BiasAdd/Add",
+            "layout": "NC",
+            "shape": [
+              1,
+              1001
+            ],
+            "type": "FullyConnected"
+          }
+        ]
+      }
+    },
+    {
+      "name": "instance-segmentation-security-0010",
+      "path": "/home/cdsiot/models/models/intel/instance-segmentation-security-0010/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "im_data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              800,
+              1344
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "im_info",
+            "layout": "NC",
+            "shape": [
+              1,
+              3
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 4,
+        "blobs": [
+          {
+            "name": "boxes",
+            "layout": "NC",
+            "shape": [
+              100,
+              4
+            ],
+            "type": "Power"
+          },
+          {
+            "name": "classes",
+            "layout": "C",
+            "shape": [
+              100
+            ],
+            "type": "Eltwise"
+          },
+          {
+            "name": "raw_masks",
+            "layout": "NCHW",
+            "shape": [
+              100,
+              81,
+              28,
+              28
+            ],
+            "type": "Sigmoid"
+          },
+          {
+            "name": "scores",
+            "layout": "C",
+            "shape": [
+              100
+            ],
+            "type": "Power"
+          }
+        ]
+      }
+    },
+    {
+      "name": "instance-segmentation-security-0050",
+      "path": "/home/cdsiot/models/models/intel/instance-segmentation-security-0050/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "im_data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              480,
+              480
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "im_info",
+            "layout": "NC",
+            "shape": [
+              1,
+              3
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 4,
+        "blobs": [
+          {
+            "name": "boxes",
+            "layout": "NC",
+            "shape": [
+              100,
+              4
+            ],
+            "type": "Power"
+          },
+          {
+            "name": "classes",
+            "layout": "C",
+            "shape": [
+              100
+            ],
+            "type": "Eltwise"
+          },
+          {
+            "name": "raw_masks",
+            "layout": "NCHW",
+            "shape": [
+              100,
+              81,
+              14,
+              14
+            ],
+            "type": "Sigmoid"
+          },
+          {
+            "name": "scores",
+            "layout": "C",
+            "shape": [
+              100
+            ],
+            "type": "Power"
+          }
+        ]
+      }
+    },
+    {
+      "name": "instance-segmentation-security-0083",
+      "path": "/home/cdsiot/models/models/intel/instance-segmentation-security-0083/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "im_data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              480,
+              640
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "im_info",
+            "layout": "NC",
+            "shape": [
+              1,
+              3
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 4,
+        "blobs": [
+          {
+            "name": "boxes",
+            "layout": "NC",
+            "shape": [
+              100,
+              4
+            ],
+            "type": "Power"
+          },
+          {
+            "name": "classes",
+            "layout": "C",
+            "shape": [
+              100
+            ],
+            "type": "Eltwise"
+          },
+          {
+            "name": "raw_masks",
+            "layout": "NCHW",
+            "shape": [
+              100,
+              81,
+              28,
+              28
+            ],
+            "type": "Sigmoid"
+          },
+          {
+            "name": "scores",
+            "layout": "C",
+            "shape": [
+              100
+            ],
+            "type": "Power"
+          }
+        ]
+      }
+    },
+    {
+      "name": "instance-segmentation-security-1025",
+      "path": "/home/cdsiot/models/models/intel/instance-segmentation-security-1025/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "im_data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              480,
+              480
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "im_info",
+            "layout": "NC",
+            "shape": [
+              1,
+              3
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 4,
+        "blobs": [
+          {
+            "name": "boxes",
+            "layout": "NC",
+            "shape": [
+              100,
+              4
+            ],
+            "type": "Power"
+          },
+          {
+            "name": "classes",
+            "layout": "C",
+            "shape": [
+              100
+            ],
+            "type": "Eltwise"
+          },
+          {
+            "name": "raw_masks",
+            "layout": "NCHW",
+            "shape": [
+              100,
+              81,
+              14,
+              14
+            ],
+            "type": "Sigmoid"
+          },
+          {
+            "name": "scores",
+            "layout": "C",
+            "shape": [
+              100
+            ],
+            "type": "Power"
+          }
+        ]
+      }
+    },
+    {
+      "name": "landmarks-regression-retail-0009",
+      "path": "/home/cdsiot/models/models/intel/landmarks-regression-retail-0009/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "0",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              48,
+              48
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "95",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              10,
+              1,
+              1
+            ],
+            "type": "Sigmoid"
+          }
+        ]
+      }
+    },
+    {
+      "name": "license-plate-recognition-barrier-0001",
+      "path": "/home/cdsiot/models/models/intel/license-plate-recognition-barrier-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              24,
+              94
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "seq_ind",
+            "layout": "NC",
+            "shape": [
+              88,
+              1
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "decode",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              88,
+              1,
+              1
+            ],
+            "type": "CTCGreedyDecoder"
+          }
+        ]
+      }
+    },
+    {
+      "name": "license-plate-recognition-barrier-0007",
+      "path": "/home/cdsiot/models/ir/public/license-plate-recognition-barrier-0007/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              24,
+              94
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "CTCGreedyDecoder",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              88,
+              1,
+              1
+            ],
+            "type": "CTCGreedyDecoder"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mask_rcnn_inception_resnet_v2_atrous_coco",
+      "path": "/home/cdsiot/models/ir/public/mask_rcnn_inception_resnet_v2_atrous_coco/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "image_info",
+            "layout": "NC",
+            "shape": [
+              1,
+              3
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "image_tensor",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              800,
+              1365
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "masks",
+            "layout": "NCHW",
+            "shape": [
+              100,
+              90,
+              33,
+              33
+            ],
+            "type": "Sigmoid"
+          },
+          {
+            "name": "reshape_do_2d",
+            "layout": "NC",
+            "shape": [
+              100,
+              7
+            ],
+            "type": "Reshape"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mask_rcnn_inception_v2_coco",
+      "path": "/home/cdsiot/models/ir/public/mask_rcnn_inception_v2_coco/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "image_info",
+            "layout": "NC",
+            "shape": [
+              1,
+              3
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "image_tensor",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              800,
+              1365
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "masks",
+            "layout": "NCHW",
+            "shape": [
+              100,
+              90,
+              15,
+              15
+            ],
+            "type": "Sigmoid"
+          },
+          {
+            "name": "reshape_do_2d",
+            "layout": "NC",
+            "shape": [
+              100,
+              7
+            ],
+            "type": "Reshape"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mask_rcnn_resnet101_atrous_coco",
+      "path": "/home/cdsiot/models/ir/public/mask_rcnn_resnet101_atrous_coco/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "image_info",
+            "layout": "NC",
+            "shape": [
+              1,
+              3
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "image_tensor",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              800,
+              1365
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "masks",
+            "layout": "NCHW",
+            "shape": [
+              100,
+              90,
+              33,
+              33
+            ],
+            "type": "Sigmoid"
+          },
+          {
+            "name": "reshape_do_2d",
+            "layout": "NC",
+            "shape": [
+              100,
+              7
+            ],
+            "type": "Reshape"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mask_rcnn_resnet50_atrous_coco",
+      "path": "/home/cdsiot/models/ir/public/mask_rcnn_resnet50_atrous_coco/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "image_info",
+            "layout": "NC",
+            "shape": [
+              1,
+              3
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "image_tensor",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              800,
+              1365
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "masks",
+            "layout": "NCHW",
+            "shape": [
+              100,
+              90,
+              33,
+              33
+            ],
+            "type": "Sigmoid"
+          },
+          {
+            "name": "reshape_do_2d",
+            "layout": "NC",
+            "shape": [
+              100,
+              7
+            ],
+            "type": "Reshape"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mobilenet-ssd",
+      "path": "/home/cdsiot/models/ir/public/mobilenet-ssd/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              300,
+              300
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "detection_out",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              100,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 21
+          }
+        ]
+      }
+    },
+    {
+      "name": "mobilenet-v1-0.25-128",
+      "path": "/home/cdsiot/models/ir/public/mobilenet-v1-0.25-128/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              128,
+              128
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "MobilenetV1/Predictions/Softmax",
+            "layout": "NC",
+            "shape": [
+              1,
+              1001
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mobilenet-v1-0.50-160",
+      "path": "/home/cdsiot/models/ir/public/mobilenet-v1-0.50-160/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              160,
+              160
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "MobilenetV1/Predictions/Softmax",
+            "layout": "NC",
+            "shape": [
+              1,
+              1001
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mobilenet-v1-0.50-224",
+      "path": "/home/cdsiot/models/ir/public/mobilenet-v1-0.50-224/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "MobilenetV1/Predictions/Softmax",
+            "layout": "NC",
+            "shape": [
+              1,
+              1001
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mobilenet-v1-1.0-224",
+      "path": "/home/cdsiot/models/ir/public/mobilenet-v1-1.0-224/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "prob",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1000,
+              1,
+              1
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mobilenet-v1-1.0-224-tf",
+      "path": "/home/cdsiot/models/ir/public/mobilenet-v1-1.0-224-tf/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "MobilenetV1/Predictions/Softmax",
+            "layout": "NC",
+            "shape": [
+              1,
+              1001
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mobilenet-v2",
+      "path": "/home/cdsiot/models/ir/public/mobilenet-v2/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "prob",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1000,
+              1,
+              1
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mobilenet-v2-1.0-224",
+      "path": "/home/cdsiot/models/ir/public/mobilenet-v2-1.0-224/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "MobilenetV2/Predictions/Softmax",
+            "layout": "NC",
+            "shape": [
+              1,
+              1001
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mobilenet-v2-1.4-224",
+      "path": "/home/cdsiot/models/ir/public/mobilenet-v2-1.4-224/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "MobilenetV2/Predictions/Softmax",
+            "layout": "NC",
+            "shape": [
+              1,
+              1001
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mtcnn-o",
+      "path": "/home/cdsiot/models/ir/public/mtcnn-o/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              48,
+              48
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 3,
+        "blobs": [
+          {
+            "name": "conv6-2",
+            "layout": "NC",
+            "shape": [
+              1,
+              4
+            ],
+            "type": "FullyConnected"
+          },
+          {
+            "name": "conv6-3",
+            "layout": "NC",
+            "shape": [
+              1,
+              10
+            ],
+            "type": "FullyConnected"
+          },
+          {
+            "name": "prob1",
+            "layout": "NC",
+            "shape": [
+              1,
+              2
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mtcnn-p",
+      "path": "/home/cdsiot/models/ir/public/mtcnn-p/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              720,
+              1280
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "conv4-2",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              4,
+              355,
+              635
+            ],
+            "type": "Convolution"
+          },
+          {
+            "name": "prob1",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              2,
+              355,
+              635
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mtcnn-r",
+      "path": "/home/cdsiot/models/ir/public/mtcnn-r/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              24,
+              24
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "conv5-2",
+            "layout": "NC",
+            "shape": [
+              1,
+              4
+            ],
+            "type": "FullyConnected"
+          },
+          {
+            "name": "prob1",
+            "layout": "NC",
+            "shape": [
+              1,
+              2
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "octave-densenet-121-0.125",
+      "path": "/home/cdsiot/models/ir/public/octave-densenet-121-0.125/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "softmax",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "octave-resnet-101-0.125",
+      "path": "/home/cdsiot/models/ir/public/octave-resnet-101-0.125/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "softmax",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "octave-resnet-200-0.125",
+      "path": "/home/cdsiot/models/ir/public/octave-resnet-200-0.125/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "softmax",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "octave-resnet-26-0.25",
+      "path": "/home/cdsiot/models/ir/public/octave-resnet-26-0.25/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "softmax",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "octave-resnet-50-0.125",
+      "path": "/home/cdsiot/models/ir/public/octave-resnet-50-0.125/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "softmax",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "octave-resnext-101-0.25",
+      "path": "/home/cdsiot/models/ir/public/octave-resnext-101-0.25/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "softmax",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "octave-resnext-50-0.25",
+      "path": "/home/cdsiot/models/ir/public/octave-resnext-50-0.25/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "softmax",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "octave-se-resnet-50-0.125",
+      "path": "/home/cdsiot/models/ir/public/octave-se-resnet-50-0.125/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "softmax",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "pedestrian-and-vehicle-detector-adas-0001",
+      "path": "/home/cdsiot/models/models/intel/pedestrian-and-vehicle-detector-adas-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              384,
+              672
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "detection_out",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              200,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "pedestrian-detection-adas-0002",
+      "path": "/home/cdsiot/models/models/intel/pedestrian-detection-adas-0002/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              384,
+              672
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "detection_out",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              200,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "person-attributes-recognition-crossroad-0230",
+      "path": "/home/cdsiot/models/models/intel/person-attributes-recognition-crossroad-0230/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "0",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              160,
+              80
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 3,
+        "blobs": [
+          {
+            "name": "453",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              8,
+              1,
+              1
+            ],
+            "type": "Sigmoid"
+          },
+          {
+            "name": "456",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              2,
+              1,
+              1
+            ],
+            "type": "Sigmoid"
+          },
+          {
+            "name": "459",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              2,
+              1,
+              1
+            ],
+            "type": "Sigmoid"
+          }
+        ]
+      }
+    },
+    {
+      "name": "person-detection-action-recognition-0005",
+      "path": "/home/cdsiot/models/models/intel/person-detection-action-recognition-0005/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              400,
+              680
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 7,
+        "blobs": [
+          {
+            "name": "mbox/priorbox",
+            "layout": "CHW",
+            "shape": [
+              1,
+              2,
+              17200
+            ],
+            "type": "PriorBoxClustered"
+          },
+          {
+            "name": "mbox_loc1/out/conv/flat",
+            "layout": "NC",
+            "shape": [
+              1,
+              17200
+            ],
+            "type": "Reshape"
+          },
+          {
+            "name": "mbox_main_conf/out/conv/flat/softmax/flat",
+            "layout": "NC",
+            "shape": [
+              1,
+              8600
+            ],
+            "type": "Reshape"
+          },
+          {
+            "name": "out/anchor1",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              25,
+              43,
+              3
+            ],
+            "type": "Permute"
+          },
+          {
+            "name": "out/anchor2",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              25,
+              43,
+              3
+            ],
+            "type": "Permute"
+          },
+          {
+            "name": "out/anchor3",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              25,
+              43,
+              3
+            ],
+            "type": "Permute"
+          },
+          {
+            "name": "out/anchor4",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              25,
+              43,
+              3
+            ],
+            "type": "Permute"
+          }
+        ]
+      }
+    },
+    {
+      "name": "person-detection-action-recognition-0006",
+      "path": "/home/cdsiot/models/models/intel/person-detection-action-recognition-0006/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              400,
+              680
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 7,
+        "blobs": [
+          {
+            "name": "ActionNet/action_heads/out_head_1_anchor_1",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              6,
+              50,
+              85
+            ],
+            "type": "Convolution"
+          },
+          {
+            "name": "ActionNet/action_heads/out_head_2_anchor_1",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              6,
+              25,
+              43
+            ],
+            "type": "Convolution"
+          },
+          {
+            "name": "ActionNet/action_heads/out_head_2_anchor_2",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              6,
+              25,
+              43
+            ],
+            "type": "Convolution"
+          },
+          {
+            "name": "ActionNet/action_heads/out_head_2_anchor_3",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              6,
+              25,
+              43
+            ],
+            "type": "Convolution"
+          },
+          {
+            "name": "ActionNet/action_heads/out_head_2_anchor_4",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              6,
+              25,
+              43
+            ],
+            "type": "Convolution"
+          },
+          {
+            "name": "ActionNet/out_detection_conf",
+            "layout": "CHW",
+            "shape": [
+              1,
+              8550,
+              2
+            ],
+            "type": "SoftMax"
+          },
+          {
+            "name": "ActionNet/out_detection_loc",
+            "layout": "CHW",
+            "shape": [
+              1,
+              8550,
+              4
+            ],
+            "type": "Concat"
+          }
+        ]
+      }
+    },
+    {
+      "name": "person-detection-action-recognition-teacher-0002",
+      "path": "/home/cdsiot/models/models/intel/person-detection-action-recognition-teacher-0002/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              400,
+              680
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 7,
+        "blobs": [
+          {
+            "name": "mbox/priorbox",
+            "layout": "CHW",
+            "shape": [
+              1,
+              2,
+              17200
+            ],
+            "type": "PriorBoxClustered"
+          },
+          {
+            "name": "mbox_loc1/out/conv/flat",
+            "layout": "NC",
+            "shape": [
+              1,
+              17200
+            ],
+            "type": "Reshape"
+          },
+          {
+            "name": "mbox_main_conf/out/conv/flat/softmax/flat",
+            "layout": "NC",
+            "shape": [
+              1,
+              8600
+            ],
+            "type": "Reshape"
+          },
+          {
+            "name": "out/anchor1",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              25,
+              43,
+              3
+            ],
+            "type": "Permute"
+          },
+          {
+            "name": "out/anchor2",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              25,
+              43,
+              3
+            ],
+            "type": "Permute"
+          },
+          {
+            "name": "out/anchor3",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              25,
+              43,
+              3
+            ],
+            "type": "Permute"
+          },
+          {
+            "name": "out/anchor4",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              25,
+              43,
+              3
+            ],
+            "type": "Permute"
+          }
+        ]
+      }
+    },
+    {
+      "name": "person-detection-asl-0001",
+      "path": "/home/cdsiot/models/models/intel/person-detection-asl-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "image",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              320,
+              320
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 9,
+        "blobs": [
+          {
+            "name": "1319.0",
+            "layout": "C",
+            "shape": [
+              1000
+            ]
+          },
+          {
+            "name": "1382.0",
+            "layout": "C",
+            "shape": [
+              400
+            ]
+          },
+          {
+            "name": "1445.0",
+            "layout": "C",
+            "shape": [
+              100
+            ]
+          },
+          {
+            "name": "1508.0",
+            "layout": "C",
+            "shape": [
+              25
+            ]
+          },
+          {
+            "name": "1571.0",
+            "layout": "C",
+            "shape": [
+              9
+            ]
+          },
+          {
+            "name": "1640/Split.1",
+            "layout": "NC",
+            "shape": [
+              100,
+              1
+            ]
+          },
+          {
+            "name": "1681.0",
+            "layout": "C",
+            "shape": [
+              100
+            ]
+          },
+          {
+            "name": "boxes/Split.0",
+            "layout": "NC",
+            "shape": [
+              100,
+              5
+            ]
+          },
+          {
+            "name": "boxes/Split.1",
+            "layout": "NC",
+            "shape": [
+              100,
+              1
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "person-detection-raisinghand-recognition-0001",
+      "path": "/home/cdsiot/models/models/intel/person-detection-raisinghand-recognition-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              400,
+              680
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 7,
+        "blobs": [
+          {
+            "name": "mbox/priorbox",
+            "layout": "CHW",
+            "shape": [
+              1,
+              2,
+              17200
+            ],
+            "type": "PriorBoxClustered"
+          },
+          {
+            "name": "mbox_loc1/out/conv/flat",
+            "layout": "NC",
+            "shape": [
+              1,
+              17200
+            ],
+            "type": "Reshape"
+          },
+          {
+            "name": "mbox_main_conf/out/conv/flat/softmax/flat",
+            "layout": "NC",
+            "shape": [
+              1,
+              8600
+            ],
+            "type": "Reshape"
+          },
+          {
+            "name": "out/anchor1",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              25,
+              43,
+              2
+            ],
+            "type": "Permute"
+          },
+          {
+            "name": "out/anchor2",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              25,
+              43,
+              2
+            ],
+            "type": "Permute"
+          },
+          {
+            "name": "out/anchor3",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              25,
+              43,
+              2
+            ],
+            "type": "Permute"
+          },
+          {
+            "name": "out/anchor4",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              25,
+              43,
+              2
+            ],
+            "type": "Permute"
+          }
+        ]
+      }
+    },
+    {
+      "name": "person-detection-retail-0002",
+      "path": "/home/cdsiot/models/models/intel/person-detection-retail-0002/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              544,
+              992
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "im_info",
+            "layout": "NC",
+            "shape": [
+              1,
+              6
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "detection_out",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              200,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "person-detection-retail-0013",
+      "path": "/home/cdsiot/models/models/intel/person-detection-retail-0013/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              320,
+              544
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "detection_out",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              200,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "person-reidentification-retail-0031",
+      "path": "/home/cdsiot/models/models/intel/person-reidentification-retail-0031/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              96,
+              48
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "ip_reid",
+            "layout": "NC",
+            "shape": [
+              1,
+              256
+            ],
+            "type": "FullyConnected"
+          }
+        ]
+      }
+    },
+    {
+      "name": "person-reidentification-retail-0248",
+      "path": "/home/cdsiot/models/models/intel/person-reidentification-retail-0248/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              256,
+              128
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "reid_embedding",
+            "layout": "NC",
+            "shape": [
+              1,
+              256
+            ],
+            "type": "Reshape"
+          }
+        ]
+      }
+    },
+    {
+      "name": "person-reidentification-retail-0249",
+      "path": "/home/cdsiot/models/models/intel/person-reidentification-retail-0249/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              256,
+              128
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "reid_embedding",
+            "layout": "NC",
+            "shape": [
+              1,
+              256
+            ],
+            "type": "Reshape"
+          }
+        ]
+      }
+    },
+    {
+      "name": "person-reidentification-retail-0300",
+      "path": "/home/cdsiot/models/models/intel/person-reidentification-retail-0300/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              256,
+              128
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "reid_embedding",
+            "layout": "NC",
+            "shape": [
+              1,
+              512
+            ],
+            "type": "Reshape"
+          }
+        ]
+      }
+    },
+    {
+      "name": "person-vehicle-bike-detection-crossroad-0078",
+      "path": "/home/cdsiot/models/models/intel/person-vehicle-bike-detection-crossroad-0078/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              1024,
+              1024
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "detection_out",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              200,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 4
+          }
+        ]
+      }
+    },
+    {
+      "name": "person-vehicle-bike-detection-crossroad-1016",
+      "path": "/home/cdsiot/models/models/intel/person-vehicle-bike-detection-crossroad-1016/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input.1",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              512,
+              512
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "653",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              200,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 4
+          }
+        ]
+      }
+    },
+    {
+      "name": "product-detection-0001",
+      "path": "/home/cdsiot/models/models/intel/product-detection-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input.1",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              512,
+              512
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "868",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              200,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 14
+          }
+        ]
+      }
+    },
+    {
+      "name": "resnet-101",
+      "path": "/home/cdsiot/models/ir/public/resnet-101/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "prob",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "resnet-152",
+      "path": "/home/cdsiot/models/ir/public/resnet-152/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "prob",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "resnet-50",
+      "path": "/home/cdsiot/models/ir/public/resnet-50/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "prob",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "resnet-50-tf",
+      "path": "/home/cdsiot/models/ir/public/resnet-50-tf/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "map/TensorArrayStack/TensorArrayGatherV3",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "softmax_tensor",
+            "layout": "NC",
+            "shape": [
+              1,
+              1001
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "rfcn-resnet101-coco-tf",
+      "path": "/home/cdsiot/models/ir/public/rfcn-resnet101-coco-tf/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "image_info",
+            "layout": "NC",
+            "shape": [
+              1,
+              3
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "image_tensor",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              600,
+              600
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "detection_output",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              100,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 91
+          }
+        ]
+      }
+    },
+    {
+      "name": "road-segmentation-adas-0001",
+      "path": "/home/cdsiot/models/models/intel/road-segmentation-adas-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              512,
+              896
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "L0317_ReWeight_SoftMax",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              4,
+              512,
+              896
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "se-inception",
+      "path": "/home/cdsiot/models/ir/public/se-inception/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "prob",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "se-resnet-101",
+      "path": "/home/cdsiot/models/ir/public/se-resnet-101/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "prob",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "se-resnet-152",
+      "path": "/home/cdsiot/models/ir/public/se-resnet-152/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "prob",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "se-resnet-50",
+      "path": "/home/cdsiot/models/ir/public/se-resnet-50/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "prob",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "se-resnext-101",
+      "path": "/home/cdsiot/models/ir/public/se-resnext-101/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "prob",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "se-resnext-50",
+      "path": "/home/cdsiot/models/ir/public/se-resnext-50/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "prob",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "semantic-segmentation-adas-0001",
+      "path": "/home/cdsiot/models/models/intel/semantic-segmentation-adas-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              1024,
+              2048
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "4262.1",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              1024,
+              2048
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "single-image-super-resolution-1032",
+      "path": "/home/cdsiot/models/models/intel/single-image-super-resolution-1032/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "0",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              270,
+              480
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "1",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              1080,
+              1920
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "129",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              1080,
+              1920
+            ],
+            "type": "Eltwise"
+          }
+        ]
+      }
+    },
+    {
+      "name": "single-image-super-resolution-1033",
+      "path": "/home/cdsiot/models/models/intel/single-image-super-resolution-1033/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "0",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              360,
+              640
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "1",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              1080,
+              1920
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "90",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              1080,
+              1920
+            ],
+            "type": "Eltwise"
+          }
+        ]
+      }
+    },
+    {
+      "name": "squeezenet1.0",
+      "path": "/home/cdsiot/models/ir/public/squeezenet1.0/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              227,
+              227
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "prob",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1000,
+              1,
+              1
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "squeezenet1.1",
+      "path": "/home/cdsiot/models/ir/public/squeezenet1.1/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              227,
+              227
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "prob",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1000,
+              1,
+              1
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ssd300",
+      "path": "/home/cdsiot/models/ir/public/ssd300/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              300,
+              300
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "detection_out",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              200,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 21
+          }
+        ]
+      }
+    },
+    {
+      "name": "ssd512",
+      "path": "/home/cdsiot/models/ir/public/ssd512/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              512,
+              512
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "detection_out",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              200,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 21
+          }
+        ]
+      }
+    },
+    {
+      "name": "ssd_mobilenet_v1_coco",
+      "path": "/home/cdsiot/models/ir/public/ssd_mobilenet_v1_coco/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "image_tensor",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              300,
+              300
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "DetectionOutput",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              100,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 91
+          }
+        ]
+      }
+    },
+    {
+      "name": "ssd_mobilenet_v1_fpn_coco",
+      "path": "/home/cdsiot/models/ir/public/ssd_mobilenet_v1_fpn_coco/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "image_tensor",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              640,
+              640
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "DetectionOutput",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              100,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 91
+          }
+        ]
+      }
+    },
+    {
+      "name": "ssd_mobilenet_v2_coco",
+      "path": "/home/cdsiot/models/ir/public/ssd_mobilenet_v2_coco/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "image_tensor",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              300,
+              300
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "DetectionOutput",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              100,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 91
+          }
+        ]
+      }
+    },
+    {
+      "name": "ssdlite_mobilenet_v2",
+      "path": "/home/cdsiot/models/ir/public/ssdlite_mobilenet_v2/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "image_tensor",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              300,
+              300
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "DetectionOutput",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              100,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 91
+          }
+        ]
+      }
+    },
+    {
+      "name": "text-detection-0003",
+      "path": "/home/cdsiot/models/models/intel/text-detection-0003/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "Placeholder",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              768,
+              1280
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "model/link_logits_/add",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              16,
+              192,
+              320
+            ],
+            "type": "Eltwise"
+          },
+          {
+            "name": "model/segm_logits/add",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              2,
+              192,
+              320
+            ],
+            "type": "Eltwise"
+          }
+        ]
+      }
+    },
+    {
+      "name": "text-detection-0004",
+      "path": "/home/cdsiot/models/models/intel/text-detection-0004/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "Placeholder",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              768,
+              1280
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "model/link_logits_/add",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              16,
+              192,
+              320
+            ],
+            "type": "Eltwise"
+          },
+          {
+            "name": "model/segm_logits/add",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              2,
+              192,
+              320
+            ],
+            "type": "Eltwise"
+          }
+        ]
+      }
+    },
+    {
+      "name": "text-image-super-resolution-0001",
+      "path": "/home/cdsiot/models/models/intel/text-image-super-resolution-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "0",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              360,
+              640
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "14",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              1080,
+              1920
+            ],
+            "type": "Convolution"
+          }
+        ]
+      }
+    },
+    {
+      "name": "text-recognition-0012",
+      "path": "/home/cdsiot/models/models/intel/text-recognition-0012/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "Placeholder",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              32,
+              120
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "shadow/LSTMLayers/transpose_time_major",
+            "layout": "CHW",
+            "shape": [
+              30,
+              1,
+              37
+            ],
+            "type": "Permute"
+          }
+        ]
+      }
+    },
+    {
+      "name": "text-spotting-0002-detector",
+      "path": "/home/cdsiot/models/models/intel/text-spotting-0002-detector/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "im_data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              768,
+              1280
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "im_info",
+            "layout": "NC",
+            "shape": [
+              1,
+              3
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 5,
+        "blobs": [
+          {
+            "name": "boxes",
+            "layout": "NC",
+            "shape": [
+              100,
+              4
+            ],
+            "type": "Power"
+          },
+          {
+            "name": "classes",
+            "layout": "C",
+            "shape": [
+              100
+            ],
+            "type": "Eltwise"
+          },
+          {
+            "name": "raw_masks",
+            "layout": "NCHW",
+            "shape": [
+              100,
+              2,
+              28,
+              28
+            ],
+            "type": "Sigmoid"
+          },
+          {
+            "name": "scores",
+            "layout": "C",
+            "shape": [
+              100
+            ],
+            "type": "Power"
+          },
+          {
+            "name": "text_features",
+            "layout": "NCHW",
+            "shape": [
+              100,
+              64,
+              28,
+              28
+            ],
+            "type": "ExperimentalDetectronROIFeatureExtractor"
+          }
+        ]
+      }
+    },
+    {
+      "name": "text-spotting-0002-recognizer-decoder",
+      "path": "/home/cdsiot/models/models/intel/text-spotting-0002-recognizer-decoder/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 3,
+        "blobs": [
+          {
+            "name": "encoder_outputs",
+            "layout": "CHW",
+            "shape": [
+              1,
+              784,
+              256
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "prev_hidden",
+            "layout": "CHW",
+            "shape": [
+              1,
+              1,
+              256
+            ],
+            "type": "Input"
+          },
+          {
+            "name": "prev_symbol",
+            "layout": "C",
+            "shape": [
+              1
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "hidden",
+            "layout": "CHW",
+            "shape": [
+              1,
+              1,
+              256
+            ],
+            "type": "Reshape"
+          },
+          {
+            "name": "output",
+            "layout": "NC",
+            "shape": [
+              1,
+              38
+            ],
+            "type": "FullyConnected"
+          }
+        ]
+      }
+    },
+    {
+      "name": "text-spotting-0002-recognizer-encoder",
+      "path": "/home/cdsiot/models/models/intel/text-spotting-0002-recognizer-encoder/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              64,
+              28,
+              28
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "output",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              256,
+              28,
+              28
+            ],
+            "type": "ReLU"
+          }
+        ]
+      }
+    },
+    {
+      "name": "unet-camvid-onnx-0001",
+      "path": "/home/cdsiot/models/models/intel/unet-camvid-onnx-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input.1",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              368,
+              480
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "206",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              12,
+              368,
+              480
+            ],
+            "type": "Eltwise"
+          }
+        ]
+      }
+    },
+    {
+      "name": "vehicle-attributes-recognition-barrier-0039",
+      "path": "/home/cdsiot/models/models/intel/vehicle-attributes-recognition-barrier-0039/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              72,
+              72
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 2,
+        "blobs": [
+          {
+            "name": "color",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              7,
+              1,
+              1
+            ],
+            "type": "SoftMax"
+          },
+          {
+            "name": "type",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              4,
+              1,
+              1
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "vehicle-detection-adas-0002",
+      "path": "/home/cdsiot/models/models/intel/vehicle-detection-adas-0002/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              384,
+              672
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "detection_out",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              200,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "vehicle-license-plate-detection-barrier-0106",
+      "path": "/home/cdsiot/models/models/intel/vehicle-license-plate-detection-barrier-0106/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "Placeholder",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              300,
+              300
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "DetectionOutput_",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              200,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "vehicle-license-plate-detection-barrier-0123",
+      "path": "/home/cdsiot/models/ir/public/vehicle-license-plate-detection-barrier-0123/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "Placeholder",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              256,
+              256
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "DetectionOutput_",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              1,
+              200,
+              7
+            ],
+            "type": "DetectionOutput",
+            "num_class": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "vgg16",
+      "path": "/home/cdsiot/models/ir/public/vgg16/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "prob",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "vgg19",
+      "path": "/home/cdsiot/models/ir/public/vgg19/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              224,
+              224
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "prob",
+            "layout": "NC",
+            "shape": [
+              1,
+              1000
+            ],
+            "type": "SoftMax"
+          }
+        ]
+      }
+    },
+    {
+      "name": "yolo-v1-tiny-tf",
+      "path": "/home/cdsiot/models/ir/public/yolo-v1-tiny-tf/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input_1",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              416,
+              416
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "conv2d_9/BiasAdd/YoloRegion",
+            "layout": "NC",
+            "shape": [
+              1,
+              21125
+            ],
+            "type": "RegionYolo"
+          }
+        ]
+      }
+    },
+    {
+      "name": "yolo-v2-ava-0001",
+      "path": "/home/cdsiot/models/models/intel/yolo-v2-ava-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              416,
+              416
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "yolo_out_postprocess/YoloRegion",
+            "layout": "NC",
+            "shape": [
+              1,
+              21125
+            ],
+            "type": "RegionYolo"
+          }
+        ]
+      }
+    },
+    {
+      "name": "yolo-v2-ava-sparse-35-0001",
+      "path": "/home/cdsiot/models/models/intel/yolo-v2-ava-sparse-35-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              416,
+              416
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "yolo_out_postprocess/YoloRegion",
+            "layout": "NC",
+            "shape": [
+              1,
+              21125
+            ],
+            "type": "RegionYolo"
+          }
+        ]
+      }
+    },
+    {
+      "name": "yolo-v2-ava-sparse-70-0001",
+      "path": "/home/cdsiot/models/models/intel/yolo-v2-ava-sparse-70-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              416,
+              416
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "yolo_out_postprocess/YoloRegion",
+            "layout": "NC",
+            "shape": [
+              1,
+              21125
+            ],
+            "type": "RegionYolo"
+          }
+        ]
+      }
+    },
+    {
+      "name": "yolo-v2-tf",
+      "path": "/home/cdsiot/models/ir/public/yolo-v2-tf/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input_1",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              608,
+              608
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "conv2d_23/BiasAdd/YoloRegion",
+            "layout": "NC",
+            "shape": [
+              1,
+              153425
+            ],
+            "type": "RegionYolo"
+          }
+        ]
+      }
+    },
+    {
+      "name": "yolo-v2-tiny-ava-0001",
+      "path": "/home/cdsiot/models/models/intel/yolo-v2-tiny-ava-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              416,
+              416
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "yolo_out_postprocess/YoloRegion",
+            "layout": "NC",
+            "shape": [
+              1,
+              21125
+            ],
+            "type": "RegionYolo"
+          }
+        ]
+      }
+    },
+    {
+      "name": "yolo-v2-tiny-ava-sparse-30-0001",
+      "path": "/home/cdsiot/models/models/intel/yolo-v2-tiny-ava-sparse-30-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              416,
+              416
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "yolo_out_postprocess/YoloRegion",
+            "layout": "NC",
+            "shape": [
+              1,
+              21125
+            ],
+            "type": "RegionYolo"
+          }
+        ]
+      }
+    },
+    {
+      "name": "yolo-v2-tiny-ava-sparse-60-0001",
+      "path": "/home/cdsiot/models/models/intel/yolo-v2-tiny-ava-sparse-60-0001/FP16",
+      "framework": "dldt",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "data",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              416,
+              416
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "yolo_out_postprocess/YoloRegion",
+            "layout": "NC",
+            "shape": [
+              1,
+              21125
+            ],
+            "type": "RegionYolo"
+          }
+        ]
+      }
+    },
+    {
+      "name": "yolo-v2-tiny-tf",
+      "path": "/home/cdsiot/models/ir/public/yolo-v2-tiny-tf/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input_1",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              416,
+              416
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "conv2d_9/BiasAdd/YoloRegion",
+            "layout": "NC",
+            "shape": [
+              1,
+              71825
+            ],
+            "type": "RegionYolo"
+          }
+        ]
+      }
+    },
+    {
+      "name": "yolo-v3-tf",
+      "path": "/home/cdsiot/models/ir/public/yolo-v3-tf/FP16",
+      "framework": "",
+      "inputs": {
+        "count": 1,
+        "blobs": [
+          {
+            "name": "input_1",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              3,
+              416,
+              416
+            ],
+            "type": "Input"
+          }
+        ]
+      },
+      "outputs": {
+        "count": 3,
+        "blobs": [
+          {
+            "name": "conv2d_58/Conv2D/YoloRegion",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              255,
+              13,
+              13
+            ],
+            "type": "RegionYolo"
+          },
+          {
+            "name": "conv2d_66/Conv2D/YoloRegion",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              255,
+              26,
+              26
+            ],
+            "type": "RegionYolo"
+          },
+          {
+            "name": "conv2d_74/Conv2D/YoloRegion",
+            "layout": "NCHW",
+            "shape": [
+              1,
+              255,
+              52,
+              52
+            ],
+            "type": "RegionYolo"
+          }
+        ]
+      }
+    }
+  ]
+}
