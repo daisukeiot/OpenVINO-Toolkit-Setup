@@ -316,8 +316,6 @@ class OpenVINO_Core(object):
 
         if not model_data.framework == 'dldt' and model_data.model_dir != None:
             self.remove_dir(model_data.model_dir)
-
-            model_data.model_dir.rmdir()
             model_data.model_dir = None
 
 #
