@@ -238,7 +238,9 @@ class OpenVINO_Core(object):
                 f.unlink()
             else:
                 self.remove_dir(f)
-#
+
+        path_to_remove.rmdir()
+
 # Set target hardware to run inference on
 #
     def set_target_device(self, target):
@@ -306,14 +308,17 @@ class OpenVINO_Core(object):
 #
 # Remove a model folder
 #
-    def remove_dir(self, path_to_remove):
-        for f in path_to_remove.glob('**/*'):
-            if f.is_file():
-                f.unlink()
-            else:
-                self.remove_dir(f)
+    def remove_model_dir(self, model_data):
+        if self._debug:
+            logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
 
-        path_to_remove.rmdir()
+        logging.info('>> Model dir {}'.format(model_data.model_dir))
+
+        if not model_data.framework == 'dldt' and model_data.model_dir != None:
+            self.remove_dir(model_data.model_dir)
+
+            model_data.model_dir.rmdir()
+            model_data.model_dir = None
 
 #
 # Search XML and BIN files
