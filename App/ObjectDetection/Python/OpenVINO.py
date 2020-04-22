@@ -305,6 +305,24 @@ class OpenVINO_Core(object):
         return '{{\"{}\":\"{}\"}}'.format(sys._getframe().f_code.co_name, (self._confidence * 100))
 
 #
+# Remove a model folder
+#
+
+    def remove_model_dir(self, model_data):
+        if self._debug:
+            logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
+
+        logging.info('>> Model dir {}'.format(model_data.model_dir))
+
+        if not model_data.framework == 'dldt' and model_data.model_dir != None:
+            for file in model_data.model_dir.glob('*'):
+                if file.is_file():
+                    file.unlink()
+
+            model_data.model_dir.rmdir()
+            model_data.model_dir = None
+
+#
 # Search XML and BIN files
 # Look for ./ir/<Intel or Public>/<Model Name>/<FP16 or FP32>/<Model Name>.bin/.xml
 #
@@ -376,16 +394,15 @@ class OpenVINO_Core(object):
         # look for a folder in download folder
         model_dir = None
         tmp = '**/{}'.format(model_folder_name)
-        print(tmp)
+
         # for download_dir in p_download_dir.glob('**/{}'.format(model_folder_name)):
         for download_dir in p_download_dir.glob(tmp):
             #assert(model_dir is None, "Multiple folders found")
-            print(str(download_dir))
             model_dir = download_dir
 
         # make sure the folder exists
         if model_dir is not None:
-            logging.info('Folder found {}'.format(str(model_dir)))
+            logging.info('>> Downloaded model found {}'.format(str(model_dir)))
             if not model_data.framework == 'dldt':
                 model_data.model_dir = model_dir
             else:
@@ -462,6 +479,9 @@ class OpenVINO_Core(object):
             # setup download logfile
             logfile = Path(self.model_dir / 'download.json')
 
+            if logfile.exists():
+                logfile.unlink()
+
             # download target folder
             if model_data.framework == 'dldt':
                 p_target_dir = self.ir_dir
@@ -515,7 +535,8 @@ class OpenVINO_Core(object):
                             #     logging.info('Download success {}'.format(str(download_file_name)))
 
             if num_files == file_count and download_result is True:
-                model_data.setFlag(Model_Flag.Downloaded)
+                # check folder.  This will set Downloaded flag if a folder is found
+                self.search_model_dir(model_data)
             else:
                 model_data.errorMsg = "Model download failed"
 

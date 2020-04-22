@@ -399,6 +399,7 @@ class VideoProcessor(object):
             logging.info('   FP16 {}'.format(str(model_data.ir_dir['FP16'])))
             logging.info('   FP32 {}'.format(str(model_data.ir_dir['FP32'])))
             self.send_message('{{\"set_ai_model\":\"{} converted to IR.\\nLoading....\", \"isSuccess\":1}}'.format(model_data.modelName))
+            self.inference_engine.remove_model_dir(model_data)
             task = self.ioLoop.run_in_executor(None, self.inference_engine.load_model, model_data)
             task.add_done_callback(self.model_load_callback)
         else:
