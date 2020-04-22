@@ -66,7 +66,8 @@ Install Video Driver
 sudo usermod -a -G video $USER
 sudo -E su
 cd $INSTALL_DIR/install_dependencies && \
-./install_NEO_OCL_driver.sh
+./install_NEO_OCL_driver.sh && \
+sudo reboot now
 ```
 
 ## App Setup
