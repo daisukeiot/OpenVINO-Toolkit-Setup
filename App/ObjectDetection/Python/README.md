@@ -1,14 +1,14 @@
 # Object Detection app
 
-## Setup
+## Environment
 
 - Ubuntu 18.04
 - Python 3.7
 - OpenVINO 2020.2.120
 
-## Ubuntu
+## Ubuntu Setup
 
-Install Python3.7 and make it default
+Install Python3.7 and make it default with :
 
 ```bash
 sudo apt-get update && \
@@ -27,9 +27,9 @@ sudo apt-get install --reinstall python3-apt && \
 pip3 install 'numpy==1.16' --force-reinstall \
 ```
 
-## OpenVINO
+## OpenVINO Setup
 
-Install 2020.2.120
+Install 2020.2.120 with following commands : 
 
 ```bash
 export OPENVINO_VER=2020.2.120
@@ -68,3 +68,40 @@ sudo -E su
 cd $INSTALL_DIR/install_dependencies && \
 ./install_NEO_OCL_driver.sh
 ```
+
+## App Setup
+
+Clone this repo and run /App/ObjectDetectino/Python/setup.sh
+
+```bash
+cd ~ && \
+git clone https://github.com/daisukeiot/OpenVINO-Toolkit-Setup.git && \
+cd OpenVINO-Toolkit-Setup/App/ObjectDetection/Python && \
+git clone https://github.com/opencv/open_model_zoo.git
+```
+
+## Using App
+
+Start the app with :  
+
+```bash
+cd ~/OpenVINO-Toolkit-Setup/App/ObjectDetection/Python
+sudo python3 ./main.py
+```
+
+- To access Movidius USB stick, you must run the app as a super user (sudo)
+
+## To do list
+
+- Add Yolo support
+- Add Async Inference
+- Containerization
+- Add IoT Hub device app/IoT Edge support
+
+## Release Notes
+
+### Version 1 (April 21, 2020)
+
+- Supports most of Object Detection models from [Open Model Zoo](https://github.com/opencv/open_model_zoo)  
+- Supports USB Webcam and Youtube Video as video source
+
