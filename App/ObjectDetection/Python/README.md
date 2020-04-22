@@ -89,7 +89,10 @@ cd ~/OpenVINO-Toolkit-Setup/App/ObjectDetection/Python
 sudo python3 ./main.py
 ```
 
-- To access Movidius USB stick, you must run the app as a super user (sudo)
+> [!IMPORTANT]
+> To access Movidius USB stick, you must run the app as a super user (sudo)
+
+- Access the UI from a browser `http://<IP Address of the device>:8080`
 
 ## To do list
 
