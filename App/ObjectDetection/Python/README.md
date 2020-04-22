@@ -86,13 +86,60 @@ Start the app with :
 
 ```bash
 cd ~/OpenVINO-Toolkit-Setup/App/ObjectDetection/Python
-sudo python3 ./main.py
+sudo -s
+python3 ./main.py
 ```
 
 > [!IMPORTANT]
-> To access Movidius USB stick, you must run the app as a super user (sudo)
+> To access Movidius USB stick, you must run the app as a super user (sudo)  
+>
+> Because of environment settings, enter super user with sudo -s then run python3
 
 - Access the UI from a browser `http://<IP Address of the device>:8080`
+
+![Browser](media/Browser_UI.png)
+
+### Video Playback
+
+For video :
+
+- `Play` and `Pause`
+- Playback Mode  
+
+  - Sync Playback Mode  
+
+    Plays at the frame rate of the source video
+
+  - Performance Mode
+
+    Plays video as fast as the system can
+
+For camera :
+
+- Change resolution  
+  Currently the app supports following resolutions (*camera must support selected resolution)
+
+  - VGA  (640x480)
+  - XGA  (1024x748)
+  - HD   (1280x720)
+  - WXGA (1280x800)
+  - FHD  (1920x1080)
+
+### AI Inference
+
+You can start and stop AI Inference.  Selecting `play` button will :  
+
+- Look for the model locally, if not found, download from internet
+- Converts model to IR if necessary
+- Loads model to selected HW
+
+### Target HW
+
+Currently you can only select 1 target hardware
+
+### Precision
+
+Only FP16 and FP32
 
 ## To do list
 
@@ -100,6 +147,8 @@ sudo python3 ./main.py
 - Add Async Inference
 - Containerization
 - Add IoT Hub device app/IoT Edge support
+- HETERO support
+- Improve status line display/logging
 
 ## Release Notes
 
