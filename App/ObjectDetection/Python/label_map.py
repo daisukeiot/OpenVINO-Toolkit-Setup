@@ -1,4 +1,7 @@
+#https://gist.github.com/AruniRC/7b3dadd004da04c80198557db5da4bda
+#https://github.com/nightrome/cocostuff/blob/master/labels.md
 coco_category_map = {
+    0: '__background__',
     1: 'person',
     2: 'bicycle',
     3: 'car',
@@ -10,6 +13,7 @@ coco_category_map = {
     9: 'boat',
     10: 'traffic light',
     11: 'fire hydrant',
+    12: 'street sign',
     13: 'stop sign',
     14: 'parking meter',
     15: 'bench',
@@ -23,8 +27,11 @@ coco_category_map = {
     23: 'bear',
     24: 'zebra',
     25: 'giraffe',
+    26: 'hat',
     27: 'backpack',
     28: 'umbrella',
+    29: 'shoe',
+    30: 'eye glasses',
     31: 'handbag',
     32: 'tie',
     33: 'suitcase',
@@ -39,6 +46,7 @@ coco_category_map = {
     42: 'surfboard',
     43: 'tennis racket',
     44: 'bottle',
+    45: 'plate',
     46: 'wine glass',
     47: 'cup',
     48: 'fork',
@@ -59,8 +67,12 @@ coco_category_map = {
     63: 'couch',
     64: 'potted plant',
     65: 'bed',
+    66: 'mirror',
     67: 'dining table',
+    68: 'window',
+    69: 'desk',
     70: 'toilet',
+    71: 'door',
     72: 'tv',
     73: 'laptop',
     74: 'mouse',
@@ -72,13 +84,15 @@ coco_category_map = {
     80: 'toaster',
     81: 'sink',
     82: 'refrigerator',
+    83: 'blender',
     84: 'book',
     85: 'clock',
     86: 'vase',
     87: 'scissors',
     88: 'teddy bear',
     89: 'hair drier',
-    90: 'toothbrush'
+    90: 'toothbrush',
+    91: 'hair brush'
 }
 
 voc_category_map = {
