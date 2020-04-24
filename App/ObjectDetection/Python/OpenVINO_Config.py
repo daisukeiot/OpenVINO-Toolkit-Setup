@@ -1,6 +1,41 @@
-from enum import Enum, IntFlag, auto
+from enum import Enum, IntFlag, auto, IntEnum
 import sys
 import logging
+import cv2
+
+class CV2_Draw_Info():
+
+    def __init__(self):
+        self.fontScale = 0.8
+        self.thickness = 1
+        self.lineType = cv2.LINE_AA
+        self.fontName = cv2.FONT_HERSHEY_COMPLEX_SMALL
+        self.textSize, self.textBaseline = cv2.getTextSize('%', self.fontName, self.fontScale, self.thickness)
+       
+def color_list():
+    colors = []
+    colors.append((232, 35, 244))
+    colors.append((0, 241, 255))
+    colors.append((255, 236, 0))
+    colors.append((242, 188, 0))
+    return colors
+
+class Output_Format(IntEnum):
+    Unknown = 0
+    DetectionOutput = 1
+    Softmax = 2
+    Mconv7_stage2_L1 = 3
+    Faster_RCNN = 4
+    RegionYolo = 5
+
+class Input_Format(IntEnum):
+    Unknown = 0
+    Tensorflow = 1
+    Caffe = 2
+    Faster_RCNN = 3
+    IntelIR = 4
+    Yolo = 5
+    Other = 6
 
 class Engine_State(IntFlag):
     Unknown = auto()

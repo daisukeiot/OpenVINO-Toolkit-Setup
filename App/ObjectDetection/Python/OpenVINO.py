@@ -4,7 +4,7 @@ import os
 import json
 from openvino.inference_engine import IECore, IENetwork
 from OpenVINO_Config import Engine_State, Model_Flag, OpenVINO_Model_Data
-from OpenVINO_Core import IE_Engine
+from OpenVINO_Core import OpenVINO_Core
 import subprocess
 from pathlib import Path
 import yaml
@@ -236,7 +236,7 @@ class OpenVINO_Core(object):
 
         if self.openvino_dir.exists() and self.model_dir.exists() and self.ir_dir.exists() and len(self.modelList) > 0:
             logging.info('OpenVINO Engine initialized')
-            self._ie_Engine = IE_Engine()
+            self._ie_Engine = OpenVINO_Core()
 
             self.signature = self._ie_Engine.get_signature()
 

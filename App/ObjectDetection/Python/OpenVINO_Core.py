@@ -1,91 +1,69 @@
 import sys
 import logging
 import traceback
-from enum import IntEnum
-from OpenVINO_Config import Engine_State, Model_Flag
+from OpenVINO_Config import Engine_State, Model_Flag, Output_Format, Input_Format
 from openvino.inference_engine import IECore, IENetwork, IEPlugin
 import numpy as np
 import cv2
 from pathlib import Path
-from label_map import coco_category_map, voc_category_map
+from Process_Object_Detection import Object_Detection_Processor 
+from Process_Faster_RCNN import Object_Detection_RCNN_Processor
+from Process_Yolo import Object_Detection_Yolo_Processor
 
-class Output_Format(IntEnum):
-    Unknown = 0
-    DetectionOutput = 1
-    Softmax = 2
-    Mconv7_stage2_L1 = 3
-    Faster_RCNN = 4
-
-class Input_Format(IntEnum):
-    Unknown = 0
-    Tensorflow = 1
-    Caffe = 2
-    Faster_RCNN = 3
-    IntelIR = 4
-
-class CV2_Draw_Info():
-
-    def __init__(self):
-        self.fontScale = 1.0
-        self.thickness = 1
-        self.lineType = cv2.LINE_AA
-        # p_font = Path(Path('./').resolve() / 'segoeui.ttf')
-        # if p_font.exists():
-        #     self.font = ImageFont.truetype(str(p_font), 10)
-        #     #self.fontSize = self.font.getsize('123.4%') 
-        # else:
-        self.fontName = cv2.FONT_HERSHEY_COMPLEX_SMALL
-        self.textSize, self.textBaseline = cv2.getTextSize('%', self.fontName, self.fontScale, self.thickness)
-        
-
-class IE_Engine:
+class OpenVINO_Core:
 
     def __init__(self):
         self.ie = IECore()
         self.name = ""
+
+        self.asyncInference = False
         self.plugin = None
         self.ieNet = None
-        self.input_blob_key = None
-        self.input_layout = None
-        self.input_shape = None
-        self.classLabels = {}
 
-        self.output_blob_key = None
+        self.result_processor = None
+
         self.exec_net = None
-        self.devices = self.ie.available_devices
+
+        devices = []
+        for device in self.ie.available_devices:
+            if device == 'CPU':
+                devices.append('CPU')
+            elif device == 'GPU':
+                devices.append('CPU')
+            elif 'MYRIAD' in device and not 'MYRIAD' in devices:
+                devices.append('MYRIAD')
+
+        self.devices = devices
         self.outputFormat = Output_Format.Unknown
         self.inputFormat = Input_Format.Unknown
-        self.outputName = None
-        self.num_class = 0
+        # self.outputName = None
         self._debug = True
         self.ver_major = 0
         self.ver_minor = 0
         self.ver_build = 0
-        self.colors = []
-        self.colors.append((232, 35, 244))
-        self.colors.append((0, 241, 255))
-        self.colors.append((10, 216, 186))
-        self.colors.append((242, 188, 0))
 
-        self.draw_info = CV2_Draw_Info()
+        self.current_hw = None
+        self.current_precision = None
+        self.current_model = None
 
     def reset_engine(self):
         self.name = ""
         self.plugin = None
         self.ieNet = None
-        self.input_blob_key = None
-        self.output_blob_key = None
+        self.result_processor = None
+
         self.exec_net = None
-        self.input_shape = None
-        self.input_layout = None
         self.outputFormat = Output_Format.Unknown
         self.inputFormat = Input_Format.Unknown
-        self.outputName = None
-        self.num_class = 0
+        # self.outputName = None
         self.ver_major = 0
         self.ver_minor = 0
         self.ver_build = 0
         self.classLabels = {}
+
+        self.current_hw = None
+        self.current_precision = None
+        self.current_model = None
 
     def dump(self, obj):
         print('=================================================')
@@ -150,113 +128,154 @@ class IE_Engine:
 
             # image_tensor : TensorFlow
             # data         : Caffe
-            logging.info('==================================================================')
-
-            for key in self.ieNet.inputs:
-                logging.info('Input Key     : {}'.format(key))
-                logging.info('     Layout   : {}'.format(self.ieNet.inputs[key].layout))
-                logging.info('      Shape   : {}'.format(self.ieNet.inputs[key].shape))
-                logging.info('  Precision   : {}'.format(self.ieNet.inputs[key].precision))
-                # don't touch layers.  Somehow touching layer will cause load failure with Myriad
-                # logging.info(' -Layers')
-                # logging.info('       Type : {}'.format(self.ieNet.layers[key].type))
-                # self.dump(self.ieNet.layers[key])
 
             if len(self.ieNet.inputs) > 2:
-                return Model_Flag.Unsupported
+                logging.warn('!! Too many inputs.  Not supported')
+                return  Model_Flag.LoadError
 
-            if len(self.ieNet.inputs) == 1:
+            # don't touch layers.  Somehow touching layer will cause load failure with Myriad
+            # logging.info(' -Layers')
+            # logging.info('       Type : {}'.format(self.ieNet.layers[key].type))
+            # self.dump(self.ieNet.layers[key])
 
-                self.input_blob_key = next(iter(self.ieNet.inputs))
-
-                if 'image_tensor' in self.ieNet.inputs.keys():
-                    logging.info('Tensorflow Input')
-                    self.inputFormat = Input_Format.Tensorflow
-                    self.input_blob_key = 'image_tensor'
-                    self.input_shape = self.ieNet.inputs[self.input_blob_key].shape
-                    self.input_layout = self.ieNet.inputs[self.input_blob_key].layout
-                    # self.ieNet.inputs[self.input_blob_key].precision = precision
-
-                elif 'data' in self.ieNet.inputs.keys():
-                    logging.info('Caffe Input')
-                    self.inputFormat = Input_Format.Caffe
-                    self.input_blob_key = 'data'
-                    self.input_shape = self.ieNet.inputs[self.input_blob_key].shape
-                    self.input_layout = self.ieNet.inputs[self.input_blob_key].layout
-
-                else:
-                    logging.info('Other Input')
-                    self.inputFormat = Input_Format.IntelIR
-                    self.input_shape = self.ieNet.inputs[self.input_blob_key].shape
-                    self.input_layout = self.ieNet.inputs[self.input_blob_key].layout
-
-            elif len(self.ieNet.inputs) == 2:
-
-                if 'image_info' in self.ieNet.inputs.keys() and 'image_tensor' in self.ieNet.inputs.keys():
-                    logging.info('Found Faster RCNN Inputs')
-                    self.input_blob_key = 'image_tensor'
-                    self.inputFormat = Input_Format.Faster_RCNN
-                    self.input_shape = self.ieNet.inputs[self.input_blob_key].shape
-                    self.input_layout = self.ieNet.inputs[self.input_blob_key].layout
-                    # self.ieNet.inputs[self.input_blob_key].precision = precision
-
-            # process output
             logging.info('==================================================================')
-            # DetectionOutput
-            self.output_blob_key = next(iter(self.ieNet.outputs))
+            logging.info('Output Blobs')
 
-            for key in self.ieNet.outputs:
+            for key, blob in self.ieNet.outputs.items():
+
                 logging.info('Output Key    : {}'.format(key))
-                logging.info('     Layout   : {}'.format(self.ieNet.outputs[key].layout))
-                logging.info('      Shape   : {}'.format(self.ieNet.outputs[key].shape))
-                logging.info('  Precision   : {}'.format(self.ieNet.outputs[key].precision))
+                logging.info('     Layout   : {}'.format(blob.layout))
+                logging.info('      Shape   : {}'.format(blob.shape))
+                logging.info('  Precision   : {}'.format(blob.precision))
                 # logging.info(' -Layers')
                 # logging.info('       Type : {}'.format(self.ieNet.layers[key].type))
                 # self.dump(self.ieNet.layers[key])
 
-            if len(self.ieNet.outputs) > 1:
-                return Model_Flag.Unsupported
+            logging.info('==================================================================')
+            logging.info('Input Blobs')
+
+            for key, blob in self.ieNet.inputs.items():
+
+                logging.info('Input Key     : {}'.format(key))
+                logging.info('     Layout   : {}'.format(blob.layout))
+                logging.info('      Shape   : {}'.format(blob.shape))
+                logging.info('  Precision   : {}'.format(blob.precision))
 
             logging.info('>> Loading model to {}'.format(device))
 
             # self.exec_net = self.ie.load_network(network = self.ieNet, device_name = device, num_requests = 2)
-            self.exec_net = self.ie.load_network(network = self.ieNet, device_name = device)
+            self.exec_net = self.ie.load_network(network = self.ieNet, device_name = device, num_requests = 4)
 
             logging.info('<< Model loaded to  {}'.format(device))
 
+            # # touch layers only after we load
+            # self.output_blob_key = next(iter(self.ieNet.outputs))
 
-            # touch layers only after we load
-            self.output_blob_key = next(iter(self.ieNet.outputs))
+            for key, blob in self.ieNet.outputs.items():
 
-            params = self.ieNet.layers[self.output_blob_key].params
+                layer = self.ieNet.layers[key]
 
-            if 'num_classes' in params:
-                self.num_class = int(params['num_classes'])
-                logging.info('  num_class   : {}'.format(self.num_class))
+                if layer.type == 'DetectionOutput':
+                    outputFormat = Output_Format.DetectionOutput
+                elif layer.type == 'RegionYolo':
+                    outputFormat = Output_Format.RegionYolo
+                else:
+                    return Model_Flag.Unsupported
 
-            if self.ieNet.layers[self.output_blob_key].type == "DetectionOutput":
-                #self.ieNet.outputs[self.output_blob_key].precision = precision
-                self.outputFormat = Output_Format.DetectionOutput
-                self.outputName = self.output_blob_key
+            if outputFormat == Output_Format.DetectionOutput:
+                if len(self.ieNet.inputs) == 1 and len(self.ieNet.outputs) == 1:
+                    # 1 input, 1 output
 
-            elif self.ieNet.layers[self.output_blob_key].type == "SoftMax":
-                self.outputFormat = Output_Format.Softmax
-                self.outputName = self.output_blob_key
+                    input_key  = next(iter(self.ieNet.inputs))
+                    output_key = next(iter(self.ieNet.outputs))
 
-            elif self.ieNet.layers[self.output_blob_key].type == "Convolution":
-                self.outputFormat = Output_Format.Mconv7_stage2_L1
-                self.outputName = self.output_blob_key
-            else:
-                return Model_Flag.Unsupported
+                    layer = self.ieNet.layers[output_key]
 
-            if self.outputFormat == Output_Format.DetectionOutput:
+                    if layer.type == 'DetectionOutput':
+                        outputFormat = Output_Format.DetectionOutput
+                    else:
+                        return Model_Flag.Unsupported
 
-                if self.num_class == 91 or 'coco' in self.name:
-                    logging.info("Loading Coco Label")
-                    self.classLabels = coco_category_map
-                elif self.num_class == 21:
-                    logging.info("Loading VOC Label")
-                    self.classLabels = voc_category_map
+                    if input_key == 'image_tensor':
+                        self.inputFormat = Input_Format.Tensorflow
+                    elif input_key == 'image':
+                        self.inputFormat = Input_Format.IntelIR
+                    elif input_key == 'data':
+                        self.inputFormat = Input_Format.Caffe
+                    else:
+                        self.inputFormat = Input_Format.Other
+
+                    params = self.ieNet.layers[output_key].params
+                    input_blob = self.ieNet.inputs[input_key]
+
+                    self.result_processor = Object_Detection_Processor(
+                                                model_name = self.name,
+                                                input_format = self.inputFormat,
+                                                input_key = input_key,
+                                                input_shape = input_blob.shape,
+                                                input_layout = input_blob.layout,
+                                                output_format = outputFormat,
+                                                output_key = output_key,
+                                                output_params = params)
+
+                elif len(self.ieNet.inputs) == 2 and len(self.ieNet.outputs) == 1:
+                    # 2 inputs and 1 output.  Faster RCNN
+
+                    output_key = next(iter(self.ieNet.outputs))
+
+                    layer = self.ieNet.layers[output_key]
+
+                    if layer.type != 'DetectionOutput':
+                        return Model_Flag.Unsupported
+
+                    info_key = ""
+                    data_key = ""
+
+                    for key, blob in self.ieNet.inputs.items():
+
+                        if key == 'image_info':
+                            info_key = key
+                        elif key == 'image_tensor':
+                            data_key = key
+
+                    if len(info_key) > 0 and len(data_key) > 0:
+
+                        self.inputFormat = Input_Format.Faster_RCNN
+                        input_blob = self.ieNet.inputs[data_key]
+                        params = self.ieNet.layers[output_key].params
+
+                        self.result_processor = Object_Detection_RCNN_Processor(
+                            model_name = self.name,
+                            input_format = self.inputFormat,
+                            info_key = info_key,
+                            data_key = data_key,
+                            data_shape = input_blob.shape,
+                            data_layout = input_blob.layout,
+                            output_format = Output_Format.DetectionOutput,
+                            output_key = output_key,
+                            output_params = params)
+                    else:
+                        return Model_Flag.Unsupported
+
+            elif outputFormat == Output_Format.RegionYolo:
+                input_key  = next(iter(self.ieNet.inputs))
+                input_blob = self.ieNet.inputs[input_key]
+
+                self.inputFormat = Input_Format.Yolo
+                self.result_processor = Object_Detection_Yolo_Processor(
+                                            model_name = self.name,
+                                            input_format = self.inputFormat,
+                                            input_key = input_key,
+                                            input_shape = input_blob.shape,
+                                            input_layout = input_blob.layout,
+                                            output_format = Output_Format.RegionYolo)
+
+                for key, blob in self.ieNet.outputs.items():
+                    self.result_processor.reshape_data[key] = self.ieNet.layers[self.ieNet.layers[key].parents[0]].shape
+                    self.result_processor.set_class_label(self.ieNet.layers[key].params)
+
+                for key, blob in self.result_processor.reshape_data.items():
+                    print('{} {}'.format(key, blob))
 
             return Model_Flag.Loaded
 
@@ -266,150 +285,49 @@ class IE_Engine:
             logging.error('!! {0}:{1}() : Exception {2}'.format(self.__class__.__name__, sys._getframe().f_code.co_name, ex))
             return Model_Flag.LoadError
 
-    def annotate_result_object_detection(self, frame, rect, confidence, label_id):
-        # if self._debug:
-        #     logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
-
-        color = (232, 35, 244)
-
-        try:
-            if self.num_class == 91 or self.num_class == 21:
-                color = self.colors[0]
-                annotation_text = '{0} {1:.1f}%'.format(self.classLabels[label_id], float(confidence*100))
-
-            elif self.num_class == 2:
-                color = self.colors[0]
-                annotation_text = '{0:.1f}%'.format(float(confidence*100))
-            else:
-                color = self.colors[label_id-1]
-                annotation_text = '{0:.1f}%'.format(float(confidence*100))
-
-        except IndexError as error:
-            logging.error('Index Error {} : {}'.format(label_id, error))
-
-        except Exception as ex:
-            logging.error('Exception finding label {} : {}'.format(label_id, error))
-
-        cv2.rectangle(frame, (rect[0], rect[1]), (rect[2], rect[3]), color, 2)
-
-        # pil_image = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-        # draw = ImageDraw.Draw(pil_image)
-        # draw.text((0,0), annotation_text, font=self.draw_info.font)
-
-        # frame = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
-        cv2.putText(img = frame, 
-                    text = annotation_text, 
-                    org = (rect[0] + 5, rect[1] + int(self.draw_info.textSize[1] * 1.5)),
-                    fontFace = self.draw_info.fontName,
-                    fontScale = self.draw_info.fontScale,
-                    color     = color,
-                    thickness = self.draw_info.thickness,
-                    lineType = self.draw_info.lineType)
-
-    def annotate_result_classification(self, frame, confidence, inference_id, color = (232, 35, 244)):
-        # if self._debug:
-        #     logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
-
-        if len(self.classLabels) > 0:
-            annotation_text = '{} {}%'.format(self.classLabels[inference_id], confidence)
-        else:
-            annotation_text = '{} {}%'.format(inference_id, confidence)
-
-        cv2.putText(img = frame, 
-                    text = annotation_text, 
-                    org = (5, 5),
-                    fontFace = cv2.FONT_HERSHEY_COMPLEX_SMALL,
-                    fontScale = 1.0,
-                    color     = color,
-                    thickness = 1,
-                    lineType = cv2.LINE_AA)
-
     def run_inference(self, frame, confidence):
         # if self._debug:
         #     logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
 
-        if self.inputFormat == Input_Format.Tensorflow or self.inputFormat == Input_Format.Caffe or self.inputFormat == Input_Format.IntelIR:
+        if self.inputFormat == Input_Format.Faster_RCNN:
+
+            inference_data = self.result_processor.process_for_inference(frame = frame)
+
+            if inference_data:
+                if self.asyncInference:
+                    self.exec_net.start_async(request_id=0, inputs={inference_data.data_key : inference_data.image_data, inference_data.info_key : inference_data.image_info})
+                    if self.exec_net.requests[0].wait(-1) == 0:
+                        self.result_processor.process_result(self.exec_net.requests[0].outputs, frame, confidence)
+                else:
+                    self.exec_net.infer(inputs={inference_data.data_key : inference_data.image_data, inference_data.info_key : inference_data.image_info})
+                    self.result_processor.process_result(self.exec_net.requests[0].outputs, frame, confidence)
+
+        elif self.inputFormat == Input_Format.Yolo:
+
+            frame_data, input_key = self.result_processor.process_for_inference(frame = frame)
+
+            if frame_data.size > 0:
+
+                if self.asyncInference:
+                    self.exec_net.start_async(request_id=0, inputs={input_key : frame_data})
+                    if self.exec_net.requests[0].wait(-1) == 0:
+                        self.result_processor.process_result(self.exec_net.requests[0].outputs, frame_data, frame, confidence)
+                else:
+                    self.exec_net.infer(inputs={input_key : frame_data})
+                    self.result_processor.process_result(self.ieNet.layers, self.exec_net.requests[0].outputs, frame_data, frame, confidence)
+
+        else:
+        # elif self.inputFormat == Input_Format.Tensorflow or self.inputFormat == Input_Format.Caffe or self.inputFormat == Input_Format.IntelIR:
             # SSD/MobileNet Tensorflow models
-            input_blob = self.ieNet.inputs[self.input_blob_key]
 
-            if input_blob.layout == 'NCHW':
-                frame_data = cv2.resize(frame, (input_blob.shape[3], input_blob.shape[2]))
-                frame_data = frame_data.transpose((2,0,1))
-                frame_data = frame_data.reshape(self.input_shape)
-                self.exec_net.infer(inputs={self.input_blob_key : frame_data})
+            frame_data, input_key = self.result_processor.process_for_inference(frame = frame)
 
-            if self.outputFormat & Output_Format.DetectionOutput:
-                self.process_DetectionOutput(frame, confidence)
+            if frame_data.size > 0:
 
-        elif self.inputFormat == Input_Format.Faster_RCNN:
-            image_tensor = self.ieNet.inputs['image_tensor']
-            image_info   = np.asarray([[image_tensor.shape[3], image_tensor.shape[2], 1]], dtype=np.float32)
-            if image_tensor.layout == 'NCHW':
-                frame_data = cv2.resize(frame, (image_tensor.shape[3], image_tensor.shape[2]))
-                frame_data = frame_data.transpose((2,0,1))
-                frame_data = frame_data.reshape(self.input_shape)
-                self.exec_net.infer(inputs={"image_tensor" : frame_data, "image_info" : image_info})
-
-            if self.outputFormat & Output_Format.DetectionOutput:
-                self.process_DetectionOutput(frame, confidence)
-
-        # elif self.outputFormat & Output_Format.Softmax:
-        #     self.process_SoftmaxOutput(frame, confidence)
-
-        # elif self.outputFormat & Output_Format.Mconv7_stage2_L1:
-        #     self.process_HumanPose(frame, confidence)
-
-    def process_DetectionOutput(self, frame, confidence):
-        #
-        # Process DetectionOutput
-        # [image_id, label, conf, x_min, y_min, x_max, y_max]
-        # - `image_id` - ID of the image in the batch
-        # - `label` - predicted class ID
-        # - `conf` - confidence for the predicted class
-        # - (`x_min`, `y_min`) - coordinates of the top left bounding box corner (coordinates stored in normalized format, in range [0, 1])
-        # - (`x_max`, `y_max`) - coordinates of the bottom right bounding box corner  (coordinates stored in normalized format, in range [0, 1])
-        ieResults = self.exec_net.requests[0].outputs[self.outputName]
-
-        imageH, imageW = frame.shape[:-1]
-
-        rect = {}
-        for index, ieResult in enumerate(ieResults[0][0]):
-            # print('  obj {} id {} label {} conf {}'.format(index, int(ieResult[0]), int(ieResult[1]), ieResult[2]))
-
-            if ieResult[0] == -1:
-                break
-            
-            if ieResult[2] < confidence:
-                continue
-
-            # if self._debug:
-            # print('  obj {} id {} label {} conf {}'.format(index, int(ieResult[0]), int(ieResult[1]), ieResult[2]))
-
-            left   = np.int(imageW * ieResult[3])
-            top    = np.int(imageH * ieResult[4])
-            right  = np.int(imageW * ieResult[5])
-            bottom = np.int(imageH * ieResult[6])
-            rect = [left, top, right, bottom]
-            self.annotate_result_object_detection(frame, rect, ieResult[2], int(ieResult[1]))
-
-    def process_SoftmaxOutput(self, frame):
-
-        prob = self.exec_net.requests[0].outputs[self.outputName][0]
-
-        ids = np.argsort(prob)[::-1][:3]
-
-        for id in ids:
-            print('  id {} conf {}'.format(id, prob[id]))
-            self.annotate_result_classification(frame, prob[id], id)
-
-    def process_HumanPose(self, frame):
-
-        input_shape = frame.shape
-        poses = self.exec_net.requests[0].outputs[self.outputName]
-        print(poses.shape)
-        [b,c,h,w]=poses.shape
-
-        out_heatmap = np.zeros([c, input_shape[0], input_shape[1]])
-
-        for h in range(len(poses[0])):
-            out_heatmap[h] = cv2.resize(poses[0][h], input_shape[0:2][::-1])
+                if self.asyncInference:
+                    self.exec_net.start_async(request_id=0, inputs={input_key : frame_data})
+                    if self.exec_net.requests[0].wait(-1) == 0:
+                        self.result_processor.process_result(self.exec_net.requests[0].outputs, frame, confidence)
+                else:
+                    self.exec_net.infer(inputs={input_key : frame_data})
+                    self.result_processor.process_result(self.exec_net.requests[0].outputs, frame, confidence)
