@@ -144,7 +144,8 @@ Only FP16 and FP32
 
 ## To do list
 
-- Add Yolo support
+- Add Yolo support  
+    Done : 4.23.2020 (ver 1.1)
 - Add Async Inference
 - Containerization
 - Add IoT Hub device app/IoT Edge support
