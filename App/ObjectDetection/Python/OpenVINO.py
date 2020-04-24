@@ -176,24 +176,54 @@ class OpenVINO_Core(object):
                         model_data.dump_model_data()
                         self.modelList.append(model_data)
         else:
+            # process Json file for models
+
             models_json_file = Path(Path('./').resolve() / 'models.json')
+
             if models_json_file.exists():
+
                 with models_json_file.open() as json_file:
+
                     json_data = json.load(json_file)
 
                     for model in json_data['Models']:
-                        if model['outputs']['count'] > 1:
+                        isSupported = False
+
+                        # Yolo v3 has 3 outputs
+                        if model['outputs']['count'] > 3:
                             continue
 
-                        # print('{}'.format(model['name']))
-
-                        if not (model['outputs']['blobs'][0].get('type') is None):
-
-                            if model['outputs']['blobs'][0]['type'] != "DetectionOutput":
+                        for output_blob in model['outputs']['blobs']:
+                            if output_blob.get('output_type') is None:
                                 continue
 
-                            # print('{}'.format(model['outputs']['blobs'][0]['layout']))
+                            # We understand Detection Output (Object Detection)
+                            if output_blob['output_type'] == 'DetectionOutput':
 
+                                if model['inputs']['count'] == 1:
+                                    # most of models are only 1 input
+                                    isSupported = True
+
+                                elif model['inputs']['count'] == 2:
+                                    # faster RCNN has 2 inputs
+
+                                    data_found = False
+                                    info_found = False
+
+                                    # look for image_info and image_tensor inputs
+                                    for input_blob in model['inputs']['blobs']:
+                                        if input_blob['input_name'] == 'image_info':
+                                            info_found = True
+                                        elif input_blob['input_name'] == 'image_tensor':
+                                            data_found = True
+
+                                    if data_found == True and info_found == True:
+                                        isSupported = True
+
+                            elif output_blob['output_type'] == 'RegionYolo':
+                                isSupported = True
+
+                        if isSupported == True:
                             model_data = OpenVINO_Model_Data(modelName = model['name'], 
                                                             folderName = model['path'],
                                                             framework = model['framework'],
