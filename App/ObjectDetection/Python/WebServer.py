@@ -179,6 +179,12 @@ class ImageStreamHandler(websocket.WebSocketHandler):
                 #
                 self.write_message(self.videoProcessor.get_inference_state())
 
+            elif 'save_image' in msg:
+                #
+                # save image
+                #
+                self.videoProcessor.save_image()
+
             else:
                 json_data = json.loads(msg)
 

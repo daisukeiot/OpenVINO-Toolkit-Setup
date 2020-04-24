@@ -207,6 +207,7 @@
             <button class="icon-button" id="btnVideoPause" style="display: none;"><i class="fa fa-pause"></i></button>
             <button class="icon-button" id="btnVideoSync" style="display: none;"><i class="fas fa-sync"></i></button>
             <button class="icon-button" id="btnVideoPerf" style="display: none;"><i class="fas fa-bolt"></i></button>
+            <button class="icon-button" id="btnVideoSave" ><i class="fas fa-save"></i></button>
           </td>
         </tr>
         <tr>
@@ -507,15 +508,15 @@
                 // {"get_target_device":"MYRIAD"}
                 console.log("get_target_device : %s", json.get_target_device);
                 targetDeviceList.value = json.get_target_device
-                if (targetDeviceList.value == 'CPU')
-                {
-                  precisionList.value = 'FP32'
-                }
+                // if (targetDeviceList.value == 'CPU')
+                // {
+                //   precisionList.value = 'FP32'
+                // }
                 // else if (targetDeviceList.value == 'GPU')
                 // {
                 //   precisionList.value = 'FP16'
                 // }
-                else if (targetDeviceList.value == 'MYRIAD')
+                if (targetDeviceList.value == 'MYRIAD')
                 {
                   precisionList.value = 'FP16'
                 }
@@ -642,6 +643,11 @@
       btnInferencePause.onclick= function(evt) {
         console.log("btnInferencePause");
         ws.send('{\"set_inference_state\":0}')
+      }
+
+      btnVideoSave.onclick= function(evt) {
+        console.log("btnInferencePause");
+        ws.send("save_image")
       }
 
       targetDeviceList.onchange = function() {
