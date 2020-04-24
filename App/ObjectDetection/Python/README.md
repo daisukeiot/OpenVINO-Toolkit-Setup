@@ -24,7 +24,7 @@ alias python='python3.7' && \
 echo alias python='python3.7'  >> ~/.bashrc && \
 sudo apt-get remove --purge python3-apt && \
 sudo apt-get install --reinstall python3-apt && \
-pip3 install 'numpy==1.16' --force-reinstall \
+pip3 install 'numpy==1.16' --force-reinstall
 ```
 
 ## OpenVINO Setup
