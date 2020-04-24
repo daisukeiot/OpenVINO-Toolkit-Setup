@@ -369,7 +369,7 @@ class Video_Data():
             h = 480
         elif resolution == "xga":
             w = 1024
-            h = 726
+            h = 768
         elif resolution == "hd":
             w = 1280
             h = 720
