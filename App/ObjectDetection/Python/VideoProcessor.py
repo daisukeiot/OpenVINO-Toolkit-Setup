@@ -52,6 +52,7 @@ class VideoProcessor(object):
         # Video source
         self.videoData = Video_Data(self, videoPath)
         self.displayFrame = np.array([])
+        self.frame_org = np.array([])
 
         # for Frame Rate measurement
         self.fps = FPS()
@@ -340,6 +341,23 @@ class VideoProcessor(object):
             #1 Get Model Data
             model_data = self.inference_engine.get_ai_model_data(msg)
 
+            current_hw        = json.loads(self.inference_engine.get_target_device())
+            current_precision = json.loads(self.inference_engine.get_precision())
+
+            if model_data.isFlagSet(Model_Flag.Loaded):
+                json_data = json.loads(msg)
+                device = json_data["set_target_device"]
+                precision = json_data["set_precision"]
+
+                if current_hw['get_target_device'] == device and current_precision['get_precision'] == precision:
+                    logging.info(">> Model {} is loaded to {} {} {} {}".format(model_data.modelName, current_hw))
+                    self.runInference = 1
+                    self.send_message('{{\"set_ai_model\":\"Running {}\",\"isComplete\":1}}'.format(model_data.modelName))
+            else:
+                if self.current_model_data:
+                    self.current_model_data.clearFlag(Model_Flag.Loaded)
+                    self.current_model_data = None
+
             if not model_data is None:
                 self.set_device_params(msg)
                 # self.set_precision(msg)
@@ -421,6 +439,8 @@ class VideoProcessor(object):
 
             target_device = json.loads(self.inference_engine.get_target_device())
             
+            print(model_data.modelName)
+
             self.send_message('{{\"set_ai_model\":\"Successfully loaded {}\", \"isComplete\":1}}'.format(model_data.modelName))
             self.send_message('{{\"get_inference_engine_info\":\"{} running on {}\"}}'.format(self.inference_engine.signature, target_device['get_target_device']))
             self.current_model_data = model_data
@@ -601,6 +621,13 @@ class VideoProcessor(object):
             traceback.print_exception(exc_type, exc_obj, exc_tb)
             logging.error('!! {0}:{1}() : Exception {2}'.format(self.__class__.__name__, sys._getframe().f_code.co_name, ex))
             return 1
+
+    #
+    # Saves frame data to a file
+    #
+    def save_image(self):
+        cv2.imwrite("./frame.png", self.frame_org)
+
     #
     # Process Video Frame
     #
@@ -643,7 +670,7 @@ class VideoProcessor(object):
                     time.sleep(1/30)
                     continue
                 else:
-                    pass
+                    self.frame_org = np.copy(frame)
 
                 if self.runInference == 1:
                     # Run Inference
