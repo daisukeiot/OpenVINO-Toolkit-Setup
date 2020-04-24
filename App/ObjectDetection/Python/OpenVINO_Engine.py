@@ -47,7 +47,7 @@ class OpenVINO_Util(object):
 
         return value
 
-class OpenVINO_Core(object):
+class OpenVINO_Engine(object):
 
     def __init__(self, videoProcessor):
         logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
@@ -58,7 +58,7 @@ class OpenVINO_Core(object):
         self.signature = 'OpenVINO'
         self.engineState = Engine_State.Unknown
 
-        self._ie_Engine = None
+        self._inference_Core = None
 
         self._target_device = 'MYRIAD'
         self._precision = 'FP32'
@@ -235,10 +235,12 @@ class OpenVINO_Core(object):
                             self.modelList.append(model_data)
 
         if self.openvino_dir.exists() and self.model_dir.exists() and self.ir_dir.exists() and len(self.modelList) > 0:
-            logging.info('OpenVINO Engine initialized')
-            self._ie_Engine = OpenVINO_Core()
 
-            self.signature = self._ie_Engine.get_signature()
+            logging.info('OpenVINO Engine initialized')
+
+            self._inference_Core = OpenVINO_Core()
+
+            self.signature = self._inference_Core.get_signature()
 
             self.engineState |= Engine_State.Initialized
         else:
@@ -257,7 +259,7 @@ class OpenVINO_Core(object):
         return ((self.engineState & flag) == flag)
 
     def get_devices(self):
-        return self._ie_Engine.devices
+        return self._inference_Core.devices
 
     def get_model_list(self):
         return self.modelList
@@ -281,7 +283,7 @@ class OpenVINO_Core(object):
 
         target_device = json_data["set_target_device"]
 
-        if target_device in self._ie_Engine.devices:
+        if target_device in self._inference_Core.devices:
             self._target_device = target_device
             return self.get_target_device()
         else:
@@ -653,7 +655,7 @@ class OpenVINO_Core(object):
                 logging.info('   XML : {}'.format(str(xml_file)))
                 logging.info('   BIN : {}'.format(str(bin_file)))
 
-                flag = self._ie_Engine.load_model(xml_file = str(xml_file), bin_file = str(bin_file), device = self._target_device, precision = self._precision)
+                flag = self._inference_Core.load_model(xml_file = str(xml_file), bin_file = str(bin_file), device = self._target_device, precision = self._precision)
 
                 model_data.setFlag(flag)
 
@@ -696,8 +698,8 @@ class OpenVINO_Core(object):
         # if self._debug:
         #     logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
 
-        if self._ie_Engine is None:
+        if self._inference_Core is None:
             logging.warn("IE Network Empty")
         else:
-            self._ie_Engine.run_inference(frame, self._confidence)
+            self._inference_Core.run_inference(frame, self._confidence)
 

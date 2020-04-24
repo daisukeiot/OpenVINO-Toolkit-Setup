@@ -8,7 +8,7 @@ import numpy as np
 from FPS import FPS
 from enum import IntEnum
 import json
-from OpenVINO import OpenVINO_Util, OpenVINO_Core
+from OpenVINO_Engine import OpenVINO_Util, OpenVINO_Engine
 from OpenVINO_Config import Engine_State, Model_Flag
 from concurrent.futures import ThreadPoolExecutor, CancelledError
 from WebServer import ImageStreamHandler
@@ -92,7 +92,7 @@ class VideoProcessor(object):
 
         self.set_video_path('{{\"set_video_path\":\"{}\"}}'.format(self.videoData.videoPath))
 
-        self.inference_engine = OpenVINO_Core(self)
+        self.inference_engine = OpenVINO_Engine(self)
 
         # with OpenVINO_Util() as openVino:
         #     devices = openVino.get_supported_devices()
