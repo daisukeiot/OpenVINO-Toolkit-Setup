@@ -6,7 +6,7 @@ FROM ubuntu:${OS_VERSION} as base
 
 ARG OS_VERSION=18.04
 ARG TF_VERSION=r1.14
-ARG PYTHON_VERSION=3.6.9
+ARG PYTHON_VERSION=3.7
 
 #
 # https://github.com/tensorflow/tensorflow/blob/r1.14/configure.py#L1386
@@ -14,7 +14,7 @@ ARG PYTHON_VERSION=3.6.9
 ARG BAZEL_VERSION=0.26.1
 
 ENV LANG C.UTF-8
-
+ENV PYTHON=python${PYTHON_VERSION}
 RUN echo "Ubuntu Version ${OS_VERSION}"
 
 #
@@ -44,16 +44,27 @@ RUN apt-get update && \
         swig \
         openjdk-8-jdk \
         openjdk-8-jre-headless \
-        python3 \
-        python3-dev \
-        python3-pip  && \
+	python3-pip && \
+    apt-get install -y --no-install-recommends \
+	${PYTHON} \
+	${PYTHON}-dev && \
+    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
+    ${PYTHON} get-pip.py && \
+    rm get-pip.py && \
+    rm /usr/bin/python3 && \
+    ln -s ${PYTHON} /usr/bin/python3 && \
+    alias python='${PYTHON}' && \
+    echo alias python='${PYTHON}'  >> ~/.bashrc && \
+    apt-get remove -y --purge python3-apt && \
+    apt-get install -y --reinstall python3-apt && \
+    pip3 install 'numpy==1.16' --force-reinstall && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 #
 # Some TF tools expect a "python" binary
 #
-RUN ln -s /usr/bin/python3 /usr/local/bin/python
+# RUN ln -s /usr/bin/${PYTHON} /usr/local/bin/python
 
 RUN pip3 --no-cache-dir install --upgrade \
     pip \
@@ -92,7 +103,7 @@ RUN mkdir /bazel && \
 #
 ENV CI_BUILD_PYTHON=python \
     PYTHON_BIN_PATH=/usr/bin/python3 \
-    PYTHON_LIB_PATH=/usr/local/lib/python3.6/dist-packages \
+    PYTHON_LIB_PATH=/usr/local/lib/${PYTHON}/dist-packages \
     PYTHONPATH=${TF_ROOT}/lib \
     PYTHON_ARG=${TF_ROOT}/lib
 
@@ -152,7 +163,7 @@ RUN  bazel build -c opt ${CC_OPT_FLAGS} \
                  //tensorflow/tools/pip_package:build_pip_package
 
 ARG PACKAGE_NAME=tensorflow
-ARG SUBFOLDER_NAME="${TF_VERSION}-py${PYTHON_VERSION}"
+ARG SUBFOLDER_NAME="${TF_VERSION}"
 
 # RUN mkdir -p "/wheels/${SUBFOLDER_NAME}" && \
 #     bazel-bin/tensorflow/tools/pip_package/build_pip_package "/wheels/${SUBFOLDER_NAME}" --project_name "${PACKAGE_NAME}" && \

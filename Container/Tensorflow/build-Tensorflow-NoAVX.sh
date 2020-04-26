@@ -5,7 +5,8 @@ if [ $# -ne 3 ]
     echo "  Ubuntu Version : 18.04 or 16.04"
     echo "  Registry       : Your registry"
     echo "  Tensorflow     : Tensorflow Version"
-    echo "  Example ./build-Tensorflow.sh 18.04 myregistry r1.14"
+    echo "  Python"        : Python version"
+    echo "  Example ./build-Tensorflow.sh 18.04 myregistry r1.14 3.7"
     echo "======================================="
     exit
 fi
@@ -14,8 +15,9 @@ SCRIPT_DIR=$(cd $(dirname $0); pwd)
 OS_VERSION=$1
 MY_REGISTRY=$2
 TF_VERSION=$3
+PYTHON_VESRION=$4
 
-TAG=${MY_REGISTRY}/openvino-container:tf_${TF_VERSION}
+TAG=${MY_REGISTRY}/openvino-container:tf_${TF_VERSION}_cp${PYTHON_VESRION}
 
 # if docker inspect --type=image $TAG > /dev/null 2>&1; then
 #     echo "Deleting image"
@@ -37,6 +39,7 @@ docker build --squash --rm \
   -f ${SCRIPT_DIR}/NoAVX/Dockerfile \
   --build-arg OS_VERSION=${OS_VERSION} \
   --build-arg TF_VERSION=${TF_VERSION} \
+  --build-arg PYTHON_VESRION=${PYTHON_VESRION} \
   -t ${TAG} \
   ${SCRIPT_DIR}
 
@@ -53,5 +56,7 @@ echo ''
 # docker push ${TAG}
 
 echo ''
-echo '###############################################################################'
-# docker run -it --rm ${TAG} /bin/bash
+echo '###############################################################################`
+docker run  --name tensorflow --rm ${TAG} /bin/true
+docker cp opencv:/wheels/${TF_VERSION}/*.whl ./
+docker rm opencv
