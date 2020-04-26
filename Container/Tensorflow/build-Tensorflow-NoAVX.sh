@@ -5,7 +5,7 @@ if [ $# -ne 3 ]
     echo "  Ubuntu Version : 18.04 or 16.04"
     echo "  Registry       : Your registry"
     echo "  Tensorflow     : Tensorflow Version"
-    echo "  Python"        : Python version"
+    echo "  Python         : Python version"
     echo "  Example ./build-Tensorflow.sh 18.04 myregistry r1.14 3.7"
     echo "======================================="
     exit
@@ -30,6 +30,7 @@ echo '   / __ )__  __(_) /___/ /  / ___// /_____ ______/ /_'
 echo '  / __  / / / / / / __  /   \__ \/ __/ __ `/ ___/ __/'
 echo ' / /_/ / /_/ / / / /_/ /   ___/ / /_/ /_/ / /  / /_  '
 echo '/_____/\__,_/_/_/\__,_/   /____/\__/\__,_/_/   \__/  '
+echo ''
 echo ''
 
 #
@@ -56,7 +57,7 @@ echo ''
 # docker push ${TAG}
 
 echo ''
-echo '###############################################################################`
+echo ''
 docker run  --name tensorflow --rm ${TAG} /bin/true
 docker cp opencv:/wheels/${TF_VERSION}/*.whl ./
 docker rm opencv
