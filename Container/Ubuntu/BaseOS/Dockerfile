@@ -29,6 +29,8 @@ RUN apt-get update && \
                 lsb-release \
                 libgtk-3-0 \
                 libtool \
+                python3.7 \
+                python3.7-dev \
                 python3-pip \
                 udev \
                 unzip \
@@ -36,6 +38,14 @@ RUN apt-get update && \
                 python3-setuptools \
                 libpython3-dev \
                 python3-wheel && \
+    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
+    python3.7 get-pip.py && \
+    rm /usr/bin/python3 && \
+    ln -s python3.7 /usr/bin/python3 && \
+    alias python='python3.7' && \
+    echo alias python='python3.7'  >> ~/.bashrc && \
+    apt-get remove -y --purge python3-apt && \
+    apt-get install -y --reinstall python3-apt && \
     rm -rf /var/lib/apt/lists/*
 
 #
@@ -66,5 +76,7 @@ RUN if [ "${OS_VERSION}" = "18.04" ] ; then \
 ENV USER=openvino
 USER openvino
 WORKDIR /home/openvino
+
+RUN echo alias python='python3.7'  >> ~/.bashrc
 
 ENTRYPOINT []
