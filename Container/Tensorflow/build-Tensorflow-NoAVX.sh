@@ -1,4 +1,4 @@
-if [ $# -ne 3 ]
+if [ $# -ne 4 ]
   then
     echo "======================================="
     echo "Please specify Ubuntu Version and reistry"
