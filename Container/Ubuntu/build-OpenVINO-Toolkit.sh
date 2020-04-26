@@ -15,7 +15,7 @@ SCRIPT_DIR=$(cd $(dirname $0); pwd)
 #
 # Use OpenVINO Toolkit ver 2019.3.376
 #
-OPENVINO_VER=2019.3.376
+OPENVINO_VER=2020.2.120
 OS_VERSION=$1
 MY_REGISTRY=$2
 TAG=${MY_REGISTRY}/openvino-container:ubuntu${OS_VERSION}_openvino${OPENVINO_VER}

@@ -14,11 +14,11 @@ FROM ${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION}
 #
 # Local variables
 #
-ARG OPENVINO_VER=2019.3.376
+ARG OPENVINO_VER=2020.2.120
 ARG OPENVINO=l_openvino_toolkit_p_${OPENVINO_VER}
 ARG OPENVINO_INSTALL=/opt/intel/openvino_${OPENVINO_VER}
 ARG INSTALL_DIR=/opt/intel/openvino
-ARG OPENVINO_DOWNLOAD=http://registrationcenter-download.intel.com/akdlm/irc_nas/16057/l_openvino_toolkit_p_2019.3.376.tgz
+ARG OPENVINO_DOWNLOAD=http://registrationcenter-download.intel.com/akdlm/irc_nas/16612/l_openvino_toolkit_p_2020.2.120.tgz
 
 #
 # Run as root to install OpenVINO Toolkit
