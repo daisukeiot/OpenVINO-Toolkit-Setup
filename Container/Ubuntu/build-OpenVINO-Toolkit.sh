@@ -62,6 +62,6 @@ echo ''
 echo 
 echo "Container built with OpenVINO Toolkit version : ${OPENVINO_VER}"
 echo ''
-# echo "Pushing Image : ${TAG}"
-# echo ''
-# docker push ${TAG}
+echo "Pushing Image : ${TAG}"
+echo ''
+docker push ${TAG}

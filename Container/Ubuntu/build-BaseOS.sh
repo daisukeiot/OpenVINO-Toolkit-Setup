@@ -53,3 +53,4 @@ echo ''
 echo ''
 echo '###############################################################################'
 docker run -it --rm ${TAG} /bin/bash -c "python3 --version;lsb_release -a"
+docker push ${TAG}
