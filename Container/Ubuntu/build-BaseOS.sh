@@ -12,7 +12,7 @@ fi
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
 OS_VERSION=$1
 MY_REGISTRY=$2
-TAG=${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION}
+TAG=${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION}_cp3.7
 
 if docker inspect --type=image $TAG > /dev/null 2>&1; then
     echo "Deleting image"
