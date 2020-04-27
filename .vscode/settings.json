@@ -6,6 +6,7 @@
         "model",
         "nchw",
         "postprocs",
+        "tooltiptext",
         "wxga"
     ]
 }
