@@ -4,7 +4,7 @@ import traceback
 import numpy as np
 import cv2
 from math import exp as exp
-from label_map import coco_category_map, voc_category_map
+from label_map import coco_80_category_map, coco_90_category_map, voc_category_map
 from OpenVINO_Config import Output_Format, Input_Format, color_list, CV2_Draw_Info
 
 class YoloParams:
@@ -76,9 +76,15 @@ class Object_Detection_Yolo_Processor():
         if 'classes' in output_params:
             self.num_class = max(int(output_params['classes']),self.num_class)
 
-        if (self.num_class == 91 or self.num_class == 80 or self.num_class == 81) or 'coco' in self.model_name:
-            logging.info("Loading Coco Label")
-            self.classLabels = coco_category_map
+        if self.num_class == 91:
+            logging.info("Loading Coco 90 Label")
+            self.classLabels = coco_90_category_map
+        elif self.num_class == 80 or self.num_class == 81:
+            logging.info("Loading Coco 80 Label")
+            self.classLabels = coco_80_category_map
+        elif 'coco' in self.model_name:
+            logging.info("Loading Coco 90 Label")
+            self.classLabels = coco_90_category_map
         elif self.num_class == 21 or self.num_class == 20:
             logging.info("Loading VOC Label")
             self.classLabels = voc_category_map
@@ -230,13 +236,13 @@ class Object_Detection_Yolo_Processor():
                 else:
                     color = self.colors[0]
                 annotation_text = '{0:.1f}%'.format(float(confidence*100))
-            else:
-                if len(self.classLabels) >= self.num_class:
+
+            elif len(self.classLabels) >= self.num_class:
                     color = self.colors[0]
                     annotation_text = '{0} {1:.1f}%'.format(self.classLabels[label_id], float(confidence*100))
-                else:
-                    color = self.colors[0]
-                    annotation_text = '{0:.1f}%'.format(float(confidence*100))
+            else:
+                color = self.colors[0]
+                annotation_text = '{0:.1f}%'.format(float(confidence*100))
 
         except IndexError as error:
             logging.error('Index Error {} : {}'.format(label_id, error))

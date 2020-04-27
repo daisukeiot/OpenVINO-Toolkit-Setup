@@ -501,7 +501,7 @@ class OpenVINO_Engine(object):
 
             if not self.isFlagSet(Engine_State.Has_OpenVINO_Tool):
                 model_data.errorMsg = 'OpenVINO Toolkit not installed'
-                logging.warn('>> {0}:{1}() : {2}'.format(self.__class__.__name__, sys._getframe().f_code.co_name, model_data.errorMsg))
+                logging.warning('>> {0}:{1}() : {2}'.format(self.__class__.__name__, sys._getframe().f_code.co_name, model_data.errorMsg))
                 return model_data
 
             # p_downloader =  (Path(self.openvino_path / 'deployment_tools' / 'tools' / 'model_downloader' / 'downloader.py').resolve())
@@ -509,7 +509,7 @@ class OpenVINO_Engine(object):
 
             if not p_downloader.exists():
                 model_data.errorMsg = 'Model Downloader not installed'
-                logging.warn('>> {0}:{1}() : {2}'.format(self.__class__.__name__, sys._getframe().f_code.co_name, model_data.errorMsg))
+                logging.warning('>> {0}:{1}() : {2}'.format(self.__class__.__name__, sys._getframe().f_code.co_name, model_data.errorMsg))
                 return model_data
 
             # setup download logfile
@@ -591,11 +591,11 @@ class OpenVINO_Engine(object):
         model_data.errorMsg = ""
 
         if not model_data.isFlagSet(Model_Flag.Downloaded):
-            logging.warn('>> {0}:{1}() Model {2} not downloaded'.format(self.__class__.__name__, sys._getframe().f_code.co_name, model_data.modelName))
+            logging.warning('>> {0}:{1}() Model {2} not downloaded'.format(self.__class__.__name__, sys._getframe().f_code.co_name, model_data.modelName))
             return model_data
 
         if model_data.framework == 'dldt':
-            logging.warn('>> {0}:{1}() DLDT Model {2} does not need conversion'.format(self.__class__.__name__, sys._getframe().f_code.co_name, model_data.modelName))
+            logging.warning('>> {0}:{1}() DLDT Model {2} does not need conversion'.format(self.__class__.__name__, sys._getframe().f_code.co_name, model_data.modelName))
             return model_data
 
         # check model/ir folder
@@ -643,7 +643,7 @@ class OpenVINO_Engine(object):
         model_data = self.search_model(model_data)
 
         if model_data.ir_dir is None:
-            logging.warn("IR Folder empty.")
+            logging.warning("IR Folder empty.")
             model_data.clearFlag(Model_Flag.Downloaded)
             return model_data
         else:
@@ -707,7 +707,7 @@ class OpenVINO_Engine(object):
         #     logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
 
         if self._inference_Core is None:
-            logging.warn("IE Network Empty")
+            logging.warning("IE Network Empty")
         else:
             self._inference_Core.run_inference(frame, self._confidence)
 

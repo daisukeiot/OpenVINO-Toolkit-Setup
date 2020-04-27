@@ -349,7 +349,7 @@ class VideoProcessor(object):
                 precision = json_data["set_precision"]
 
                 if current_hw['get_target_device'] == device and current_precision['get_precision'] == precision:
-                    logging.info(">> Model {} is loaded to {} {} {} {}".format(model_data.modelName, current_hw))
+                    logging.info(">> Model {} is loaded to {}".format(model_data.modelName, current_hw))
                     self.runInference = 1
                     self.send_message('{{\"set_ai_model\":\"Running {}\",\"isComplete\":1}}'.format(model_data.modelName))
             else:

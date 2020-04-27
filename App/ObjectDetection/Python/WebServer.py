@@ -248,7 +248,7 @@ class ImageStreamHandler(websocket.WebSocketHandler):
                 #     #
                 #     self.write_message(self.videoProcessor.set_precision(msg))
                 else:
-                    logging.warn('Unknown Message {}'.format(msg))
+                    logging.warning('Unknown Message {}'.format(msg))
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -264,7 +264,7 @@ class ImageStreamHandler(websocket.WebSocketHandler):
                 encoded = base64.b64encode(frame)
                 self.write_message('{{\"Image\":\"{0}\", \"FPS\":\"{1:5.1f}\"}}'.format(encoded.decode(), fps), binary=False)
             else:
-                logging.warn('<< {0}:{1}() : Empty Frame'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
+                logging.warning('<< {0}:{1}() : Empty Frame'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             traceback.print_exception(exc_type, exc_obj, exc_tb)
@@ -301,5 +301,5 @@ class ImageStreamHandler(websocket.WebSocketHandler):
                 else:
                     ImageStreamHandler.clients.remove(client)
         else:
-            logging.warn('<< {0}() : Empty Frame'.format(sys._getframe().f_code.co_name))
+            logging.warning('<< {0}() : Empty Frame'.format(sys._getframe().f_code.co_name))
 

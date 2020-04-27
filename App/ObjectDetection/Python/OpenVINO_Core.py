@@ -129,7 +129,7 @@ class OpenVINO_Core:
             # data         : Caffe
 
             if len(self.ieNet.inputs) > 2:
-                logging.warn('!! Too many inputs.  Not supported')
+                logging.warning('!! Too many inputs.  Not supported')
                 return  Model_Flag.LoadError
 
             # don't touch layers.  Somehow touching layer will cause load failure with Myriad
@@ -287,6 +287,9 @@ class OpenVINO_Core:
     def run_inference(self, frame, confidence):
         # if self._debug:
         #     logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
+
+        if self.result_processor == None:
+            return
 
         if self.inputFormat == Input_Format.Faster_RCNN:
 
