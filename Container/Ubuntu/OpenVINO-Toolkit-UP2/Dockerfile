@@ -5,15 +5,16 @@
 # 
 ARG OS_VERSION=18.04
 ARG MY_REGISTRY=daisukeiot
-ARG TF_VERSION
-ARG TAG_TF
+ARG TF_VERSION=r1.15
+ARG TAG_TF=
+ARG PYTHON_VERSION=3.7
 
 FROM ${TAG_TF} as TensorFlow
-WORKDIR /wheels/r1.14-py3.6.9
+WORKDIR /wheels/${TF_VERSION}
 #
 # Use Base image built in the previous step
 #
-FROM ${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION}
+FROM ${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION}_cp${PYTHON_VERSION}
 
 #
 # Local variables

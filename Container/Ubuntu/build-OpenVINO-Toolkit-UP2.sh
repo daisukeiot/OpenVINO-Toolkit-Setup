@@ -21,7 +21,7 @@ OS_VERSION=$1
 MY_REGISTRY=$2
 TF_VERSION=$3
 TAG_TF=${MY_REGISTRY}/openvino-container:tf_${TF_VERSION}
-TAG=${MY_REGISTRY}/openvino-container:ubuntu${OS_VERSION}_openvino${OPENVINO_VER}_${TF_VERSION}
+TAG=${MY_REGISTRY}/openvino-container:ubuntu${OS_VERSION}_openvino${OPENVINO_VER}_${TF_VERSION}_cp37
 
 if docker inspect --type=image $TAG > /dev/null 2>&1; then
     echo "Deleting image"

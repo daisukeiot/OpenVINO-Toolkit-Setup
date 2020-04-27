@@ -5,11 +5,11 @@
 # 
 ARG OS_VERSION=18.04
 ARG MY_REGISTRY=daisukeiot
-
+ARG PYTHON_VERSION=3.7
 #
 # Use Base image built in the previous step
 #
-FROM ${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION}
+FROM ${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION}_cp${PYTHON_VERSION}
 
 #
 # Local variables
