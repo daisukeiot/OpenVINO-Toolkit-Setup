@@ -26,12 +26,11 @@ class OpenVINO_Core:
 
         devices = []
         for device in self.ie.available_devices:
-            if device == 'CPU':
-                devices.append('CPU')
-            elif device == 'GPU':
-                devices.append('CPU')
-            elif 'MYRIAD' in device and not 'MYRIAD' in devices:
+            if 'MYRIAD' in device and not 'MYRIAD' in devices:
                 devices.append('MYRIAD')
+            else:
+                if not device in devices:
+                    devices.append(device)
 
         self.devices = devices
         self.outputFormat = Output_Format.Unknown

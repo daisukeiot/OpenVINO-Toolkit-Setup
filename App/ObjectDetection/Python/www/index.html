@@ -102,6 +102,7 @@
 
       .icon-button {
         min-width: 4rem;
+        min-height: 1.8rem;
       }
 
       .child-table {
@@ -119,6 +120,7 @@
         padding:0;
         padding-right: 0.3rem;
         height: 2.2rem;
+        max-height: 2.2rem;
         width:auto;
       }
 
@@ -166,6 +168,44 @@
         background: gray;
         cursor: pointer;
       }
+
+      .fa, .fas {
+        width : 2.8rem;
+      }
+      .tooltip {
+        position: relative;
+        display: inline-block;
+        /* border-bottom: 1px dotted black; */
+      }
+
+      .tooltip .tooltiptext {
+        visibility: hidden;
+        /* max-width: 20em; */
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 100%;
+        left: 50%;
+        margin-left: -60px;
+        
+        /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
+        opacity: 0;
+        transition: opacity 1s;
+        display: block;
+        white-space: pre;
+        padding-left:1em;
+        padding-right:1em;
+      }
+
+      .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+      }
+
   </style>
   </head>
   
@@ -179,7 +219,7 @@
           <td>
             <label class="main-label" style="float: left">Inference Engine</label>
           </td>
-          <td>
+          <td colspan="2">
             <table class="child-table">
               <tr>
                 <td style="width: 8em;">
@@ -198,16 +238,52 @@
             <label for="textVideoPath" class="main-label">Video Source</label>
           </td>
           <td>
-            <input class="main-list" type="text" id="textVideoPath" style="min-width: 33rem;padding-left: 0.3rem;padding-right:0.3rem"></input>
+            <div class="tooltip">
+              <input class="main-list" type="text" id="textVideoPath" style="min-width: 33rem;padding-left: 0.3rem;padding-right:0.3rem">
+              </input>
+              <span class="tooltiptext">Enter Video Source Path.  /dev/videoX for Webcam, or Youtube Video URL</span>
+            </div>
           </dt>
           <td>
-            <button class="icon-button" id="btnVideoConfig"><i class="fa fa-cogs"></i></button>
-            <button class="icon-button" id="btnVideoWait" style="display: none;"><i class="fas fa-spinner fa-spin"></i></button>
-            <button class="icon-button" id="btnVideoPlay" style="display: none;"><i class="fa fa-play"></i></button>
-            <button class="icon-button" id="btnVideoPause" style="display: none;"><i class="fa fa-pause"></i></button>
-            <button class="icon-button" id="btnVideoSync" style="display: none;"><i class="fas fa-sync"></i></button>
-            <button class="icon-button" id="btnVideoPerf" style="display: none;"><i class="fas fa-bolt"></i></button>
-            <button class="icon-button" id="btnVideoSave" ><i class="fas fa-save"></i></button>
+            <button class="icon-button" id="btnVideoWait">
+              <i class="fas fa-spinner fa-spin"></i>
+            </button>
+            <button class="icon-button" id="btnVideoConfig">
+              <div class="tooltip" id="ttVideoConfig">
+                <i class="fa fa-cogs"></i>
+                <span class="tooltiptext">Configure Video Source.</span>
+              </div>
+            </button>
+            <button class="icon-button" id="btnVideoPlay">
+              <div class="tooltip" id="ttVideoPlay">
+                <i class="fa fa-play"></i>
+                <span class="tooltiptext">Play the movie file</span>
+              </div>
+            </button>
+            <button class="icon-button" id="btnVideoPause">
+              <div class="tooltip" id="ttVideoPause">
+                <i class="fa fa-pause"></i>
+                <span class="tooltiptext">Pause the movie playback</span>
+              </div>
+            </button>
+            <button class="icon-button" id="btnVideoSync">
+              <div class="tooltip" id="ttVideoSync">
+                <i class="fas fa-sync"></i>
+                <span class="tooltiptext">Playback the movie at the movie's frame rate</span>
+              </div>
+            </button>
+            <button class="icon-button" id="btnVideoPerf">
+              <div class="tooltip" id="ttVideoPerf">
+                <i class="fas fa-bolt"></i>
+                <span class="tooltiptext">Playback the movie file as fast as possible to measure performance</span>
+              </div>
+            </button>
+            <button class="icon-button" id="btnVideoSave">
+              <div class="tooltip" id="ttVideoSave">
+                <i class="fas fa-save"></i>
+                <span class="tooltiptext">Pause the movie playback</span>
+              </div>
+            </button>
           </td>
         </tr>
         <tr>
@@ -215,32 +291,18 @@
             <label class="child-label">Resolution</label>
           </td>
           <td>
-            <select  class="child-list" id="videoResItem">
-              <option value="vga">640x480</option>
-              <option value="xga">1024x768</option>
-              <option value="hd">1280x720</option>
-              <option value="wxga">1280x800</option>
-              <option value="fhd">1920x1080</option>
-            </select>
-            <!-- <table class="child-table">
-                <tr>
-                  <td>
-                    <label class="child-label" style="float:right">Camera Resolution :</label>
-                  </td>
-                  <td style="padding:0;width: 7rem;">
-                    <select  class="child-list" id="videoResItem">
-                      <option value="vga">640x480</option>
-                      <option value="xga">1024x768</option>
-                      <option value="hd">1280x720</option>
-                      <option value="wxga">1280x800</option>
-                      <option value="fhd">1920x1080</option>
-                    </select>
-                  </td>
-                </tr>
-            </table> -->
+            <div class="tooltip">
+              <select  class="child-list" id="videoResItem">
+                <option value="vga">640x480</option>
+                <option value="xga">1024x768</option>
+                <option value="hd">1280x720</option>
+                <option value="wxga">1280x800</option>
+                <option value="fhd">1920x1080</option>
+              </select>
+              <span class="tooltiptext">Resolution for camera</span>
+            </div>
           </td>
           <td>
-            <!-- <button class="icon-button" id="btnSyncResolution" disabled=true><i class="fas fa-sync"></i></button> -->
         </td>
       </tr>
         <tr>
@@ -248,12 +310,28 @@
             <label class="main-label">Model List</label>
           </td>
           <td>
-            <select class="main-list" id="modelList" style="min-width: 33rem;">
+            <div class="tooltip">
+              <select class="main-list" id="modelList" style="min-width: 33rem;">
+              </select>
+              <span class="tooltiptext">Select Object Detection Model from the list</span>
+            </div>
           </td>
           <td>
-            <button class="icon-button" id="btnInferenceSpin" style="display: none;"><i class="fas fa-spinner fa-spin"></i></button>
-            <button class="icon-button" id="btnInferenceStart" disabled=true><i class="fa fa-play"></i></button>
-            <button class="icon-button" id="btnInferencePause" disabled=true><i class="fa fa-pause"></i></button>
+            <button class="icon-button" id="btnInferenceSpin" style="display: none;">
+              <i class="fas fa-spinner fa-spin"></i>
+            </button>
+            <div class="tooltip" id="tpInferenceStart">
+              <button class="icon-button" id="btnInferenceStart" disabled=true>
+                <i class="fa fa-play"></i>
+                <span class="tooltiptext">Run Inference</span>
+              </button>
+            </div>
+            <div class="tooltip">
+              <button class="icon-button" id="btnInferencePause" disabled=true>
+                <i class="fa fa-pause"></i>
+                <span class="tooltiptext">Stop Inference</span>
+              </button>
+            </div>
           </td>
         </tr>
         <tr>
@@ -261,8 +339,10 @@
             <label class="child-label">Target HW</label>
           </td>
           <td>
-            <select class="child-list" id="targetDeviceItem">
-            </select>
+            <div class="tooltip">
+              <select class="child-list" id="targetDeviceItem"></select>
+              <span class="tooltiptext">Target hardware to run inference on.</span>
+            </div>
           </td>
         </tr>
         <tr>
@@ -270,40 +350,15 @@
             <label class="child-label">Precision</label>
           </td>
           <td>
-            <select class="child-list" id="precisionItem" style="width: 4em;">
-              <option value="FP16">FP16</option>
-              <option value="FP32">FP32</option>
-            </select>
+            <div class="tooltip">
+              <select class="child-list" id="precisionItem" style="width: 4em;">
+                <option value="FP16">FP16</option>
+                <option value="FP32">FP32</option>
+              </select>
+              <span class="tooltiptext">IR Precision of Model. FP32 for CPU and FP16 for GPU are preferred. FP16 only for Myriad.</span>
+            </div>
           </td>
         </tr>
-        <!-- <tr>
-          <td></td>
-          <td>
-            <table class="child-table">
-              <tr>
-                <td>
-                  <label class="child-label" style="float:right">Hardware :</label>
-                </td>
-                <td style="width:7rem">
-                  <select class="child-list" id="targetDeviceItem">
-                  </select>
-                </td>
-                <td style="width:6rem">
-                  <label class="child-label" style="float:right">Precision :</label>
-                </td>
-                <td style="padding:0;width: 4em;">
-                  <select class="child-list" id="precisionItem" style="width: 4em;">
-                    <option value="FP16">FP16</option>
-                    <option value="FP32">FP32</option>
-                  </select>
-                </td>
-              </tr>
-            </table>
-          </td>
-          <td>
-            <button class="icon-button" id="btnSyncDevice" disabled=true><i class="fas fa-sync"></i></button>
-          </td>
-        </tr> -->
         <tr>
           <td>
             <label class="child-label" style="float: left">Confidence %</label>
@@ -315,13 +370,15 @@
                   <label class="child-label" id="textConfidence" style="padding-left:0;float:left;">0%</label>
                 </td>
                 <td style="padding-left:1rem;padding-right:0;">
-                  <input type="range" id="rangeConfidence" class="range-confidence" min="0" max="100" value="0">
+                  <div class="tooltip" style="width: 100%;">
+                    <input type="range" id="rangeConfidence" class="range-confidence" min="0" max="100" value="0"></input>
+                    <span class="tooltiptext">Confidence level threshold.  Ignores inference results below this threshold.</span>
+                  </div>
                 </td>
               </tr>
             </table>
           </td>
           <td>
-            <!-- <button class="icon-button" id="btnSyncConfidence"><i class="fas fa-sync"></i></button> -->
           </td>
         <tr>
           <td>
@@ -339,8 +396,8 @@
     <script>
       var _debug = false
       var liveViewVideo     = document.getElementById("liveVideo");
-      var textFps               = document.getElementById("textFps");
-      var textIe                = document.getElementById("textIE");
+      var textFps           = document.getElementById("textFps");
+      var textIe            = document.getElementById("textIE");
       var textVideoPath     = document.getElementById("textVideoPath");
       var modelList         = document.getElementById("modelList")
       var precisionList     = document.getElementById("precisionItem");
@@ -434,6 +491,14 @@
                 inference_state_ui(json.get_inference_state)
               }
 
+              // Set current precision list box
+              if (json.get_precision)
+              {
+                // {"get_precision":"FP32"}
+                console.log("get_precision : %s", json.get_precision)
+                precisionList.value = json.get_precision
+              }
+
               // Received Inference Engine State including :
               // Supported HW to run inference on
               // Current Inference State
@@ -520,13 +585,6 @@
                 {
                   precisionList.value = 'FP16'
                 }
-              }
-              // Set current precision list box
-              else if (json.get_precision)
-              {
-                // {"get_precision":"FP32"}
-                console.log("get_precision : %s", json.get_precision)
-                precisionList.value = json.get_precision
               }
               // Set current confidence slider
               else if (json.get_confidence_level)
@@ -732,11 +790,9 @@
           } else {
             btnVideoConfig.style.display = "inherit"
             btnVideoWait.style.display = "none"
-            // btnVideoPlay.style.display = ""
             btnVideoPause.style.display = "inherit"
             btnVideoPerf.style.display = "inherit"
             btnVideoPerf.disabled = false
-            // btnSyncResolution.disabled = true
           }
 
           videoResItem.disabled = true
@@ -787,7 +843,7 @@
         btnInferencePause.disabled = true
         // btnSyncDevice.disabled = true
         btnInferenceSpin.style.display = "Inherit"
-        btnInferenceStart.style.display = "None"
+        // tpInferenceStart.style.display = "None"
       }
 
       function setAiModel_Finish() {
@@ -808,7 +864,7 @@
         btnInferencePause.disabled = false
         // btnSyncDevice.disabled = false
         btnInferenceSpin.style.display = "None"
-        btnInferenceStart.style.display = "Inherit"
+        // tpInferenceStart.style.display = "Inherit"
       }
 
       function setBtnState(on) {
