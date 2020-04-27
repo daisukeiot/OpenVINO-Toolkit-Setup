@@ -296,7 +296,15 @@ class OpenVINO_Engine(object):
         if self._debug:
             logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
 
-        return '{{\"{}\":\"{}\"}}'.format(sys._getframe().f_code.co_name, self._target_device)
+        if self._target_device in self._inference_Core.devices:
+            return '{{\"{}\":\"{}\"}}'.format(sys._getframe().f_code.co_name, self._target_device)
+        else:
+            device = self._inference_Core.devices[0]
+            if device == 'CPU':
+                precision = 'FP32'
+            else:
+                precision = 'FP16'
+            return '{{\"{}\":\"{}\",\"get_precision\":\"{}\"}}'.format(sys._getframe().f_code.co_name, device, precision)
 
 #
 # Set precision (FP16, FP32)
