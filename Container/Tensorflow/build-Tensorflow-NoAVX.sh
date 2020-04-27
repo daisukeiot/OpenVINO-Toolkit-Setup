@@ -59,5 +59,5 @@ echo ''
 echo ''
 echo ''
 docker run  --name tensorflow ${TAG} /bin/true
-docker cp tensorflow:/wheels/*.whl ./
+docker cp tensorflow:/wheels/tensorflow-1.15.2-cp37-cp37m-linux_x86_64.whl ./
 docker rm tensorflow
