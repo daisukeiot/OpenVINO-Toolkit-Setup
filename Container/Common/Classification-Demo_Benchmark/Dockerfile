@@ -36,29 +36,4 @@ RUN cd ${INTEL_OPENVINO_DIR}/install_dependencies && \
 USER openvino
 WORKDIR /home/openvino
 
-#
-# Image Classification Sample
-#
-RUN if [ "${CONTAINER_OS}" = "Ubuntu" ] ; then \
-    ( \
-        cd ${INTEL_OPENVINO_DIR}/deployment_tools/demo && \
-        ./demo_squeezenet_download_convert_run.sh \
-    ); \
-    fi
-
-#
-# Build Benchmark C++ Tool
-#
-RUN if [ "${CONTAINER_OS}" = "Ubuntu" ] ; then \
-    ( \
-        cd ${INTEL_OPENVINO_DIR}/deployment_tools/tools/model_downloader && \
-        ./downloader.py --name alexnet --output /home/$USER/openvino_models/ && \
-        cd ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/ && \
-        ./mo.py --data_type=FP16 --input_model /home/$USER/openvino_models/public/alexnet/alexnet.caffemodel -o /home/$USER/openvino_models/ir/public/alexnet/FP16/ && \
-        ./mo.py --data_type=FP32 --input_model /home/$USER/openvino_models/public/alexnet/alexnet.caffemodel -o /home/$USER/openvino_models/ir/public/alexnet/FP32/ && \
-        cd /home/$USER/inference_engine_samples_build/benchmark_app && \
-        make \
-    ); \
-    fi
-
 ENTRYPOINT []
