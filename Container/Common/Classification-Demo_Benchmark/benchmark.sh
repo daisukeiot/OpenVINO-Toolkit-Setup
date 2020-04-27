@@ -28,7 +28,7 @@ cd ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/install_prerequisites
 cd ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/
 python3 ./mo.py --data_type=FP16 --input_model /home/$USER/openvino_models/public/alexnet/alexnet.caffemodel -o /home/$USER/openvino_models/ir/public/alexnet/FP16/
 python3 ./mo.py --data_type=FP32 --input_model /home/$USER/openvino_models/public/alexnet/alexnet.caffemodel -o /home/$USER/openvino_models/ir/public/alexnet/FP32/
-cd ${INTEL_OPENVINO_DIR}/rence_engine/samples/cpp
+cd ${INTEL_OPENVINO_DIR}/inference_engine/samples/cpp
 ./build_samples.sh
 cd /home/$USER/inference_engine_samples_build/benchmark_app
 make

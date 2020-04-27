@@ -23,8 +23,12 @@ docker build --squash --rm -f \
     --build-arg CONTAINER_OS=${CONTAINER_OS} \
     ${SCRIPT_DIR}/Common/Classification-Demo_Benchmark
 
-echo ''
-echo 'Container Built'
-echo 'Run Hello World to check available hardware'
+docker run --rm --privileged -v /dev:/dev --network=host ${TARGET_TAG} /home/openvino/hello_device.sh
+
+echo "============================================================================================================="
+echo "Container built with Tag : "
+echo ${TARGET_TAG}
+echo "Run verification with :"
 echo "docker run --rm --privileged -v /dev:/dev --network=host ${TARGET_TAG} /home/openvino/hello_device.sh"
-echo ''
+echo "docker run --rm --privileged -v /dev:/dev --network=host ${TARGET_TAG} /home/openvino/imageclaasification.sh"
+echo "docker run --rm --privileged -v /dev:/dev --network=host ${TARGET_TAG} /home/openvino/benchmark.sh"
