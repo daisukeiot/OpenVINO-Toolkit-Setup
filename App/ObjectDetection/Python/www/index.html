@@ -416,7 +416,7 @@
             console.log("Connection Established to " + document.URL);
             StatusLine.innerHTML = "";
             StatusLine.innerHTML = "Connected to " + document.URL;
-            StatusLine.style.color = 'lightgray'
+            StatusLine.style.color = 'white'
 
             ws.send("get_inference_engine_info")
             ws.send("get_video_path");
