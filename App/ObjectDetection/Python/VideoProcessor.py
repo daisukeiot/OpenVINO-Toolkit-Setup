@@ -213,7 +213,6 @@ class VideoProcessor(object):
     def playback_mode(self, msg):
         if self.verbose:
             logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
-        print('*****************************************************************')
 
         jsonData = json.loads(msg)
         playback_mode = jsonData["playback_mode"]
@@ -439,8 +438,6 @@ class VideoProcessor(object):
 
             target_device = json.loads(self.inference_engine.get_target_device())
             
-            print(model_data.modelName)
-
             self.send_message('{{\"set_ai_model\":\"Successfully loaded {}\", \"isComplete\":1}}'.format(model_data.modelName))
             self.send_message('{{\"get_inference_engine_info\":\"{} running on {}\"}}'.format(self.inference_engine.signature, target_device['get_target_device']))
             self.current_model_data = model_data

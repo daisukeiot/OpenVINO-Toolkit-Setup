@@ -273,8 +273,8 @@ class OpenVINO_Core:
                     self.result_processor.reshape_data[key] = self.ieNet.layers[self.ieNet.layers[key].parents[0]].shape
                     self.result_processor.set_class_label(self.ieNet.layers[key].params)
 
-                for key, blob in self.result_processor.reshape_data.items():
-                    print('{} {}'.format(key, blob))
+                # for key, blob in self.result_processor.reshape_data.items():
+                #     print('{} {}'.format(key, blob))
 
             return Model_Flag.Loaded
 

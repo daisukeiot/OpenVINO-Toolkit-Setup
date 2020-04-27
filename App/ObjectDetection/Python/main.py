@@ -86,7 +86,6 @@ async def main():
             #
             # Start Processing video frames
             #
-            print("Video Processor Task")
             videoProcessTask = loop.create_task(videoProcessor.process_video_frame_async(executor))
             tasks.append(videoProcessTask)
 
@@ -122,7 +121,7 @@ async def main():
     finally:
         logging.info('-- {0}() - Finally'.format(sys._getframe().f_code.co_name))
         for task in asyncio.Task.all_tasks():
-            print("Task {}", task)
+            logging.info("Task {}", task)
 
         # done, futures = await asyncio.wait(tasks, return_when=asyncio.FIRST_EXCEPTION)
         # print("done {}", done)

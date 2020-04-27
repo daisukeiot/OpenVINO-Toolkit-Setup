@@ -283,7 +283,7 @@ class Video_Data():
                 task = ioLoop.run_in_executor(None, self._download_video)
                 task.add_done_callback(self._download_callback)                
             else:
-                print("ioLoop None")
+                logging.info("!! No ioLoop")
 
 #
 # Download video
@@ -306,7 +306,7 @@ class Video_Data():
 
             try:
                 with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-                    print("downloading")
+                    logging.info('downloading {}....'.format(str(p_video))
                     ydl.download([self.videoPath])
 
                 return str(p_video)
