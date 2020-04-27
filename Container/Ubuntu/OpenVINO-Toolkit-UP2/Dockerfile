@@ -10,7 +10,7 @@ ARG TAG_TF=
 ARG PYTHON_VERSION=3.7
 
 FROM ${TAG_TF} as TensorFlow
-WORKDIR /wheels/${TF_VERSION}
+WORKDIR /wheels
 #
 # Use Base image built in the previous step
 #

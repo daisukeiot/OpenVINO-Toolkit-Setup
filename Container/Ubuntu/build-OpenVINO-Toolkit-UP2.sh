@@ -20,8 +20,10 @@ OPENVINO_VER=2020.2.120
 OS_VERSION=$1
 MY_REGISTRY=$2
 TF_VERSION=$3
-TAG_TF=${MY_REGISTRY}/openvino-container:tf_${TF_VERSION}
-TAG=${MY_REGISTRY}/openvino-container:ubuntu${OS_VERSION}_openvino${OPENVINO_VER}_${TF_VERSION}_cp37
+PYTHON_VERSION=3.7
+
+TAG_TF=${MY_REGISTRY}/openvino-container:tf_${TF_VERSION}_cp${PYTHON_VERSION}
+TAG=${MY_REGISTRY}/openvino-container:ubuntu${OS_VERSION}_openvino${OPENVINO_VER}_${TF_VERSION}_cp${PYTHON_VERSION}
 
 if docker inspect --type=image $TAG > /dev/null 2>&1; then
     echo "Deleting image"
@@ -36,7 +38,8 @@ echo ' / /_/ / /_/ / / / /_/ /   ___/ / /_/ /_/ / /  / /_  '
 echo '/_____/\__,_/_/_/\__,_/   /____/\__/\__,_/_/   \__/  '
 echo ''
 echo ''
-echo "Image Tag : ${TAG}"
+echo "Image Tag      : ${TAG}"
+echo "TensorFlow Tag : ${TAG_TF}"
 echo ''
 #
 # Install OpenVINO Toolkit to Ubuntu Base Image

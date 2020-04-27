@@ -15,9 +15,9 @@ SCRIPT_DIR=$(cd $(dirname $0); pwd)
 OS_VERSION=$1
 MY_REGISTRY=$2
 TF_VERSION=$3
-PYTHON_VESRION=$4
+PYTHON_VERSION=$4
 
-TAG=${MY_REGISTRY}/openvino-container:tf_${TF_VERSION}_cp${PYTHON_VESRION}
+TAG=${MY_REGISTRY}/openvino-container:tf_${TF_VERSION}_cp${PYTHON_VERSION}
 
 # if docker inspect --type=image $TAG > /dev/null 2>&1; then
 #     echo "Deleting image"
@@ -40,7 +40,7 @@ docker build --squash --rm \
   -f ${SCRIPT_DIR}/NoAVX/Dockerfile \
   --build-arg OS_VERSION=${OS_VERSION} \
   --build-arg TF_VERSION=${TF_VERSION} \
-  --build-arg PYTHON_VESRION=${PYTHON_VESRION} \
+  --build-arg PYTHON_VERSION=${PYTHON_VERSION} \
   -t ${TAG} \
   ${SCRIPT_DIR}
 
@@ -58,6 +58,6 @@ echo ''
 
 echo ''
 echo ''
-docker run  --name tensorflow --rm ${TAG} /bin/true
-docker cp opencv:/wheels/${TF_VERSION}/*.whl ./
-docker rm opencv
+docker run  --name tensorflow ${TAG} /bin/true
+docker cp tensorflow:/wheels/*.whl ./
+docker rm tensorflow

@@ -53,6 +53,7 @@ RUN apt-get update && \
     rm get-pip.py && \
     rm /usr/bin/python3 && \
     ln -s ${PYTHON} /usr/bin/python3 && \
+    ln -s ${PYTHON} /usr/bin/python && \
     alias python='${PYTHON}' && \
     echo alias python='${PYTHON}'  >> ~/.bashrc && \
     apt-get remove -y --purge python3-apt && \
