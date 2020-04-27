@@ -306,7 +306,7 @@ class Video_Data():
 
             try:
                 with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-                    logging.info('downloading {}....'.format(str(p_video))
+                    logging.info('downloading {}....'.format(str(p_video)))
                     ydl.download([self.videoPath])
 
                 return str(p_video)
