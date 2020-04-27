@@ -13,7 +13,7 @@ Verified with :
 
 - UP2 with Myriad X
 - Ubuntu 18.04 LTS
-- OpenVINO 2019.3.376
+- OpenVINO 2020.2.120
 
 ### Ubuntu 18.04 LTS
 

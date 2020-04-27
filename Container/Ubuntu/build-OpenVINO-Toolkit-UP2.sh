@@ -14,9 +14,9 @@ fi
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
 
 #
-# Use OpenVINO Toolkit ver 2019.3.376
+# Use OpenVINO Toolkit ver 2020.2.120
 #
-OPENVINO_VER=2019.3.376
+OPENVINO_VER=2020.2.120
 OS_VERSION=$1
 MY_REGISTRY=$2
 TF_VERSION=$3
