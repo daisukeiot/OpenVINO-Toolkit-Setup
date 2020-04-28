@@ -52,6 +52,10 @@ RUN apt-get update && \
     apt-get install -y --reinstall python3-apt && \
     rm -rf /var/lib/apt/lists/*
 
+RUN pip3 --no-cache-dir install --upgrade \
+    pip \
+    setuptools==39.0.1
+
 #
 # Create user `openvino`
 #
