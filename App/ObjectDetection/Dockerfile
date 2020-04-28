@@ -27,7 +27,7 @@ RUN cd ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/install_prerequisi
 ADD ./Python ./App
 ADD ./startapp.sh  /home/openvino
 
-RUN chmod a+w ./App ./App/video && \
+RUN chmod a+w ./App ./App/video ./App/model ./App/ir && \
     cd ./App && \
     git clone https://github.com/opencv/open_model_zoo.git && \
     pip3 install -r ./requirements.txt
