@@ -49,8 +49,11 @@ RUN pip3 install ./*.whl && \
     ./install.sh -s silent.cfg && \
     rm -rf /tmp/l_openvino_toolkit* && \
     cd $INSTALL_DIR/install_dependencies && \
-    $INSTALL_DIR/install_dependencies/install_openvino_dependencies.sh && \
+    ./_install_all_dependencies.sh && \
+    ./install_NCS_udev_rules.sh && \
     echo "source $OPENVINO_INSTALL/bin/setupvars.sh" >> /home/openvino/.bashrc
+
+RUN useradd -G video -ms /bin/bash openvino
 
 ENV INSTALLDIR ${INSTALL_DIR}
 
