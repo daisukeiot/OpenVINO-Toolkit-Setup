@@ -1,3 +1,4 @@
 tornado
 youtube-dl
-Pillow
+numpy==1.16
+pyyaml
