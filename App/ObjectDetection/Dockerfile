@@ -13,26 +13,27 @@ ENV INTEL_OPENVINO_DIR=/opt/intel/openvino
 # Install sudo
 #
 RUN apt-get update && \
-    apt install -y --no-install-recommends sudo && \
+    apt install -y --no-install-recommends sudo git && \
     rm -rf /var/lib/apt/lists/*
 
 RUN usermod -aG sudo openvino && \
     echo "%sudo  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/nopasswd
 
-RUN cd ${INTEL_OPENVINO_DIR}/install_dependencies && \
-    ./install_NCS_udev_rules.sh
-
-USER openvino
-WORKDIR /home/openvino
+RUN cd ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/install_prerequisites && \
+    install_prerequisites.sh && \
+    cd ${INTEL_OPENVINO_DIR}/install_dependencies && \
+    ./install_NCS_udev_rules.sh 
 
 ADD ./Python ./App
 ADD ./startapp.sh  /home/openvino
 
-RUN sudo chmod a+w ./App/video && \
-    sudo chmod a+w ./App/model &&\
-    sudo chmod a+w ./App/ir
+RUN chmod a+w ./App ./App/video && \
+    cd ./App && \
+    git clone https://github.com/opencv/open_model_zoo.git && \
+    pip3 install -r ./requirements.txt
 
-RUN pip3 install -r ./App/requirements.txt
+USER openvino
+WORKDIR /home/openvino
 
 EXPOSE 8080
 
