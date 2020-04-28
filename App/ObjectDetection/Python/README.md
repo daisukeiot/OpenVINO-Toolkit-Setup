@@ -146,11 +146,16 @@ Only FP16 and FP32
 
 - Add Yolo support  
     Done : 4.23.2020 (ver 1.1)
+- Add tooltips to buttons
+    Done : 4.27.2020 (ver 1.2)
 - Add Async Inference
 - Containerization
 - Add IoT Hub device app/IoT Edge support
 - HETERO support
 - Improve status line display/logging
+    Done : 4.27.2020 (ver 1.2)
+- Handle camera error
+    Done : 4.27.2020 (ver 1.2)
 
 ## Release Notes
 
