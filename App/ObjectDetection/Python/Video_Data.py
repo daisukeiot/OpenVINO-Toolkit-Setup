@@ -69,7 +69,7 @@ class Video_Data():
             logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
 
         # check if this is the same video file
-        if self.videoPath == videoPath:
+        if self.videoPath == videoPath and self.get_video_stream_state() == Video_Stream_State.Running:
             # if this is a video file set frame to the beginning
             video_type = self._get_video_type()
             if video_type == Video_Device_Type.Video or video_type == Video_Device_Type.Youtube:
@@ -467,8 +467,6 @@ class Video_Data():
         if self.verbose:
             logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
 
-        self._set_video_stream_state(Video_Stream_State.Running)
-
         try:
             while True:
                 #
@@ -480,13 +478,17 @@ class Video_Data():
                         self.frame_queue.get()
                     break
 
-                if self.get_video_stream_state() == Video_Stream_State.Pause:
+                elif self.get_video_stream_state() == Video_Stream_State.Pause: 
                     if self._debug:
                         logging.info('>> Stream Pause')
                     if (self._get_video_type() != Video_Device_Type.Video):
                         while not self.frame_queue.empty():
                             self.frame_queue.get()
                     time.sleep(0.3)
+                    continue
+
+                elif self.get_video_stream_state() != Video_Stream_State.Running:
+                    time.sleep(1.0)
                     continue
 
                 ret, frame = self.cv2_cap.read()
