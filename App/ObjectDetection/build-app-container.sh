@@ -20,3 +20,5 @@ docker build --squash --rm \
     --build-arg BASE_TAG=${BASE_TAG} \
     -t ${TARGET_TAG} \
     ${SCRIPT_DIR}
+
+dicker push ${TARGET_TAG}
