@@ -274,6 +274,7 @@ class VideoProcessor(object):
         self.fps.reset(self.videoData.get_video_fps())
         self.videoData.set_video_playback(isPause = False)
         self.set_video_processor_state(VideoProcessorState.Running)
+        self.send_message('{\"frame_ready\":1}')
 
 #
 # Set Video Resolution
