@@ -20,7 +20,7 @@ RUN usermod -aG sudo openvino && \
     echo "%sudo  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/nopasswd
 
 RUN cd ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/install_prerequisites && \
-    install_prerequisites.sh && \
+    ./install_prerequisites.sh && \
     cd ${INTEL_OPENVINO_DIR}/install_dependencies && \
     ./install_NCS_udev_rules.sh 
 
