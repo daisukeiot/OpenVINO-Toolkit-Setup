@@ -1,4 +1,5 @@
 tornado
-youtube-dl
 numpy==1.16
 pyyaml
+requests
+youtube-dl
