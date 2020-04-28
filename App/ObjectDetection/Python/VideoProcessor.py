@@ -49,6 +49,10 @@ class VideoProcessor(object):
         logging.info('   - Frame Size         : {}x{}'.format(videoW, videoH))
         logging.info('===============================================================')
 
+        # To send message to clients (Browser)
+        self.imageStreamHandler = None
+        self.threadExecutor = None
+
         # Video source
         self.videoData = Video_Data(self, videoPath)
         self.displayFrame = np.array([])
@@ -69,10 +73,6 @@ class VideoProcessor(object):
 
         # Track states of this object
         self.set_video_processor_state(VideoProcessorState.Unknown)
-
-        # To send message to clients (Browser)
-        self.imageStreamHandler = None
-        self.threadExecutor = None
 
         # OpenVINO
         self.inference_engine = None

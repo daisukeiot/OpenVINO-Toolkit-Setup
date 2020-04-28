@@ -131,6 +131,7 @@ class Video_Data():
             else:
                 self._set_video_data_state(Video_Data_State.Error)
                 logging.error('>> Video Open Failed')
+                self.videoProcessor.send_message(self.get_video_path())
         else:
             self._set_video_data_state(Video_Data_State.Error)
             logging.info('>> Video Empty!!!!')
@@ -487,7 +488,7 @@ class Video_Data():
                     time.sleep(0.3)
                     continue
 
-                elif self.get_video_stream_state() != Video_Stream_State.Running:
+                elif self.get_video_stream_state() == Video_Stream_State.Error:
                     time.sleep(1.0)
                     continue
 
@@ -514,7 +515,14 @@ class Video_Data():
                             self._set_video_stream_state(Video_Stream_State.Pause)
                             continue
 
-                    logging.error("!!!Capture Failed")
+                    if self.cv2_cap.isOpened():
+                        logging.error("!! Capture Failed")
+                        time.sleep(1.0)
+                        # try to access video again
+                        self._set_video_param(self.videoPath)
+                    else:
+                        logging.error("!! Video Closed")
+                        self._set_video_stream_state(Video_Stream_State.Error)
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()

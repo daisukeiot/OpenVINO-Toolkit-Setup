@@ -447,6 +447,14 @@
               isError = true
             }
 
+            if (json.frame_ready)
+            {
+              if (json.frame_ready == 1)
+              {
+                ws.send("nextFrame");
+                return;
+              }
+            }
             // Received Image to Display (Live View)
             if (json.Image)
             {
