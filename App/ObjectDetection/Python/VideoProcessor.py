@@ -156,7 +156,11 @@ class VideoProcessor(object):
     def get_display_frame(self):
 
         if self.displayFrame.size == 0:
-            wallpaper = np.zeros((self.videoData.videoH, self.videoData.videoW, 3), np.uint8)
+            if self.videoData.videoH == 0 or self.videoData.videoW == 0:
+                wallpaper = np.zeros((720, 1280, 3), np.uint8)
+            else:
+                wallpaper = np.zeros((self.videoData.videoH, self.videoData.videoW, 3), np.uint8)
+
             ret, buffer = cv2.imencode( '.jpg', wallpaper )
         else:
             ret, buffer = cv2.imencode( '.jpg', self.displayFrame )
