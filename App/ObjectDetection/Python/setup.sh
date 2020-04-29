@@ -1,6 +1,6 @@
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
 
-if [! -d "open_model_zoo" ]; then
+if [ ! -d "open_model_zoo" ]; then
   git clone https://github.com/opencv/open_model_zoo.git
 fi
 
