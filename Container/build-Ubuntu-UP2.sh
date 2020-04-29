@@ -28,7 +28,7 @@ TAG_TF=${MY_REGISTRY}/openvino-container:tf_${TF_VERSION}
 if docker inspect --type=image $TAG_TF > /dev/null 2>&1; then
     echo "${TAG_TF} exists"
   else
-    ./Tensorflow/build-Tensorflow-NoAVX.sh ${OS_VERSION} ${MY_REGISTRY} ${TF_VERSION}
+    ./Tensorflow/build-Tensorflow-NoAVX.sh ${OS_VERSION} ${MY_REGISTRY} ${TF_VERSION} ${PYTHON_VERSION}
 fi
 
 ./Ubuntu/build-OpenVINO-Toolkit-UP2.sh ${OS_VERSION} ${MY_REGISTRY} ${TF_VERSION}
