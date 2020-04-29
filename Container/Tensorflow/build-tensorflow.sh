@@ -120,3 +120,5 @@ bazel-bin/tensorflow/tools/pip_package/build_pip_package "/wheels/$SUBFOLDER_NAM
 
 # Fix wheel folder permissions
 chmod -R 777 /wheels/
+
+docker rmi $(docker images -f “dangling=true” -q)
