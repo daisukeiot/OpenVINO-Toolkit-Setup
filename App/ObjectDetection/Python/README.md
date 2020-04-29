@@ -48,7 +48,8 @@ sudo ./install.sh -s silent.cfg && \
 cd ~ && \
 rm -rf /tmp/openvino && \
 cd $INSTALL_DIR/install_dependencies && \
-sudo -E $INSTALL_DIR/install_dependencies/install_openvino_dependencies.sh && \
+sudo -E $INSTALL_DIR/install_dependencies/_install_all_dependencies.sh && \
+sudo usermod -a -G video $USER && \
 sudo usermod -a -G users $USER && \
 sudo cp /opt/intel/openvino/inference_engine/external/97-myriad-usbboot.rules /etc/udev/rules.d/ && \
 sudo udevadm control --reload-rules && \
@@ -58,16 +59,6 @@ echo "source $OPENVINO_INSTALL/bin/setupvars.sh" >> ~/.bashrc && \
 source /opt/intel/openvino/bin/setupvars.sh && \
 cd $OPENVINO_INSTALL/deployment_tools/model_optimizer/install_prerequisites && \
 sudo ./install_prerequisites.sh
-```
-
-Install Video Driver
-
-```bash
-sudo usermod -a -G video $USER
-sudo -E su
-cd $INSTALL_DIR/install_dependencies && \
-./install_NEO_OCL_driver.sh && \
-sudo reboot now
 ```
 
 ## App Setup
@@ -142,6 +133,10 @@ Currently you can only select 1 target hardware
 
 Only FP16 and FP32
 
+## Run in container
+
+Please see [this](../README.md)
+
 ## To do list
 
 - Add Yolo support  
@@ -163,4 +158,13 @@ Only FP16 and FP32
 
 - Supports most of Object Detection models from [Open Model Zoo](https://github.com/opencv/open_model_zoo)  
 - Supports USB Webcam and Youtube Video as video source
+
+### Version 1.1 (April 23, 2020)
+
+- Added Yolo support
+
+### Version 1.2 (April 27, 2020)
+
+- Added tooltips to UI components
+- Bug fixes
 
