@@ -22,14 +22,14 @@ sudo rm /usr/bin/python3 && \
 sudo ln -s python3.7 /usr/bin/python3 && \
 alias python='python3.7' && \
 echo alias python='python3.7'  >> ~/.bashrc && \
-sudo apt-get remove --purge python3-apt && \
-sudo apt-get install --reinstall python3-apt && \
-pip3 install 'numpy==1.16' --force-reinstall
+cd /usr/lib/python3/dist-packages && \
+sudo ln -s apt_pkg.cpython-{36m,37m}-x86_64-linux-gnu.so && \
+python3.7 -m pip install 'numpy==1.16' --force-reinstall
 ```
 
 ## OpenVINO Setup
 
-Install 2020.2.120 with following commands : 
+Install 2020.2.120 with following commands :
 
 ```bash
 export OPENVINO_VER=2020.2.120
@@ -60,6 +60,8 @@ source /opt/intel/openvino/bin/setupvars.sh && \
 cd $OPENVINO_INSTALL/deployment_tools/model_optimizer/install_prerequisites && \
 sudo ./install_prerequisites.sh
 ```
+
+
 
 ## App Setup
 
