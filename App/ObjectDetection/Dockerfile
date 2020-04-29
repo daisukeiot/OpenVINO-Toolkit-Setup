@@ -25,11 +25,13 @@ RUN curl -L https://github.com/libusb/libusb/archive/v1.0.22.zip --output v1.0.2
     ./bootstrap.sh && \
     ./configure --disable-udev --enable-shared && \
     make -j4
+
 RUN apt-get update && \
     apt-get install -y --no-install-recommends libusb-1.0-0-dev && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt/libusb-1.0.22/libusb
+
 RUN /bin/mkdir -p '/usr/local/lib' && \
     /bin/bash ../libtool   --mode=install /usr/bin/install -c   libusb-1.0.la '/usr/local/lib' && \
     /bin/mkdir -p '/usr/local/include/libusb-1.0' && \
@@ -41,7 +43,7 @@ RUN /bin/mkdir -p '/usr/local/lib' && \
 
 RUN pip3 install setuptools==41.0.0 && \
     cd ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/install_prerequisites && \
-    ./install_prerequisites.sh 
+    ./install_prerequisites.sh
 
 WORKDIR /home/openvino
 ADD ./Python ./App
@@ -52,6 +54,10 @@ RUN chmod a+w ./App ./App/video ./App/model ./App/ir && \
     cd ./App && \
     git clone https://github.com/opencv/open_model_zoo.git && \
     pip3 install -r ./requirements.txt
+
+# Make sure we can run sudo and access to GPU
+RUN usermod -aG sudo openvino && \
+    usermod -aG video openvino
 
 USER openvino
 WORKDIR /home/openvino
