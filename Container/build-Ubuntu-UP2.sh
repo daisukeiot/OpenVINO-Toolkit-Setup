@@ -1,11 +1,12 @@
-if [ $# -ne 3 ]
+if [ $# -ne 4 ]
   then
     echo "======================================="
     echo "Please specify Ubuntu Version and reistry"
     echo "  Ubuntu Version : 18.04 or 16.04"
     echo "  Registry       : Your registry"
     echo "  Tensorflow     : Tensorflow Version"
-    echo "  Example ./build-Ubuntu-UP2.sh 18.04 myregistry r1.14"
+    echo "  Python         : Python Version"
+    echo "  Example ./build-Ubuntu-UP2.sh 18.04 myregistry r1.14 3.7"
     echo "======================================="
     exit
 fi
@@ -13,8 +14,8 @@ fi
 OS_VERSION=$1
 MY_REGISTRY=$2
 TF_VERSION=$3
-
-TAG_OS=${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION}
+PYTHON_VERSION=$4
+TAG_OS=${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION}_cp${PYTHON_VERSION}
 
 if docker inspect --type=image $TAG_OS > /dev/null 2>&1; then
     echo "${TAG_OS} exists"

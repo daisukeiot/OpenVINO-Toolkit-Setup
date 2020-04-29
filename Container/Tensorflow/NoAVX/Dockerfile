@@ -142,14 +142,7 @@ ENV GCC_HOST_COMPILER_PATH=/usr/bin/gcc
 # Here you can edit this variable to set any optimizations you want.
 # Disabled warnings as we are not touching code...
 #
-ENV CC_OPT_FLAGS="--copt=-march=silvermont --copt=-mcx16 --copt=-mssse3 --copt=-msse4.1 --copt=-msse4.2 --copt=-mpopcnt --copt=-mno-avx \
-      --copt=-Wno-maybe-uninitialized \
-      --copt=-Wno-unknown-pragmas \
-      --copt=-Wno-sign-compare \
-      --copt=-Wno-return-type \
-      --copt=-Wno-strict-aliasing \
-      --copt=-Wno-comment \
-      --copt=-Wno-unused-function"
+ENV CC_OPT_FLAGS="--copt=-march=silvermont --copt=-mcx16 --copt=-mssse3 --copt=-msse4.1 --copt=-msse4.2 --copt=-mpopcnt --copt=-mno-avx"
 
 ENV tag="silvermont"
 
