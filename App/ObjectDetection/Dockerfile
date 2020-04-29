@@ -20,16 +20,17 @@ RUN pip3 install setuptools==41.0.0 && \
     cd ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/install_prerequisites && \
     ./install_prerequisites.sh 
 
-USER openvino
-WORKDIR /home/openvino
-
 ADD ./Python ./App
-ADD ./startapp.sh  /home/openvino
+ADD ./startapp.sh  /home/openvino && \
+    chmod a+x ./startapp.sh
 
 RUN chmod a+w ./App ./App/video ./App/model ./App/ir && \
     cd ./App && \
     git clone https://github.com/opencv/open_model_zoo.git && \
     pip3 install -r ./requirements.txt
+
+USER openvino
+WORKDIR /home/openvino
 
 EXPOSE 8080
 
