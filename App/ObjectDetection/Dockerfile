@@ -21,8 +21,8 @@ RUN pip3 install setuptools==41.0.0 && \
     ./install_prerequisites.sh 
 
 ADD ./Python ./App
-ADD ./startapp.sh  /home/openvino && \
-    chmod a+x ./startapp.sh
+ADD ./startapp.sh  /home/openvino
+RUN chmod a+x ./startapp.sh
 
 RUN chmod a+w ./App ./App/video ./App/model ./App/ir && \
     cd ./App && \
