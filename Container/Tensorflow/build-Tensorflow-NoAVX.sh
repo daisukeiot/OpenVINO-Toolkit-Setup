@@ -62,4 +62,4 @@ docker run  --name tensorflow ${TAG} /bin/true
 docker cp tensorflow:/wheels/tensorflow-1.15.2-cp37-cp37m-linux_x86_64.whl ./
 docker rm tensorflow
 docker push ${TAG}
-docker rmi $(docker images -f “dangling=true” -q)
+docker rmi $(docker images -f "dangling=true" -q)

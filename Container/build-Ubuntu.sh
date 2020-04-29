@@ -16,4 +16,4 @@ cd ./Ubuntu
 ./build-BaseOS.sh ${OS_VERSION} ${REPOSITORY}
 ./build-OpenVINO-Toolkit.sh ${OS_VERSION} ${REPOSITORY}
 
-docker rmi $(docker images -f “dangling=true” -q)
+docker rmi $(docker images -f "dangling=true" -q)
