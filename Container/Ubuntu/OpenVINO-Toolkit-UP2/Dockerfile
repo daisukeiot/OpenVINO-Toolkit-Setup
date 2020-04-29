@@ -34,8 +34,13 @@ USER root
 # Use /tmp folder
 #
 WORKDIR /tmp
+
 COPY --from=TensorFlow /wheels/*.whl .
 
+RUN apt-get update && \
+    apt install -y --no-install-recommends sudo && \
+    rm -rf /var/lib/apt/lists/* && \
+    echo "openvino ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 #
 # Download OpenVINO Toolkit
 # Run silent install
@@ -47,10 +52,12 @@ RUN pip3 install ./*.whl && \
     ./install.sh --list_components && \
     sed -i 's/decline/accept/g' silent.cfg && \
     ./install.sh -s silent.cfg && \
-    rm -rf /tmp/l_openvino_toolkit* && \
-    cd $INSTALL_DIR/install_dependencies && \
-    $INSTALL_DIR/install_dependencies/install_openvino_dependencies.sh && \
+    rm -rf /tmp/* && \
     echo "source $OPENVINO_INSTALL/bin/setupvars.sh" >> /home/openvino/.bashrc
+
+RUN cd $INSTALL_DIR/install_dependencies && \
+    sudo -E ./install_openvino_dependencies.sh && \
+    sudo -E ./install_NEO_OCL_driver.sh
 
 ENV INSTALLDIR ${INSTALL_DIR}
 
@@ -59,5 +66,12 @@ ENV INSTALLDIR ${INSTALL_DIR}
 #
 USER openvino
 WORKDIR /home/openvino
+
+#
+# Run as openvino user
+#
+RUN /bin/bash -c "source $INSTALL_DIR/bin/setupvars.sh && \
+    cd $INSTALL_DIR/install_dependencies && \
+    ./install_NCS_udev_rules.sh"
 
 ENTRYPOINT []

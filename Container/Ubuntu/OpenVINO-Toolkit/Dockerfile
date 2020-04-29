@@ -30,6 +30,11 @@ USER root
 #
 WORKDIR /tmp
 
+RUN apt-get update && \
+    apt install -y --no-install-recommends sudo && \
+    rm -rf /var/lib/apt/lists/* && \
+    echo "openvino ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+#    echo "%sudo  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/nopasswd
 #
 # Download OpenVINO Toolkit
 # Run silent install
@@ -41,9 +46,11 @@ RUN curl -LOJ "${OPENVINO_DOWNLOAD}" && \
     sed -i 's/decline/accept/g' silent.cfg && \
     ./install.sh -s silent.cfg && \
     rm -rf /tmp/* && \
-    cd $INSTALL_DIR/install_dependencies && \
-    $INSTALL_DIR/install_dependencies/install_openvino_dependencies.sh && \
     echo "source $OPENVINO_INSTALL/bin/setupvars.sh" >> /home/openvino/.bashrc
+
+RUN cd $INSTALL_DIR/install_dependencies && \
+    sudo -E ./install_openvino_dependencies.sh && \
+    sudo -E ./install_NEO_OCL_driver.sh
 
 ENV INSTALLDIR ${INSTALL_DIR}
 
@@ -52,5 +59,12 @@ ENV INSTALLDIR ${INSTALL_DIR}
 #
 USER openvino
 WORKDIR /home/openvino
+
+#
+# Run as openvino user
+#
+RUN /bin/bash -c "source $INSTALL_DIR/bin/setupvars.sh && \
+    cd $INSTALL_DIR/install_dependencies && \
+    ./install_NCS_udev_rules.sh"
 
 ENTRYPOINT []

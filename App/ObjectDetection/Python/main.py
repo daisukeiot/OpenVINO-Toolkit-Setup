@@ -67,7 +67,6 @@ async def main():
             #
             # Initialize Tornado Web Server
             #
-            logging.info("main Loop {}".format(hex(id(loop))))
             webServer = WebServer(videoProcessor = videoProcessor, port = 8080)
 
             if (sys.version_info >= (3, 7)):
