@@ -52,16 +52,28 @@ RUN apt-get update && \
     apt-get install -y --reinstall python3-apt && \
     rm -rf /var/lib/apt/lists/*
 
-RUN pip3 --no-cache-dir install --upgrade \
-    pip \
-    setuptools==39.0.1
-
 #
 # Create user `openvino`
 #
 RUN useradd -ms /bin/bash -G video,users openvino && \
    chown openvino -R /home/openvino
 
+#
+# Download and install OpenCL etc
+#
+RUN if [ "${OS_VERSION}" = "18.04" ] ; then \
+    ( \
+        cd /tmp/ && \
+        curl -L "https://github.com/intel/compute-runtime/releases/download/20.09.15980/intel-gmmlib_19.4.1_amd64.deb" --output "intel-gmmlib_19.4.1_amd64.deb" && \
+        curl -L "https://github.com/intel/compute-runtime/releases/download/20.09.15980/intel-igc-core_1.0.3445_amd64.deb" --output "intel-igc-core_1.0.3445_amd64.deb" && \
+        curl -L "https://github.com/intel/compute-runtime/releases/download/20.09.15980/intel-igc-opencl_1.0.3445_amd64.deb" --output "intel-igc-opencl_1.0.3445_amd64.deb" && \
+        curl -L "https://github.com/intel/compute-runtime/releases/download/20.09.15980/intel-opencl_20.09.15980_amd64.deb" --output "intel-opencl_20.09.15980_amd64.deb" && \
+        curl -L "https://github.com/intel/compute-runtime/releases/download/20.09.15980/intel-ocloc_20.09.15980_amd64.deb" --output "intel-ocloc_20.09.15980_amd64.deb" && \
+        dpkg -i ./*.deb && \
+        ldconfig && \
+        rm ./* \
+    ); \
+    fi
 #
 # Change user to openvino
 #
