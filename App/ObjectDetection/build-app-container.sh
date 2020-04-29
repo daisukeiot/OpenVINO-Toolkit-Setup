@@ -25,4 +25,4 @@ docker build --squash --rm \
     -t ${TARGET_TAG} \
     ${SCRIPT_DIR}
 
-dicker push ${TARGET_TAG}
+docker push ${TARGET_TAG}
