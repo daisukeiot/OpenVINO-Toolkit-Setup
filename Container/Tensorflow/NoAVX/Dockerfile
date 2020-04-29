@@ -51,14 +51,11 @@ RUN apt-get update && \
     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
     ${PYTHON} get-pip.py && \
     rm get-pip.py && \
-    rm /usr/bin/python3 && \
-    ln -s ${PYTHON} /usr/bin/python3 && \
-    ln -s ${PYTHON} /usr/bin/python && \
     alias python='${PYTHON}' && \
     echo alias python='${PYTHON}'  >> ~/.bashrc && \
-    apt-get remove -y --purge python3-apt && \
-    apt-get install -y --reinstall python3-apt && \
-    pip3 install 'numpy==1.16' --force-reinstall && \
+    cd /usr/lib/python3/dist-packages && \
+    sudo ln -s apt_pkg.cpython-{36m,37m}-x86_64-linux-gnu.so && \
+    python3.7 -m pip install 'numpy==1.16' --force-reinstall && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
