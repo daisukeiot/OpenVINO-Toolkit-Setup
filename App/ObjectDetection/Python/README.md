@@ -61,8 +61,6 @@ cd $OPENVINO_INSTALL/deployment_tools/model_optimizer/install_prerequisites && \
 sudo ./install_prerequisites.sh
 ```
 
-
-
 ## App Setup
 
 Clone this repo and run /App/ObjectDetectino/Python/setup.sh
@@ -71,7 +69,8 @@ Clone this repo and run /App/ObjectDetectino/Python/setup.sh
 cd ~ && \
 git clone https://github.com/daisukeiot/OpenVINO-Toolkit-Setup.git && \
 cd OpenVINO-Toolkit-Setup/App/ObjectDetection/Python && \
-git clone https://github.com/opencv/open_model_zoo.git
+./setup.sh
+
 ```
 
 ## Using App
@@ -80,8 +79,7 @@ Start the app with :
 
 ```bash
 cd ~/OpenVINO-Toolkit-Setup/App/ObjectDetection/Python
-sudo -s
-python3 ./main.py
+python3.7 ./main.py
 ```
 
 > [!IMPORTANT]
