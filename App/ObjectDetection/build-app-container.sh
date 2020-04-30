@@ -19,7 +19,7 @@ MY_REGISTRY=$2
 BASE_TAG=$1
 TARGET_TAG=${BASE_TAG}_app
 
-if [ -d "open_model_zoo" ]; then
+if [ -d "./Python/open_model_zoo" ]; then
   rm -r -f ./Python/open_model_zoo
 fi
 
