@@ -55,9 +55,6 @@ RUN chmod a+w ./App ./App/video ./App/model ./App/ir && \
     git clone https://github.com/opencv/open_model_zoo.git && \
     python3.7 -m pip install -r ./requirements.txt
 
-# Make sure we can run sudo and access to GPU
-RUN usermod -aG video openvino
-
 USER openvino
 WORKDIR /home/openvino
 

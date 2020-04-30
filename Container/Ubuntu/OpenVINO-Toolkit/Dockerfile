@@ -52,6 +52,8 @@ RUN cd $INSTALL_DIR/install_dependencies && \
     sudo -E ./install_openvino_dependencies.sh && \
     sudo -E ./install_NEO_OCL_driver.sh
 
+RUN usermod -aG video openvino
+
 ENV INSTALLDIR ${INSTALL_DIR}
 
 #
