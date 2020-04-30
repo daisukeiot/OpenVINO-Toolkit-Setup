@@ -1,6 +1,6 @@
 # Containerize the app
 
-## Build a conatiner with Python App
+## Build a container with Python App
 
 Build container with base image with :
 
@@ -14,15 +14,28 @@ Example :
 
 ## Run the container
 
-You need to run the container with :
+You need to run the container with several flags for GPU and Myriad Access
 
-- Access to GPU and/or Myriad you need --priviledged flag
-- To access Myriad, you need to --network=host
+- GPU Access  
+    `--device /dev/dri`
+- VPU (Myriad) Access
+    `--device-cgroup-rule='c 189:* rmw' -v /dev/bus/usb:/dev/bus/usb`
 
-docker run -it --rm --privileged -v /dev:/dev --network=host myregistry/openvino-container:ubuntu18.04_openvino2020.2.120_cp3.7_app
+Example :
+
+```bash
+docker run -it --device-cgroup-rule='c 189:* rmw' -v /dev/bus/usb:/dev/bus/usb --device /dev/dri  -p 8080:8080 daisukeiot/openvino-container:ubuntu18.04_openvino2020.2.120_cp3.7_app
+```
+
+For UP2 (ATOM) :
+
+```bash
+docker run -it --device-cgroup-rule='c 189:* rmw' -v /dev/bus/usb:/dev/bus/usb --device /dev/dri  -p 8080:8080 daisukeiot/openvino-container:ubuntu18.04_openvino2020.2.120_r1.15_cp3.7_app
+```
+
 
 ## Custom Tensorflow Build
 
 ATOM Processors (e.g. UP2) do not support AVX, therefore, Tensorflow must be re-compiled without AVX support.
 
-Make sure to use Tensorflow without AVX support, otherwise, Model Conversion and Inference won't work
+Make sure to use Tensorflow without AVX support, otherwise, Model Conversion and Inference won't work.
