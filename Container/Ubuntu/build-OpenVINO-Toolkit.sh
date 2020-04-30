@@ -1,10 +1,11 @@
-if [ $# -ne 2 ]
+if [ $# -ne 3 ]
   then
     echo "======================================="
     echo "Please specify Ubuntu Version and reistry"
     echo "  Ubuntu Version : 18.04 or 16.04"
     echo "  Registry       : Your registry"
-    echo "  Example ./build-OpenVINO-Toolkit.sh 18.04 myregistry"
+    echo "  Python         : Python Version"
+    echo "  Example ./build-OpenVINO-Toolkit.sh 18.04 myregistry 3.7"
     echo "======================================="
     exit
 fi
@@ -18,7 +19,8 @@ SCRIPT_DIR=$(cd $(dirname $0); pwd)
 OPENVINO_VER=2020.2.120
 OS_VERSION=$1
 MY_REGISTRY=$2
-PYTHON_VERSION=3.7
+PYTHON_VERSION=$3
+
 TAG=${MY_REGISTRY}/openvino-container:ubuntu${OS_VERSION}_openvino${OPENVINO_VER}_cp${PYTHON_VERSION}
 
 if docker inspect --type=image $TAG > /dev/null 2>&1; then
