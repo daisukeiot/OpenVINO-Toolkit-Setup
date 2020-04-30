@@ -5,7 +5,9 @@
         "gztar",
         "model",
         "nchw",
+        "openvino",
         "postprocs",
+        "tensorflow",
         "tooltiptext",
         "wxga"
     ]

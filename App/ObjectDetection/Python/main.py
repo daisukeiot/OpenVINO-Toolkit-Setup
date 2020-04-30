@@ -67,7 +67,6 @@ async def main():
             #
             # Initialize Tornado Web Server
             #
-            logging.info("main Loop {}".format(hex(id(loop))))
             webServer = WebServer(videoProcessor = videoProcessor, port = 8080)
 
             if (sys.version_info >= (3, 7)):
@@ -121,7 +120,7 @@ async def main():
     finally:
         logging.info('-- {0}() - Finally'.format(sys._getframe().f_code.co_name))
         for task in asyncio.Task.all_tasks():
-            logging.info("Task {}", task)
+            logging.info("Task\r\n", task)
 
         # done, futures = await asyncio.wait(tasks, return_when=asyncio.FIRST_EXCEPTION)
         # print("done {}", done)

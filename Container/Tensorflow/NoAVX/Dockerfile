@@ -51,14 +51,11 @@ RUN apt-get update && \
     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
     ${PYTHON} get-pip.py && \
     rm get-pip.py && \
-    rm /usr/bin/python3 && \
-    ln -s ${PYTHON} /usr/bin/python3 && \
-    ln -s ${PYTHON} /usr/bin/python && \
     alias python='${PYTHON}' && \
     echo alias python='${PYTHON}'  >> ~/.bashrc && \
-    apt-get remove -y --purge python3-apt && \
-    apt-get install -y --reinstall python3-apt && \
-    pip3 install 'numpy==1.16' --force-reinstall && \
+    cd /usr/lib/python3/dist-packages && \
+    sudo ln -s apt_pkg.cpython-{36m,37m}-x86_64-linux-gnu.so && \
+    python3.7 -m pip install 'numpy==1.16' --force-reinstall && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -67,17 +64,17 @@ RUN apt-get update && \
 #
 # RUN ln -s /usr/bin/${PYTHON} /usr/local/bin/python
 
-RUN pip3 --no-cache-dir install --upgrade \
+RUN ${PYTHON} -m pip --no-cache-dir install --upgrade \
     pip \
     setuptools
 
-RUN pip3 --no-cache-dir install \
+RUN ${PYTHON} -m pip --no-cache-dir install \
     six \
     numpy \
     wheel \
     mock 'future>=0.17.1' && \
-    pip3 install -U --user keras_applications --no-deps && \
-    pip3 install -U --user keras_preprocessing --no-deps
+    ${PYTHON} -m pip install -U --user keras_applications --no-deps && \
+    ${PYTHON} -m pip install -U --user keras_preprocessing --no-deps
 
 #
 # Clone Tensorflow from GIT
@@ -142,14 +139,7 @@ ENV GCC_HOST_COMPILER_PATH=/usr/bin/gcc
 # Here you can edit this variable to set any optimizations you want.
 # Disabled warnings as we are not touching code...
 #
-ENV CC_OPT_FLAGS="--copt=-march=silvermont --copt=-mcx16 --copt=-mssse3 --copt=-msse4.1 --copt=-msse4.2 --copt=-mpopcnt --copt=-mno-avx \
-      --copt=-Wno-maybe-uninitialized \
-      --copt=-Wno-unknown-pragmas \
-      --copt=-Wno-sign-compare \
-      --copt=-Wno-return-type \
-      --copt=-Wno-strict-aliasing \
-      --copt=-Wno-comment \
-      --copt=-Wno-unused-function"
+ENV CC_OPT_FLAGS="--copt=-march=silvermont --copt=-mcx16 --copt=-mssse3 --copt=-msse4.1 --copt=-msse4.2 --copt=-mpopcnt --copt=-mno-avx"
 
 ENV tag="silvermont"
 

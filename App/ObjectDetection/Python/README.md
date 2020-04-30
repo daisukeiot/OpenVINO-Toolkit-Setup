@@ -22,14 +22,14 @@ sudo rm /usr/bin/python3 && \
 sudo ln -s python3.7 /usr/bin/python3 && \
 alias python='python3.7' && \
 echo alias python='python3.7'  >> ~/.bashrc && \
-sudo apt-get remove --purge python3-apt && \
-sudo apt-get install --reinstall python3-apt && \
-pip3 install 'numpy==1.16' --force-reinstall
+cd /usr/lib/python3/dist-packages && \
+sudo ln -s apt_pkg.cpython-{36m,37m}-x86_64-linux-gnu.so && \
+python3.7 -m pip install 'numpy==1.16' --force-reinstall
 ```
 
 ## OpenVINO Setup
 
-Install 2020.2.120 with following commands : 
+Install 2020.2.120 with following commands :
 
 ```bash
 export OPENVINO_VER=2020.2.120
@@ -48,7 +48,8 @@ sudo ./install.sh -s silent.cfg && \
 cd ~ && \
 rm -rf /tmp/openvino && \
 cd $INSTALL_DIR/install_dependencies && \
-sudo -E $INSTALL_DIR/install_dependencies/install_openvino_dependencies.sh && \
+sudo -E $INSTALL_DIR/install_dependencies/_install_all_dependencies.sh && \
+sudo usermod -a -G video $USER && \
 sudo usermod -a -G users $USER && \
 sudo cp /opt/intel/openvino/inference_engine/external/97-myriad-usbboot.rules /etc/udev/rules.d/ && \
 sudo udevadm control --reload-rules && \
@@ -60,16 +61,6 @@ cd $OPENVINO_INSTALL/deployment_tools/model_optimizer/install_prerequisites && \
 sudo ./install_prerequisites.sh
 ```
 
-Install Video Driver
-
-```bash
-sudo usermod -a -G video $USER
-sudo -E su
-cd $INSTALL_DIR/install_dependencies && \
-./install_NEO_OCL_driver.sh && \
-sudo reboot now
-```
-
 ## App Setup
 
 Clone this repo and run /App/ObjectDetectino/Python/setup.sh
@@ -78,7 +69,8 @@ Clone this repo and run /App/ObjectDetectino/Python/setup.sh
 cd ~ && \
 git clone https://github.com/daisukeiot/OpenVINO-Toolkit-Setup.git && \
 cd OpenVINO-Toolkit-Setup/App/ObjectDetection/Python && \
-git clone https://github.com/opencv/open_model_zoo.git
+./setup.sh
+
 ```
 
 ## Using App
@@ -87,8 +79,7 @@ Start the app with :
 
 ```bash
 cd ~/OpenVINO-Toolkit-Setup/App/ObjectDetection/Python
-sudo -s
-python3 ./main.py
+python3.7 ./main.py
 ```
 
 > [!IMPORTANT]
@@ -142,6 +133,10 @@ Currently you can only select 1 target hardware
 
 Only FP16 and FP32
 
+## Run in container
+
+Please see [this](../README.md)
+
 ## To do list
 
 - Add Yolo support  
@@ -163,4 +158,13 @@ Only FP16 and FP32
 
 - Supports most of Object Detection models from [Open Model Zoo](https://github.com/opencv/open_model_zoo)  
 - Supports USB Webcam and Youtube Video as video source
+
+### Version 1.1 (April 23, 2020)
+
+- Added Yolo support
+
+### Version 1.2 (April 27, 2020)
+
+- Added tooltips to UI components
+- Bug fixes
 
