@@ -64,17 +64,17 @@ RUN apt-get update && \
 #
 # RUN ln -s /usr/bin/${PYTHON} /usr/local/bin/python
 
-RUN pip3 --no-cache-dir install --upgrade \
+RUN ${PYTHON} -m pip --no-cache-dir install --upgrade \
     pip \
     setuptools
 
-RUN pip3 --no-cache-dir install \
+RUN ${PYTHON} -m pip --no-cache-dir install \
     six \
     numpy \
     wheel \
     mock 'future>=0.17.1' && \
-    pip3 install -U --user keras_applications --no-deps && \
-    pip3 install -U --user keras_preprocessing --no-deps
+    ${PYTHON} -m pip install -U --user keras_applications --no-deps && \
+    ${PYTHON} -m pip install -U --user keras_preprocessing --no-deps
 
 #
 # Clone Tensorflow from GIT

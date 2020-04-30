@@ -25,6 +25,8 @@ ARG OPENVINO_INSTALL=/opt/intel/openvino_${OPENVINO_VER}
 ARG INSTALL_DIR=/opt/intel/openvino
 ARG OPENVINO_DOWNLOAD=http://registrationcenter-download.intel.com/akdlm/irc_nas/16612/l_openvino_toolkit_p_2020.2.120.tgz
 
+ENV PYTHON=python${PYTHON_VERSION}
+
 #
 # Run as root to install OpenVINO Toolkit
 #
@@ -45,7 +47,7 @@ RUN apt-get update && \
 # Download OpenVINO Toolkit
 # Run silent install
 # Setup environment variable
-RUN pip3 install ./*.whl && \
+RUN ${PYTHON} -m pip install ./*.whl && \
     curl -LOJ "${OPENVINO_DOWNLOAD}" && \
     tar -xzf ./*.tgz && \
     cd l_openvino_toolkit* && \

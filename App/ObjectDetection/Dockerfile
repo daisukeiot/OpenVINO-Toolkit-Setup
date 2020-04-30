@@ -41,7 +41,7 @@ RUN /bin/mkdir -p '/usr/local/lib' && \
     /usr/bin/install -c -m 644 libusb-1.0.pc '/usr/local/lib/pkgconfig' && \
     ldconfig
 
-RUN pip3 install setuptools==41.0.0 && \
+RUN python3.7 -m pip install setuptools==41.0.0 && \
     cd ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/install_prerequisites && \
     ./install_prerequisites.sh
 
@@ -53,11 +53,10 @@ RUN chmod a+x ./startapp.sh
 RUN chmod a+w ./App ./App/video ./App/model ./App/ir && \
     cd ./App && \
     git clone https://github.com/opencv/open_model_zoo.git && \
-    pip3 install -r ./requirements.txt
+    python3.7 -m pip install -r ./requirements.txt
 
 # Make sure we can run sudo and access to GPU
-RUN usermod -aG sudo openvino && \
-    usermod -aG video openvino
+RUN usermod -aG video openvino
 
 USER openvino
 WORKDIR /home/openvino
