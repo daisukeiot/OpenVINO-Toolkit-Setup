@@ -26,8 +26,9 @@ class OpenVINO_Core:
 
         devices = []
         for device in self.ie.available_devices:
-            if 'MYRIAD' in device and not 'MYRIAD' in devices:
-                devices.append('MYRIAD')
+            if 'MYRIAD' in device:
+                if not 'MYRIAD' in devices:
+                    devices.append('MYRIAD')
             else:
                 if not device in devices:
                     devices.append(device)

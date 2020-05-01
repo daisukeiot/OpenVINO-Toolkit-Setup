@@ -120,7 +120,7 @@ async def main():
     finally:
         logging.info('-- {0}() - Finally'.format(sys._getframe().f_code.co_name))
         for task in asyncio.Task.all_tasks():
-            logging.info("Task\r\n", task)
+            logging.info("Task {}".format(task))
 
         # done, futures = await asyncio.wait(tasks, return_when=asyncio.FIRST_EXCEPTION)
         # print("done {}", done)

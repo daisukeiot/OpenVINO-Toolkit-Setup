@@ -21,7 +21,7 @@
         display: block;
       }
 
-      .main-label, .child-label {
+      .main-label, .child-label, .cb-label {
         color: whitesmoke;
         border-width:2px;
         font-weight: bold;
@@ -35,6 +35,14 @@
 
       .child-label {
         padding-left:1em;
+        font-size:1.1em;
+        font-weight: normal;
+        width:max-content;
+      }
+
+      .cb-label {
+        float:none;
+        /* padding-left:0.5em; */
         font-size:1.1em;
         font-weight: normal;
         width:max-content;
@@ -206,6 +214,68 @@
         opacity: 1;
       }
 
+      .switch {
+        position: relative;
+        display: inline-block;
+        min-width: 4rem;
+        height: 1.6rem;
+        padding-top: 1px;
+        padding-right: 6px;
+        padding-left: 6px;
+        padding-bottom: 1px;
+      }
+
+      .switch input { 
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider.round {
+        border-radius: 1.1rem;
+      }
+
+      .slider.round:before {
+        border-radius: 50%;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 1.1rem;
+        width: 1.1rem;
+        left: 4px;
+        bottom: 4px;
+        background-color: #0078d4;
+        -webkit-transition: .4s;
+        transition: .4s;
+      }
+
+      input:checked + .slider {
+        background-color:rgb(240,240,240);
+      }
+
+      /* input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+      } */
+
+      input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+      }
   </style>
   </head>
   
@@ -305,91 +375,97 @@
           <td>
         </td>
       </tr>
-        <tr>
-          <td>
-            <label class="main-label">Inference Model</label>
-          </td>
-          <td>
-            <div class="tooltip">
-              <select class="main-list" id="modelList" style="min-width: 33rem;">
-              </select>
-              <span class="tooltiptext">Select Object Detection Model from the list</span>
-            </div>
-          </td>
-          <td>
-            <button class="icon-button" id="btnInferenceSpin" style="display: none;">
-              <i class="fas fa-spinner fa-spin"></i>
-            </button>
+      <tr>
+        <td>
+          <label class="main-label">AI Inference</label>
+        </td>
+        <td>
+          <label class="switch">
+            <input type="checkbox"  id="cbInference">
+            <span class="slider round" id='sliderInference'></span>
+          </label>
+          <label class="cb-label" id="labelCbInference">test</label>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label class="child-label">Model</label>
+        </td>
+        <td>
+          <div class="tooltip">
+            <select class="main-list" id="modelList" style="min-width: 33rem;">
+            </select>
+            <span class="tooltiptext">Select Object Detection Model from the list</span>
+          </div>
+        </td>
+        <td>
+          <button class="icon-button" id="btnInferenceSpin" style="display: none;">
+            <i class="fas fa-spinner fa-spin"></i>
+          </button>
+          <button class="icon-button" id="btnInferenceConfig">
             <div class="tooltip" id="tpInferenceStart">
-              <button class="icon-button" id="btnInferenceStart" disabled=true>
-                <i class="fa fa-play"></i>
-                <span class="tooltiptext">Run Inference</span>
-              </button>
+              <i class="fa fa-download"></i>
+              <span class="tooltiptext">Run Inference</span>
             </div>
-            <div class="tooltip">
-              <button class="icon-button" id="btnInferencePause" disabled=true>
-                <i class="fa fa-pause"></i>
-                <span class="tooltiptext">Stop Inference</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <label class="child-label">Target HW</label>
-          </td>
-          <td>
-            <div class="tooltip">
-              <select class="child-list" id="targetDeviceItem"></select>
-              <span class="tooltiptext">Target hardware to run inference on.</span>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <label class="child-label">Precision</label>
-          </td>
-          <td>
-            <div class="tooltip">
-              <select class="child-list" id="precisionItem" style="width: 4em;">
-                <option value="FP16">FP16</option>
-                <option value="FP32">FP32</option>
-              </select>
-              <span class="tooltiptext">IR Precision of Model. FP32 for CPU and FP16 for GPU are preferred. FP16 only for Myriad.</span>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <label class="child-label" style="float: left">Confidence %</label>
-          </td>
-          <td>
-            <table class="child-table">
-              <tr>
-                <td style="padding:0;width:10%">
-                  <label class="child-label" id="textConfidence" style="padding-left:0;float:left;">0%</label>
-                </td>
-                <td style="padding-left:1rem;padding-right:0;">
-                  <div class="tooltip" style="width: 100%;">
-                    <input type="range" id="rangeConfidence" class="range-confidence" min="0" max="100" value="0"></input>
-                    <span class="tooltiptext">Confidence level threshold.  Ignores inference results below this threshold.</span>
-                  </div>
-                </td>
-              </tr>
-            </table>
-          </td>
-          <td>
-          </td>
-        <tr>
-          <td>
-            <label class="main-label" style="float: left">Status</label>
-          </td>
-          <td colspan="2">
-            <div id="textStatus" style="color:white;float:left; word-wrap:break-word; font-weight:normal; white-space:wrap"></div>
-          </td>
-          <td>
-          </td>
-        </tr>
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label class="child-label">Target HW</label>
+        </td>
+        <td>
+          <div class="tooltip">
+            <select class="child-list" id="targetDeviceItem"></select>
+            <span class="tooltiptext">Target hardware to run inference on.</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label class="child-label">Precision</label>
+        </td>
+        <td>
+          <div class="tooltip">
+            <select class="child-list" id="precisionItem" style="width: 4em;">
+              <option value="FP16">FP16</option>
+              <option value="FP32">FP32</option>
+            </select>
+            <span class="tooltiptext">IR Precision of Model. FP32 for CPU and FP16 for GPU are preferred. FP16 only for Myriad.</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label class="child-label" style="float: left">Confidence %</label>
+        </td>
+        <td>
+          <table class="child-table">
+            <tr>
+              <td style="padding:0;width:10%">
+                <label class="child-label" id="textConfidence" style="padding-left:0;float:left;">0%</label>
+              </td>
+              <td style="padding-left:1rem;padding-right:0;">
+                <div class="tooltip" style="width: 100%;">
+                  <input type="range" id="rangeConfidence" class="range-confidence" min="0" max="100" value="0"></input>
+                  <span class="tooltiptext">Confidence level threshold.  Ignores inference results below this threshold.</span>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td>
+        </td>
+      <tr>
+        <td>
+          <label class="main-label" style="float: left">Status</label>
+        </td>
+        <td colspan="2">
+          <div id="textStatus" style="color:white;float:left; word-wrap:break-word; font-weight:normal; white-space:wrap"></div>
+        </td>
+        <td>
+        </td>
+      </tr>
     </div>
 
     <script>
@@ -604,8 +680,8 @@
               // Received ai model settting callbacks
               else if (json.set_ai_model)
               {
-                console.log("set_ai_model %s", String(msg.data));
                 console.log("set_ai_model %s", json.set_ai_model);
+
                 if (isError) {
                   StatusLine.style.color = 'red'
                 } else {
@@ -697,21 +773,21 @@
         ws.send('{\"set_video_resolution\":\"' + document.getElementById("videoResItem").value + '\"}')
       }
 
-      // start inference
-      btnInferenceStart.onclick= function(evt) {
-        console.log("btnInferenceStart");
+      // // start inference
+      btnInferenceConfig.onclick= function(evt) {
+        console.log("btnInferenceConfig");
         setAiModel_Start()
         ws.send('{\"set_ai_model\":\"' + document.getElementById("modelList").value + '\", \"set_precision\":\"' + document.getElementById("precisionItem").value + '\", \"set_target_device\":\"' + targetDeviceList.value + '\"}')
       }
 
-      // pause inference
-      btnInferencePause.onclick= function(evt) {
-        console.log("btnInferencePause");
-        ws.send('{\"set_inference_state\":0}')
-      }
+      // // pause inference
+      // btnInferencePause.onclick= function(evt) {
+      //   console.log("btnInferencePause");
+      //   ws.send('{\"set_inference_state\":0}')
+      // }
 
       btnVideoSave.onclick= function(evt) {
-        console.log("btnInferencePause");
+        console.log("btnVideoSave.onClick");
         ws.send("save_image")
       }
 
@@ -744,6 +820,18 @@
       rangeConfidence.onchange = function() {
         textConfidence.innerHTML = this.value + '%';
         ws.send('{\"set_confidence_level\":\"' + textConfidence.innerHTML + '\"}')
+      }
+
+      cbInference.onchange = function() {
+        console.log("cbInference.onchange")
+        if (cbInference.checked == true)
+        {
+          setAiModel_Start()
+          ws.send('{\"set_ai_model\":\"' + document.getElementById("modelList").value + '\", \"set_precision\":\"' + document.getElementById("precisionItem").value + '\", \"set_target_device\":\"' + targetDeviceList.value + '\"}')
+        }
+        else{
+          ws.send('{\"set_inference_state\":0}')
+        }
       }
 
       // Set UI components based on video state and type
@@ -809,13 +897,17 @@
       // Set UI components based on inference state
       function inference_state_ui(state)
       {
+        console.log("inference_state_ui")
         if (state == '1')
         {
-          btnInferencePause.disabled = false
+          console.log('111')
+          cbInference.checked = true;
+          labelCbInference.innerHTML = "Inference On";
         }
         else
         {
-          btnInferencePause.disabled = true
+          cbInference.checked = false;
+          labelCbInference.innerHTML = "Inference Off";
         }
       }
 
@@ -829,7 +921,7 @@
         // console.log(item)
         // console.log(item["modelName"])
         modelList.innerHTML += '<option value=' + item.modelName.trim() + '>' + item.modelName.trim() + '</option>'
-        btnInferenceStart.disabled = false
+        btnInferenceConfig.style.display = 'inherit'
       }
 
       function setAiModel_Start() {
@@ -846,11 +938,10 @@
         targetDeviceList.disabled = disable;
         targetDeviceList.style.color = color;
 
-        btnInferenceStart.disabled = true
-        btnInferencePause.disabled = true
-        // btnSyncDevice.disabled = true
-        btnInferenceSpin.style.display = "Inherit"
-        // tpInferenceStart.style.display = "None"
+        btnInferenceConfig.style.display = 'none';
+        btnInferenceSpin.style.display = "Inherit";
+        cbInference.disabled = true;
+        sliderInference.style.backgroundColor  = "darkgray";
       }
 
       function setAiModel_Finish() {
@@ -867,11 +958,10 @@
         targetDeviceList.disabled = disable;
         targetDeviceList.style.color = color;
 
-        btnInferenceStart.disabled = false
-        btnInferencePause.disabled = false
-        // btnSyncDevice.disabled = false
-        btnInferenceSpin.style.display = "None"
-        // tpInferenceStart.style.display = "Inherit"
+        btnInferenceConfig.style.display = 'inherit';
+        btnInferenceSpin.style.display = "None";
+        cbInference.disabled = false;
+        sliderInference.style.backgroundColor  = "rgb(240,240,240)";
       }
 
       function setBtnState(on) {
