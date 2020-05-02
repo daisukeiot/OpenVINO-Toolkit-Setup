@@ -709,5 +709,5 @@ class OpenVINO_Engine(object):
         if self._inference_Core is None:
             logging.warning("IE Network Empty")
         else:
-            self._inference_Core.run_inference(frame, self._confidence)
+            return self._inference_Core.run_inference(frame, self._confidence)
 

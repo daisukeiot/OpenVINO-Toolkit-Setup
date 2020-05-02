@@ -676,7 +676,7 @@ class VideoProcessor(object):
 
                 if self.runInference == 1:
                     # Run Inference
-                    self.inference_engine.inference(frame)
+                    frame = self.inference_engine.inference(frame)
 
                 if self._annotate:
                     fps_annotation = 'FPS : {}'.format(self.currentFps)

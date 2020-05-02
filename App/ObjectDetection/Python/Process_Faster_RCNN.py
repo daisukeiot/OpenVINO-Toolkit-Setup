@@ -48,6 +48,8 @@ class Object_Detection_RCNN_Processor():
         self.output_key = output_key
         self.output_format = output_format
 
+        self.prev_frame = None
+
         self.colors = color_list()
         self.draw_info = CV2_Draw_Info()
 
@@ -107,7 +109,7 @@ class Object_Detection_RCNN_Processor():
         for result in results[self.output_key][0][0]:
 
             if result[0] == -1:
-                return
+                break
             
             if result[2] < confidence:
                 continue
@@ -121,6 +123,8 @@ class Object_Detection_RCNN_Processor():
             rect = [left, top, right, bottom]
 
             self.annotate(frame, rect, result[2], int(result[1]))
+
+        return frame
 
     def annotate(self, frame, rect, confidence, label_id):
 
