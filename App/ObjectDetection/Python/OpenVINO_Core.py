@@ -16,7 +16,7 @@ class OpenVINO_Core:
         self.ie = IECore()
         self.name = ""
 
-        self.asyncInference = False
+        self.asyncInference = True
         self.plugin = None
         self.ieNet = None
 
@@ -306,6 +306,7 @@ class OpenVINO_Core:
                     if self.exec_net.requests[self.request_slot_curr].wait(-1) == 0:
                         return_frame = self.result_processor.process_result(self.exec_net.requests[self.request_slot_curr].outputs, self.result_processor.prev_frame, confidence)
                 else:
+                    self.request_slot_curr = 0
                     self.exec_net.infer(inputs={inference_data.data_key : inference_data.image_data, inference_data.info_key : inference_data.image_info})
                     return_frame = self.result_processor.process_result(self.exec_net.requests[self.request_slot_curr].outputs, frame, confidence)
 
@@ -326,6 +327,7 @@ class OpenVINO_Core:
                                                                             frame = self.result_processor.prev_frame, 
                                                                             confidence = confidence)
                 else:
+                    self.request_slot_curr = 0
                     self.exec_net.infer(inputs={input_key : frame_data})
                     return_frame = self.result_processor.process_result(layers = self.ieNet.layers,
                                                                         results = self.exec_net.requests[self.request_slot_curr].outputs,
@@ -348,6 +350,7 @@ class OpenVINO_Core:
                         return_frame = self.result_processor.process_result(self.exec_net.requests[self.request_slot_curr].outputs, self.result_processor.prev_frame, confidence)
                         assert return_frame.size > 0, "Frame Empty"
                 else:
+                    self.request_slot_curr = 0
                     self.exec_net.infer(inputs={input_key : frame_data})
                     return_frame = self.result_processor.process_result(self.exec_net.requests[self.request_slot_curr].outputs, frame, confidence)
 
