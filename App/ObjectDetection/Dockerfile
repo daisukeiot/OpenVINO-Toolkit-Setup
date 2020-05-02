@@ -21,8 +21,7 @@ RUN cp ${INSTALLDIR}/deployment_tools/inference_engine/external/97-myriad-usbboo
 
 WORKDIR /opt
 RUN curl -L https://github.com/libusb/libusb/archive/v1.0.22.zip --output v1.0.22.zip && \
-    unzip v1.0.22.zip && \
-    cd libusb-1.0.22 && \
+    unzip v1.0.22.zip && cd libusb-1.0.22 && \
     ./bootstrap.sh && \
     ./configure --disable-udev --enable-shared && \
     make -j4
@@ -32,6 +31,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt/libusb-1.0.22/libusb
+
 RUN /bin/mkdir -p '/usr/local/lib' && \
     /bin/bash ../libtool   --mode=install /usr/bin/install -c   libusb-1.0.la '/usr/local/lib' && \
     /bin/mkdir -p '/usr/local/include/libusb-1.0' && \
@@ -40,10 +40,6 @@ RUN /bin/mkdir -p '/usr/local/lib' && \
     cd  /opt/libusb-1.0.22/ && \
     /usr/bin/install -c -m 644 libusb-1.0.pc '/usr/local/lib/pkgconfig' && \
     ldconfig
-
-WORKDIR /opt
-RUN rm -r -f libusb-1.0.22 && \
-    rm v1.0.22.zip
 
 RUN python3.7 -m pip install setuptools==41.0.0 && \
     cd ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/install_prerequisites && \
