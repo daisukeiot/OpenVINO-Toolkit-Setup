@@ -17,4 +17,4 @@ docker run -it --rm \
     -p 8080:8080 \
     $1
 
-docker exec -it python_app
+docker logs -f python_app
