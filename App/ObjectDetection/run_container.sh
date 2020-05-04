@@ -16,3 +16,5 @@ docker run -it --rm \
     --device /dev/dri \
     -p 8080:8080 \
     $1
+
+docker exec -it python_app
