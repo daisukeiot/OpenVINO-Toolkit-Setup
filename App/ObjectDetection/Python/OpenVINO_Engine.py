@@ -108,7 +108,7 @@ class OpenVINO_Engine(object):
                 self.engineState |= Engine_State.Has_OpenVINO_Tool
 
         data_dir = Path(Path.home() / 'data')
-        if data_dir.exists():
+        if not data_dir.exists():
             # create model folder
             data_dir.mkdir(mode=0o777)
             data_dir.chmod(0o777)
