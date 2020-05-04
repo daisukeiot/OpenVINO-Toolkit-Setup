@@ -46,14 +46,15 @@ Verified with :
     ./setup2.sh
     ```
 
-1. Upon reboot, install OpenVINO toolkit with :
-
-    This script is generic (not UP2 specific).  This installs OpenVINO toolkit then reboot the host machine.
+1. Install Tensorflow with AVX turned off
 
     ```bash
     cd OpenVINO-Toolkit-Setup\UP2 && \
     ./setup3.sh
     ```
+
+1. Upon reboot, install OpenVINO toolkit  
+    [Instruction](../App/ObjectDetection/Python/README.md)
 
 1. Install Docker
 
