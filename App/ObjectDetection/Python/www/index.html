@@ -743,7 +743,7 @@
       // start video playback
       btnVideoConfig.onclick= function(evt) {
         console.log("btnVideoPlay");
-        ws.send('{\"set_video_path\":\"' + textVideoPath.value + '\"}')
+        ws.send('{\"set_video_path\":\"' + textVideoPath.value.trim() + '\"}')
         set_video_state_ui(0, 2);
       }
 

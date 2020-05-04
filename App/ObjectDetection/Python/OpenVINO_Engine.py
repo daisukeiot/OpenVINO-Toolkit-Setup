@@ -107,8 +107,14 @@ class OpenVINO_Engine(object):
                 self.openvino_path = openvino_path
                 self.engineState |= Engine_State.Has_OpenVINO_Tool
 
+        data_dir = Path(Path.home() / 'data')
+        if data_dir.exists():
+            # create model folder
+            data_dir.mkdir(mode=0o777)
+            data_dir.chmod(0o777)
+
         # make sure model folder exists
-        self.model_dir = Path(Path('./').resolve() / 'model')
+        self.model_dir = Path(data_dir / 'model')
 
         if not self.model_dir.exists():
             # create model folder
@@ -116,7 +122,8 @@ class OpenVINO_Engine(object):
             self.model_dir.chmod(0o777)
 
         # make sure ir folder exists
-        self.ir_dir =  Path(Path('./').resolve() / 'ir')
+        self.ir_dir = Path(data_dir / 'ir')
+
         if not self.ir_dir.exists():
             # create ir folder
             self.ir_dir.mkdir(mode=0o777) 

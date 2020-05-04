@@ -294,7 +294,7 @@ class Video_Data():
             logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
 
         p_video_url = Path(self.videoPath)
-        p_video = Path(Path('./').resolve() / 'video' / ((p_video_url.name).split('=')[1] + '.mp4'))
+        p_video = Path(Path.home() / 'data' / 'video' / ((p_video_url.name).split('=')[1] + '.mp4'))
 
         if not p_video.exists():
 
