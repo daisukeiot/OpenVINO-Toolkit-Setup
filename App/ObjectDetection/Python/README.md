@@ -8,12 +8,13 @@
 
 ## Ubuntu Setup
 
-Install Python3.7 and make it default with :
+Clone repo and install Python3.7 :
 
 ```bash
 sudo apt-get update && \
 # install Python3.7 for AsyncIO
-sudo apt-get install -y curl python3-pip python3.7 python3.7-dev && \
+sudo apt-get install -y git curl python3-pip python3.7 python3.7-dev && \
+git clone https://github.com/daisukeiot/OpenVINO-Toolkit-Setup.git && \
 # install pip for python3.7
 PATH=$PATH:$HOME/.local/bin && \
 echo PATH=$PATH:$HOME/.local/bin >> ~/.bashrc && \
@@ -30,20 +31,21 @@ sudo ln -s apt_pkg.cpython-{36m,37m}-x86_64-linux-gnu.so
 Install 2020.2.120 with following commands :
 
 ```bash
-# Temporary make Python3.7 to be default so OpenVINO scripts will install libraries for Python3.7
-alias python='python3.7' && \
-# echo alias python='python3.7'  >> ~/.bashrc && \
 export OPENVINO_VER=2020.2.120
 export OPENVINO_PKG=l_openvino_toolkit_p_${OPENVINO_VER}
 export OPENVINO_INSTALL=/opt/intel/openvino_${OPENVINO_VER}
 export OPENVINO_DIR=/opt/intel/openvino
 export OPENVINO_DOWNLOAD=http://registrationcenter-download.intel.com/akdlm/irc_nas/16612/l_openvino_toolkit_p_2020.2.120.tgz
 
+# Temporary make Python3.7 to be default so OpenVINO scripts will install libraries for Python3.7
+alias python='python3.7' && \
+# echo alias python='python3.7'  >> ~/.bashrc && \
+
 # install numpy
-python3.7 -m pip install 'numpy==1.16' --force-reinstall
+python3.7 -m pip install 'numpy==1.16' --force-reinstall && \
 
 # downlaod and install OpenVINO toolkit
-mkdir /tmp/openvino
+mkdir /tmp/openvino && \
 cd /tmp/openvino && \
 curl -LOJ "${OPENVINO_DOWNLOAD}" && \
 tar -xzf ./*.tgz && \
