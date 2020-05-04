@@ -8,13 +8,10 @@ if [ $# -ne 1 ]
     exit
 fi
 
-docker run -it --rm \
-    --name python_app \
-    -device-cgroup-rule='c 189:* rmw' \
+docker run -it --rm --name python_app \
+    --device-cgroup-rule='c 189:* rmw' \
     -v /dev/bus/usb:/dev/bus/usb \
-    -v ${HOME}/data:/home/openvino/data \
     --device /dev/dri \
+    -v ${HOME}/data:/home/openvino/data \
     -p 8080:8080 \
     $1
-
-docker logs -f python_app
