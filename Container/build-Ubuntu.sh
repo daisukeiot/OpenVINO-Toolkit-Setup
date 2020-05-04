@@ -14,7 +14,7 @@ REPOSITORY=$2
 PYTHON_VERSION=3.7
 
 cd ./Ubuntu
-./build-BaseOS.sh ${OS_VERSION} ${REPOSITORY}
-./build-OpenVINO-Toolkit.sh ${OS_VERSION} ${REPOSITORY}
+./build-BaseOS.sh ${OS_VERSION} ${REPOSITORY} ${PYTHON_VERSION}
+./build-OpenVINO-Toolkit.sh ${OS_VERSION} ${REPOSITORY} ${PYTHON_VERSION}
 
 docker rmi -f $(docker images -f "dangling=true" -q)
