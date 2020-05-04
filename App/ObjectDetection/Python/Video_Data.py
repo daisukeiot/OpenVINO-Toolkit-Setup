@@ -300,12 +300,27 @@ class Video_Data():
 
             self.videoProcessor.set_video_stop()
 
-            ydl_opts = {
-                'format':'bestvideo',
-                'outtmpl': str(p_video)
-            }
+            # get list of formats
+            # Use format 136 (MP4, 1280x720)
+            # 136          mp4        1280x720   720p 2329k , avc1.4d401f, 30fps, video only, 367.06MiB
+            ydl_opts = {}
 
             try:
+                with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                    info = ydl.extract_info(str(p_video), download=False)
+                    formats = meta.get('formats', [info])
+
+                for format in formats:
+                    if format['format_id'] == '136':
+                        ydl_opts['format'] = '136'
+                        break
+
+                if not 'format' in ydl_opts.keys():
+                    ydl_opts['format'] = 'bestvideo'
+
+
+                ydl_opts['outtmpl'] = str(p_video)
+
                 with youtube_dl.YoutubeDL(ydl_opts) as ydl:
                     logging.info('downloading {}....'.format(str(p_video)))
                     ydl.download([self.videoPath])
