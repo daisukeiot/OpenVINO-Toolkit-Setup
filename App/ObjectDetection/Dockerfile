@@ -55,7 +55,7 @@ ADD ./Python ./App
 ADD ./startapp.sh  /home/openvino
 RUN chmod a+x ./startapp.sh
 
-RUN chmod a+w ./App ./App/video ./App/model ./App/ir && \
+RUN chmod a+w ./App && \
     cd ./App && \
     git clone https://github.com/opencv/open_model_zoo.git && \
     python3.7 -m pip install -r ./requirements.txt
