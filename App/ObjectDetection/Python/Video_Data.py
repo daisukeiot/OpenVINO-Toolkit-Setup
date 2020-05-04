@@ -307,8 +307,8 @@ class Video_Data():
 
             try:
                 with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-                    info = ydl.extract_info(str(p_video), download=False)
-                    formats = meta.get('formats', [info])
+                    info = ydl.extract_info(self.videoPath, download=False)
+                    formats = info.get('formats', [info])
 
                 for format in formats:
                     if format['format_id'] == '136':
@@ -317,7 +317,6 @@ class Video_Data():
 
                 if not 'format' in ydl_opts.keys():
                     ydl_opts['format'] = 'bestvideo'
-
 
                 ydl_opts['outtmpl'] = str(p_video)
 
