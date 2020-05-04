@@ -431,6 +431,8 @@ class Video_Data():
             res = "wxga"
         elif w == 1920 and h == 1080:
             res = "fhd"
+        elif w == 3840 and h == 2160:
+            res = "uhd"
         else:
             res = "{}x{}".format(w, h)
 
