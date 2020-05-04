@@ -8,6 +8,7 @@ FROM ${BASE_TAG}
 USER root
 
 ENV INTEL_OPENVINO_DIR=/opt/intel/openvino
+ENV OPENVINO_OBJECT_DETECTION_PYTHON=1
 
 #
 # Install sudo
