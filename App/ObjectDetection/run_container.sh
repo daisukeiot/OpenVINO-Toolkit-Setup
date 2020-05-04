@@ -9,6 +9,7 @@ if [ $# -ne 1 ]
 fi
 
 docker run -it --rm \
+    --name python_app \
     -device-cgroup-rule='c 189:* rmw' \
     -v /dev/bus/usb:/dev/bus/usb \
     -v ${HOME}/data:/home/openvino/data \
