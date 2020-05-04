@@ -57,6 +57,9 @@ class Object_Detection_Yolo_Processor():
 
         self.output_format = output_format
 
+        self.prev_frame = None
+        self.prev_frame_data = None
+
         self.reshape_data = dict()
 
         self.colors = color_list()
@@ -144,6 +147,8 @@ class Object_Detection_Yolo_Processor():
             rect = [left, top, right, bottom]
 
             self.annotate(frame, rect, obj['confidence'], obj['class_id'] + 1)
+
+        return frame
 
     def parse_yolo_region(self, blob, resized_image_shape, original_im_shape, params, threshold):
         # ------------------------------------------ Validating output parameters ------------------------------------------

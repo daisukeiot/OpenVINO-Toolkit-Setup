@@ -301,7 +301,7 @@ class Video_Data():
             self.videoProcessor.set_video_stop()
 
             ydl_opts = {
-                'format':'136',
+                'format':'bestvideo',
                 'outtmpl': str(p_video)
             }
 

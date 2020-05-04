@@ -16,7 +16,7 @@ class OpenVINO_Core:
         self.ie = IECore()
         self.name = ""
 
-        self.asyncInference = False
+        self.asyncInference = True
         self.plugin = None
         self.ieNet = None
 
@@ -26,8 +26,9 @@ class OpenVINO_Core:
 
         devices = []
         for device in self.ie.available_devices:
-            if 'MYRIAD' in device and not 'MYRIAD' in devices:
-                devices.append('MYRIAD')
+            if 'MYRIAD' in device:
+                if not 'MYRIAD' in devices:
+                    devices.append('MYRIAD')
             else:
                 if not device in devices:
                     devices.append(device)
@@ -44,6 +45,8 @@ class OpenVINO_Core:
         self.current_hw = None
         self.current_precision = None
         self.current_model = None
+        self.request_slot_curr = 1
+        self.request_slot_next = 0
 
     def reset_engine(self):
         self.name = ""
@@ -91,8 +94,6 @@ class OpenVINO_Core:
 
             p_model = Path(xml_file).resolve()
             self.name = str(Path(p_model.name).stem)
-
-            precision = precision
 
             logging.info('==================================================================')
             logging.info('Loading Model')
@@ -149,6 +150,7 @@ class OpenVINO_Core:
                 # logging.info(' -Layers')
                 # logging.info('       Type : {}'.format(self.ieNet.layers[key].type))
                 # self.dump(self.ieNet.layers[key])
+                # blob.precision = precision
 
             logging.info('==================================================================')
             logging.info('Input Blobs')
@@ -159,11 +161,11 @@ class OpenVINO_Core:
                 logging.info('     Layout   : {}'.format(blob.layout))
                 logging.info('      Shape   : {}'.format(blob.shape))
                 logging.info('  Precision   : {}'.format(blob.precision))
-
+                # blob.precision = precision
             logging.info('>> Loading model to {}'.format(device))
 
             # self.exec_net = self.ie.load_network(network = self.ieNet, device_name = device, num_requests = 2)
-            self.exec_net = self.ie.load_network(network = self.ieNet, device_name = device, num_requests = 4)
+            self.exec_net = self.ie.load_network(network = self.ieNet, device_name = device, num_requests = 2)
 
             logging.info('<< Model loaded to  {}'.format(device))
 
@@ -288,6 +290,8 @@ class OpenVINO_Core:
         # if self._debug:
         #     logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
 
+        return_frame = frame
+
         if self.result_processor == None:
             return
 
@@ -297,12 +301,14 @@ class OpenVINO_Core:
 
             if inference_data:
                 if self.asyncInference:
-                    self.exec_net.start_async(request_id=0, inputs={inference_data.data_key : inference_data.image_data, inference_data.info_key : inference_data.image_info})
-                    if self.exec_net.requests[0].wait(-1) == 0:
-                        self.result_processor.process_result(self.exec_net.requests[0].outputs, frame, confidence)
+                    self.result_processor.prev_frame = frame
+                    self.exec_net.start_async(request_id=self.request_slot_next, inputs={inference_data.data_key : inference_data.image_data, inference_data.info_key : inference_data.image_info})
+                    if self.exec_net.requests[self.request_slot_curr].wait(-1) == 0:
+                        return_frame = self.result_processor.process_result(self.exec_net.requests[self.request_slot_curr].outputs, self.result_processor.prev_frame, confidence)
                 else:
+                    self.request_slot_curr = 0
                     self.exec_net.infer(inputs={inference_data.data_key : inference_data.image_data, inference_data.info_key : inference_data.image_info})
-                    self.result_processor.process_result(self.exec_net.requests[0].outputs, frame, confidence)
+                    return_frame = self.result_processor.process_result(self.exec_net.requests[self.request_slot_curr].outputs, frame, confidence)
 
         elif self.inputFormat == Input_Format.Yolo:
 
@@ -311,12 +317,23 @@ class OpenVINO_Core:
             if frame_data.size > 0:
 
                 if self.asyncInference:
-                    self.exec_net.start_async(request_id=0, inputs={input_key : frame_data})
-                    if self.exec_net.requests[0].wait(-1) == 0:
-                        self.result_processor.process_result(self.exec_net.requests[0].outputs, frame_data, frame, confidence)
+                    self.result_processor.prev_frame = frame
+                    self.result_processor.prev_frame_data = frame_data
+                    self.exec_net.start_async(request_id=self.request_slot_next, inputs={input_key : frame_data})
+                    if self.exec_net.requests[self.request_slot_curr].wait(-1) == 0:
+                        return_frame = self.result_processor.process_result(layers = self.ieNet.layers,
+                                                                            results = self.exec_net.requests[self.request_slot_curr].outputs, 
+                                                                            frame_data = self.result_processor.prev_frame_data, 
+                                                                            frame = self.result_processor.prev_frame, 
+                                                                            confidence = confidence)
                 else:
+                    self.request_slot_curr = 0
                     self.exec_net.infer(inputs={input_key : frame_data})
-                    self.result_processor.process_result(self.ieNet.layers, self.exec_net.requests[0].outputs, frame_data, frame, confidence)
+                    return_frame = self.result_processor.process_result(layers = self.ieNet.layers,
+                                                                        results = self.exec_net.requests[self.request_slot_curr].outputs,
+                                                                        frame_data = frame_data,
+                                                                        frame = frame,
+                                                                        confidence = confidence)
 
         else:
         # elif self.inputFormat == Input_Format.Tensorflow or self.inputFormat == Input_Format.Caffe or self.inputFormat == Input_Format.IntelIR:
@@ -327,9 +344,17 @@ class OpenVINO_Core:
             if frame_data.size > 0:
 
                 if self.asyncInference:
-                    self.exec_net.start_async(request_id=0, inputs={input_key : frame_data})
-                    if self.exec_net.requests[0].wait(-1) == 0:
-                        self.result_processor.process_result(self.exec_net.requests[0].outputs, frame, confidence)
+                    self.result_processor.prev_frame = frame
+                    self.exec_net.start_async(request_id=self.request_slot_next, inputs={input_key : frame_data})
+                    if self.exec_net.requests[self.request_slot_curr].wait(-1) == 0:
+                        return_frame = self.result_processor.process_result(self.exec_net.requests[self.request_slot_curr].outputs, self.result_processor.prev_frame, confidence)
+                        assert return_frame.size > 0, "Frame Empty"
                 else:
+                    self.request_slot_curr = 0
                     self.exec_net.infer(inputs={input_key : frame_data})
-                    self.result_processor.process_result(self.exec_net.requests[0].outputs, frame, confidence)
+                    return_frame = self.result_processor.process_result(self.exec_net.requests[self.request_slot_curr].outputs, frame, confidence)
+
+        if self.asyncInference:
+            self.request_slot_next, self.request_slot_curr = self.request_slot_curr, self.request_slot_next
+
+        return return_frame
