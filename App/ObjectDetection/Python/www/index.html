@@ -699,7 +699,10 @@
 
                 if (json.isComplete)
                 {
-                  ws.send('{\"set_inference_state\":1}')
+                  if (cbInference.checked == false)
+                  {
+                    ws.send('{\"set_inference_state\":1}')
+                  }
                 }
               }
               else if (json.set_target_device)
@@ -743,7 +746,7 @@
       // start video playback
       btnVideoConfig.onclick= function(evt) {
         console.log("btnVideoPlay");
-        ws.send('{\"set_video_path\":\"' + textVideoPath.value + '\"}')
+        ws.send('{\"set_video_path\":\"' + textVideoPath.value.trim() + '\"}')
         set_video_state_ui(0, 2);
       }
 
@@ -782,12 +785,6 @@
         setAiModel_Start()
         ws.send('{\"set_ai_model\":\"' + document.getElementById("modelList").value + '\", \"set_precision\":\"' + document.getElementById("precisionItem").value + '\", \"set_target_device\":\"' + targetDeviceList.value + '\"}')
       }
-
-      // // pause inference
-      // btnInferencePause.onclick= function(evt) {
-      //   console.log("btnInferencePause");
-      //   ws.send('{\"set_inference_state\":0}')
-      // }
 
       btnVideoSave.onclick= function(evt) {
         console.log("btnVideoSave.onClick");

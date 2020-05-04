@@ -1,3 +1,4 @@
+import os
 import sys
 import logging
 import traceback
@@ -76,7 +77,11 @@ class OpenVINO_Core:
     def get_signature(self):
         cpu = self.ie.get_versions('CPU')
 
-        signature = 'OpenVINO {}.{}.{}'.format(cpu['CPU'].major,cpu['CPU'].minor, cpu['CPU'].build_number)
+        if os.getenv('OPENVINO_OBJECT_DETECTION_PYTHON'):
+            signature = 'OpenVINO {}.{}.{} in Container'.format(cpu['CPU'].major,cpu['CPU'].minor, cpu['CPU'].build_number)
+        else:
+            signature = 'OpenVINO {}.{}.{}'.format(cpu['CPU'].major,cpu['CPU'].minor, cpu['CPU'].build_number)
+
         return signature
 
 

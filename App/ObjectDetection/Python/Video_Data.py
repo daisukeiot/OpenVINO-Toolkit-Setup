@@ -294,18 +294,32 @@ class Video_Data():
             logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
 
         p_video_url = Path(self.videoPath)
-        p_video = Path(Path('./').resolve() / 'video' / ((p_video_url.name).split('=')[1] + '.mp4'))
+        p_video = Path(Path.home() / 'data' / 'video' / ((p_video_url.name).split('=')[1] + '.mp4'))
 
         if not p_video.exists():
 
             self.videoProcessor.set_video_stop()
 
-            ydl_opts = {
-                'format':'bestvideo',
-                'outtmpl': str(p_video)
-            }
+            # get list of formats
+            # Use format 136 (MP4, 1280x720)
+            # 136          mp4        1280x720   720p 2329k , avc1.4d401f, 30fps, video only, 367.06MiB
+            ydl_opts = {}
 
             try:
+                with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                    info = ydl.extract_info(self.videoPath, download=False)
+                    formats = info.get('formats', [info])
+
+                for format in formats:
+                    if format['format_id'] == '136':
+                        ydl_opts['format'] = '136'
+                        break
+
+                if not 'format' in ydl_opts.keys():
+                    ydl_opts['format'] = 'bestvideo'
+
+                ydl_opts['outtmpl'] = str(p_video)
+
                 with youtube_dl.YoutubeDL(ydl_opts) as ydl:
                     logging.info('downloading {}....'.format(str(p_video)))
                     ydl.download([self.videoPath])
@@ -431,6 +445,8 @@ class Video_Data():
             res = "wxga"
         elif w == 1920 and h == 1080:
             res = "fhd"
+        elif w == 3840 and h == 2160:
+            res = "uhd"
         else:
             res = "{}x{}".format(w, h)
 
