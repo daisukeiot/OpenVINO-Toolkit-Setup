@@ -525,7 +525,7 @@ class OpenVINO_Engine(object):
                 p_target_dir = self.model_dir
 
             # download
-            downloader_cmd = 'python3 {} --name {} --output_dir {} --progress_format json > {}'.format(str(p_downloader), model_data.modelName, str(p_target_dir), str(logfile))
+            downloader_cmd = 'python3.7 {} --name {} --output_dir {} --progress_format json > {}'.format(str(p_downloader), model_data.modelName, str(p_target_dir), str(logfile))
             if self._debug:
                 logging.info(downloader_cmd)                
 
@@ -611,7 +611,7 @@ class OpenVINO_Engine(object):
 
             if (p_converter.exists()):
 
-                converter_cmd = 'python3 {} --download_dir {} --output_dir {} --name {} --python {}'.format(
+                converter_cmd = 'python3.7 {} --download_dir {} --output_dir {} --name {} --python {}'.format(
                     str(p_converter),
                     str(self.model_dir),
                     str(self.ir_dir),
