@@ -24,40 +24,33 @@ ARG OPENVINO_DOWNLOAD=http://registrationcenter-download.intel.com/akdlm/irc_nas
 # Run as root to install OpenVINO Toolkit
 #
 USER root
-
-#
-# Use /tmp folder
-#
 WORKDIR /tmp
 
 RUN apt-get update && \
-    apt install -y --no-install-recommends sudo && \
+    apt install -y --no-install-recommends sudo python3-yaml python3-requests && \
     rm -rf /var/lib/apt/lists/* && \
-    echo "openvino ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-#    echo "%sudo  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/nopasswd
+    echo "openvino ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
+    usermod -aG video openvino 
+
 #
 # Download OpenVINO Toolkit
 # Run silent install
 # Setup environment variable
+#
 RUN curl -LOJ "${OPENVINO_DOWNLOAD}" && \
     tar -xzf ./*.tgz && \
     cd l_openvino_toolkit* && \
     ./install.sh --list_components && \
     sed -i 's/decline/accept/g' silent.cfg && \
     ./install.sh -s silent.cfg && \
-    rm -rf /tmp/* && \
-    echo "source $OPENVINO_INSTALL/bin/setupvars.sh" >> /home/openvino/.bashrc
-
-RUN cd $INSTALL_DIR/install_dependencies && \
-    sudo -E ./install_openvino_dependencies.sh && \
-    sudo -E ./install_NEO_OCL_driver.sh
-
-RUN usermod -aG video openvino
-
-ENV INSTALLDIR ${INSTALL_DIR}
+    echo "source ${INSTALL_DIR}/bin/setupvars.sh" >> /home/openvino/.bashrc && \
+    /bin/bash -c "source ${INSTALL_DIR}/bin/setupvars.sh" && \
+    cd ${INSTALL_DIR}/install_dependencies && \
+    ./_install_all_dependencies.sh && \
+    rm -rf /tmp/*
 
 #
-# Set user to openvino and current directory to /home/openvino
+# Switch user to openvino and current directory to /home/openvino
 #
 USER openvino
 WORKDIR /home/openvino
@@ -65,8 +58,8 @@ WORKDIR /home/openvino
 #
 # Run as openvino user
 #
-RUN /bin/bash -c "source $INSTALL_DIR/bin/setupvars.sh && \
-    cd $INSTALL_DIR/install_dependencies && \
+RUN /bin/bash -c "source ${INSTALL_DIR}/bin/setupvars.sh && \
+    cd ${INSTALL_DIR}/install_dependencies && \
     ./install_NCS_udev_rules.sh"
 
 ENTRYPOINT []

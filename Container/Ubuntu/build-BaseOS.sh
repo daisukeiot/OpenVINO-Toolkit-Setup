@@ -9,9 +9,7 @@ if [ $# -ne 3 ]
     echo "======================================="
     exit
 fi
-
 clear
-
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
 OS_VERSION=$1
 MY_REGISTRY=$2
@@ -49,9 +47,6 @@ echo '/ /_/ / /_/ / /_/ / / / / /_/ / /_  '
 echo '\____/_.___/\__,_/_/ /_/\__,_/\__/  '
 echo ''
 echo "Container built with Ubuntu version : ${OS_VERSION}"
-# echo "Pushing Image : ${TAG}"
-# echo ''
-# docker push ${TAG}
 
 echo $'\n###############################################################################\n'
 docker run -it --rm ${TAG} /bin/bash -c "python${PYTHON_VERSION} --version;lsb_release -a"

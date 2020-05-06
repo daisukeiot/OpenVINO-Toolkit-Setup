@@ -5,12 +5,12 @@
 # 
 ARG OS_VERSION=18.04
 ARG MY_REGISTRY=daisukeiot
+ARG PYTHON_VERSION=3.7
 ARG TF_VERSION=r1.15
 ARG TAG_TF=
-ARG PYTHON_VERSION=3.7
 
 FROM ${TAG_TF} as TensorFlow
-WORKDIR /wheels
+
 #
 # Use Base image built in the previous step
 #
@@ -25,48 +25,50 @@ ARG OPENVINO_INSTALL=/opt/intel/openvino_${OPENVINO_VER}
 ARG INSTALL_DIR=/opt/intel/openvino
 ARG OPENVINO_DOWNLOAD=http://registrationcenter-download.intel.com/akdlm/irc_nas/16612/l_openvino_toolkit_p_2020.2.120.tgz
 
-ENV PYTHON=python${PYTHON_VERSION}
+ARG PYTHON=python${PYTHON_VERSION}
 
 #
 # Run as root to install OpenVINO Toolkit
 #
 USER root
 
-#
-# Use /tmp folder
-#
 WORKDIR /tmp
 
+#
+# Copy Tensorflow Wheel Package
+#
 COPY --from=TensorFlow /wheels/*.whl .
 
 RUN apt-get update && \
-    apt install -y --no-install-recommends sudo && \
+    apt install -y --no-install-recommends sudo python3-yaml python3-requests && \
     rm -rf /var/lib/apt/lists/* && \
-    echo "openvino ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+    echo "openvino ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
+    usermod -aG video openvino 
+
+#
+# Install Tensorflow Package
+#
+RUN ${PYTHON} -m pip install ./*.whl
+
 #
 # Download OpenVINO Toolkit
 # Run silent install
 # Setup environment variable
-RUN ${PYTHON} -m pip install ./*.whl && \
-    curl -LOJ "${OPENVINO_DOWNLOAD}" && \
+#
+RUN curl -LOJ "${OPENVINO_DOWNLOAD}" && \
     tar -xzf ./*.tgz && \
     cd l_openvino_toolkit* && \
     ./install.sh --list_components && \
     sed -i 's/decline/accept/g' silent.cfg && \
     ./install.sh -s silent.cfg && \
-    rm -rf /tmp/* && \
-    echo "source $OPENVINO_INSTALL/bin/setupvars.sh" >> /home/openvino/.bashrc
-
-RUN cd $INSTALL_DIR/install_dependencies && \
-    sudo -E ./install_openvino_dependencies.sh && \
-    sudo -E ./install_NEO_OCL_driver.sh
-
-RUN usermod -aG video openvino
-
-ENV INSTALLDIR ${INSTALL_DIR}
+    echo "source ${INSTALL_DIR}/bin/setupvars.sh" >> /home/openvino/.bashrc && \
+    /bin/bash -c "source ${INSTALL_DIR}/bin/setupvars.sh" && \
+    cd ${INSTALL_DIR}/install_dependencies && \
+    ./_install_all_dependencies.sh && \
+    rm -rf /tmp/*
 
 #
-# Set user to openvino and current directory to /home/openvino
+# Switch user to openvino and current directory to /home/openvino
 #
 USER openvino
 WORKDIR /home/openvino
@@ -74,8 +76,8 @@ WORKDIR /home/openvino
 #
 # Run as openvino user
 #
-RUN /bin/bash -c "source $INSTALL_DIR/bin/setupvars.sh && \
-    cd $INSTALL_DIR/install_dependencies && \
+RUN /bin/bash -c "source ${INSTALL_DIR}/bin/setupvars.sh && \
+    cd ${INSTALL_DIR}/install_dependencies && \
     ./install_NCS_udev_rules.sh"
 
 ENTRYPOINT []

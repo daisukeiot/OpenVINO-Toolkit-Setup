@@ -14,7 +14,7 @@ ARG PYTHON=python${PYTHON_VERSION}
 # Run as root user
 #
 USER root
-WORKDIR /
+WORKDIR /tmp
 
 #
 # Create user `openvino`
@@ -49,6 +49,7 @@ RUN apt-get update && \
                 libpython3-dev \
                 python3-wheel && \
     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
+    python3 get-pip.py && \
     ${PYTHON} get-pip.py && \
     alias python="${PYTHON}" && \
     echo alias python="${PYTHON}"  >> /home/openvino/.bashrc && \
@@ -59,7 +60,8 @@ RUN apt-get update && \
     ${PYTHON} -m pip --no-cache-dir install --upgrade \
         pip \
         setuptools==39.0.1 && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /tmp/*
 
 #
 # Change user to openvino
