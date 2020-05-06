@@ -1,10 +1,12 @@
-# Setting Up UP2
+# UP2 Development Environment with Ubuntu 18.04
 
 Verified with :
 
 - UP2 with Myriad X
+- UP2 Kernel
 - Ubuntu 18.04 LTS
 - OpenVINO 2020.2.120
+- Python 3.7.5
 
 ## Ubuntu 18.04 LTS
 

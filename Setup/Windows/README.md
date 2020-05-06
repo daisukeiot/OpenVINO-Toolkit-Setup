@@ -1,11 +1,12 @@
-# Setup Windows 10 Development Environment
+# Windows 10 Development Environment
 
-## Components
+Verified with :
 
+- Windows 10 1809 LTSC
 - Visual Studio 2019
 - Python 3.7.5
 - CMake
-- OpenVINO Toolkit
+- OpenVINO 2020.2.117
 
 ## Clone the repo
 
