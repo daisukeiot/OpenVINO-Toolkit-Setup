@@ -70,13 +70,14 @@ WORKDIR 'C:\Program Files (x86)\IntelSWTools\openvino\deployment_tools\model_opt
 RUN .\install_prerequisites.bat ; `
     Start-Process $ENV:PYTHON_BIN -ArgumentList '-m easy_install protobuf-3.6.1-py3.7-win-amd64.egg' -Wait -PassThru -NoNewWindow
 
-#
-# Change Shell to CMD.EXE
-#
-SHELL ["cmd", "/S", "/C"]
 WORKDIR C:\
 
 # Clean Up
 RUN Remove-Item -Path C:\OV.TEMP -recurse -force
- 
+
+#
+# Change Shell to CMD.EXE
+#
+SHELL ["cmd", "/S", "/C"]
+
 CMD cmd.exe
