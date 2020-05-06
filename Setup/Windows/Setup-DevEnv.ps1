@@ -49,7 +49,7 @@ function UpdateEnvironment()
 
 if (-not (Test-Path "C:\OV.Work"))
 {
-    New-Item "C:\OV.WORK" -itemtype directory
+    New-Item "C:\OV.WORK" -itemtype directory | Out-Null
 }
 
 
