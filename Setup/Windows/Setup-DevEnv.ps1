@@ -47,7 +47,7 @@ function UpdateEnvironment()
     $ENV:PATH= $Path_New
 }
 
-if (-not Test-Path "C:\OV.Work")
+if (-not (Test-Path "C:\OV.Work"))
 {
     New-Item "C:\OV.WORK" -itemtype directory
 }
