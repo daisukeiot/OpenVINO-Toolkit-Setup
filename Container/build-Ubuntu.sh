@@ -4,7 +4,8 @@ if [ $# -ne 3 ]
     echo "Please specify Ubuntu Version and reistry"
     echo "  Ubuntu Version : 18.04 or 16.04"
     echo "  Registry       : Your registry"
-    echo "  Example ./build-BaseOS.sh 18.04 myregistry"
+    echo "  Python         : Python Version"
+    echo "  Example ./build-BaseOS.sh 18.04 myregistry 3.7"
     echo "======================================="
     exit
 fi
