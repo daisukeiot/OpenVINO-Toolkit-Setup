@@ -45,7 +45,6 @@ echo '/ /_/ / /_/ /  __/ / / / |/ // // /|  / /_/ /    / / / /_/ / /_/ / / ,< / 
 echo '\____/ .___/\___/_/ /_/|___/___/_/ |_/\____/    /_/  \____/\____/_/_/|_/_/\__/   \____/_/   /____/ '
 echo '    /_/                                                                                            '
 echo ''
-echo ''
 echo "Image Tag      : ${TAG}"
 echo "TensorFlow Tag : ${TAG_TF}"
 echo ''
@@ -79,6 +78,7 @@ echo '\____/ .___/\___/_/ /_/|___/___/_/ |_/\____/    /_/  \____/\____/_/_/|_/_/
 echo '    /_/                                                                                            '
 echo ''
 echo "Container built with OpenVINO Toolkit version : ${OPENVINO_VER}"
+echo "Image Tag : ${TAG}"
 echo ''
 echo $'\n###############################################################################'
 echo 'CTLC+C to cancel docker push'
