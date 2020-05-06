@@ -24,7 +24,7 @@ if docker inspect --type=image $TAG_OS > /dev/null 2>&1; then
     ./Ubuntu/build-BaseOS.sh ${OS_VERSION} ${MY_REGISTRY}
 fi
 
-TAG_TF=${MY_REGISTRY}/openvino-container:tf_${TF_VERSION}
+TAG_TF=${MY_REGISTRY}/openvino-container:tf_${TF_VERSION}_cp${PYTHON_VERSION}
 
 if docker inspect --type=image $TAG_TF > /dev/null 2>&1; then
     echo "${TAG_TF} exists"
