@@ -16,8 +16,8 @@ sudo docker run --name tensorflow ${TAG} /bin/true && \
 sudo docker cp tensorflow:/tensorflow-1.15.2-cp37-cp37m-linux_x86_64.whl ./ && \
 sudo docker rm tensorflow && \
 sudo docker rmi -f ${TAG} && \
-sudo apt-get remove --purge moby-cli
-sudo apt-get remove --purge moby-engine
+sudo apt-get remove -y --purge moby-cli
+sudo apt-get remove -y --purge moby-engine
 sudo apt-get install -y curl python3-pip python3.7 python3.7-dev && \
 PATH=$PATH:$HOME/.local/bin && \
 echo PATH=$PATH:$HOME/.local/bin >> ~/.bashrc && \

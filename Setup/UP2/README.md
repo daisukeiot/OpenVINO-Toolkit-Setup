@@ -21,7 +21,7 @@ Verified with :
     sudo apt update && \
     sudo apt install -y git && \
     git clone https://github.com/daisukeiot/OpenVINO-Toolkit-Setup.git && \
-    cd ./OpenVINO-Toolkit-Setup/Setup/UP2/ && \
+    cd ~/OpenVINO-Toolkit-Setup/Setup/UP2 && \
     ./setup1.sh
     ```
 
@@ -33,14 +33,14 @@ Verified with :
     > Do not run this if your host machine is not UP2
 
     ```bash
-    cd OpenVINO-Toolkit-Setup/Setup/UP2 && \
+    cd ~/OpenVINO-Toolkit-Setup/Setup/UP2 && \
     ./setup2.sh
     ```
 
 1. Install Tensorflow with AVX turned off
 
     ```bash
-    cd OpenVINO-Toolkit-Setup/Setup/UP2 && \
+    cd ~/OpenVINO-Toolkit-Setup/Setup/UP2 && \
     ./setup3.sh
     ```
 

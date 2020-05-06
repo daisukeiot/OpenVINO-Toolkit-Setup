@@ -24,6 +24,15 @@ cd ~/OpenVINO-Toolkit-Setup/Setup/Ubuntu && \
 ./setup.sh
 ```
 
+## Verification
+
+Run verification on CPU, GPU, and MYRIAD with :
+
+```bash
+cd ~/OpenVINO-Toolkit-Setup/Setup/Ubuntu && \
+./verification.sh
+```
+
 ## Container
 
 If you are planning to run IoT Edge or containerized OpenVINO application, install Docker/Moby
