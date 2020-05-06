@@ -47,6 +47,11 @@ function UpdateEnvironment()
     $ENV:PATH= $Path_New
 }
 
+if (-not Test-Path "C:\OV.Work")
+{
+    New-Item "C:\OV.WORK" -itemtype directory
+}
+
 
 #######################################################################################
 #
@@ -55,7 +60,7 @@ function UpdateEnvironment()
 #######################################################################################
 
 $URL_VS = 'https://aka.ms/vs/16/release/vs_Community.exe'
-$PATH_VS = 'C:\Work\vs.exe'
+$PATH_VS = 'C:\OV.Work\vs.exe'
 $VS_WORKLOADs = ' --add Microsoft.VisualStudio.Workload.NativeDesktop' + `
                 ' --add Microsoft.VisualStudio.Workload.Universal' + `
                 ' --add Microsoft.VisualStudio.Component.Windows10SDK.17763' +
@@ -94,7 +99,7 @@ else
 $PYTHON_VERSION="3.7.5"
 $PYTHON_DIR="C:\Python${PYTHON_VERSION}"
 $URL_Python = "https://www.python.org/ftp/python/${PYTHON_VERSION}/python-${PYTHON_VERSION}-amd64.exe"
-$PATH_Python = "C:\Work\Python${PYTHON_VERSION}.exe"
+$PATH_Python = "C:\OV.Work\Python${PYTHON_VERSION}.exe"
 
 Write-Host "Downloading Python ..."
 
@@ -103,7 +108,7 @@ if (-not (Test-Path $PATH_Python))
     Invoke-WebRequest -Uri $URL_Python -OutFile $PATH_Python
 }
 
-$Arguments = ('/passive', '/log', 'C:\Work\Python.log', "TargetDir=$PYTHON_DIR", 'InstallAllUsers=1','PrependPath=1', 'Include_test=0', 'Include_launcher=0', 'Include_tcltk=0', 'Include_doc=0', 'Shortcuts=0')
+$Arguments = ('/passive', '/log', 'C:\OV.Work\Python.log', "TargetDir=$PYTHON_DIR", 'InstallAllUsers=1','PrependPath=1', 'Include_test=0', 'Include_launcher=0', 'Include_tcltk=0', 'Include_doc=0', 'Shortcuts=0')
 
 Write-Host "Starting Python Install ..."
 $process = Start-Process -FilePath $PATH_Python -ArgumentList $Arguments -Wait -PassThru -NoNewWindow
@@ -157,7 +162,7 @@ else
 #
 #######################################################################################
 $URL_OPENVINO = "http://registrationcenter-download.intel.com/akdlm/irc_nas/16613/w_openvino_toolkit_p_2020.2.117.exe"
-$PATH_OPENVINO = "C:\Work\openvino.exe"
+$PATH_OPENVINO = "C:\OV.Work\openvino.exe"
 
 Write-Host "Downloading OpenVINO ..."
 
@@ -167,7 +172,7 @@ if (-not (Test-Path $PATH_OPENVINO))
 }
 
 $OPENVINO_COMPONENTS = 'OPENVINO_COMMON,icl_redist,INFERENCE_ENGINE,INFERENCE_ENGINE_CPU,INFERENCE_ENGINE_GPU,INFERENCE_ENGINE_SDK,INFERENCE_ENGINE_SAMPLES,POT,OMZ_TOOLS,INFERENCE_ENGINE_VPU,VPU_DRV,MODEL_OPTIMIZER,OMZ_DEV,OPENCV,OPENCV_RUNTIME,OPENCV_PYTHON,SETUPVARS'
-$Arguments = ('--s', '--r yes', '--l C:\Work\openvino_log.txt', '--a install', '--eula=accept', "--components=${OPENVINO_COMPONENTS}", '--output=C:\Work\openvino_out.txt')
+$Arguments = ('--s', '--r yes', '--l C:\OV.Work\openvino_log.txt', '--a install', '--eula=accept', "--components=${OPENVINO_COMPONENTS}", '--output=C:\OV.Work\openvino_out.txt')
 
 Write-Host "Starting OpenVINO Toolkit ..."
 $process = Start-Process -FilePath $PATH_OPENVINO -ArgumentList $Arguments -Wait -PassThru -NoNewWindow
