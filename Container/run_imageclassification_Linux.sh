@@ -36,7 +36,7 @@ echo ' _/ // / / / / / /_/ / /_/ /  __/  / /___/ / /_/ (__  |__  ) / __/ / /__/ 
 echo '/___/_/ /_/ /_/\__,_/\__, /\___/   \____/_/\__,_/____/____/_/_/ /_/\___/\__,_/\__/_/\____/_/ /_/ '
 echo '                    /____/                                                                       '
 echo '###################################################################################################'
-echo "Running on ${TARGET}"
+echo "Running on ${TARGET_DEV}"
 echo '###################################################################################################'
 
 docker run -it --rm ${DOCKER_OPTION} ${TARGET_TAG} /bin/bash -c "cd /opt/intel/openvino/deployment_tools/demo && ./demo_squeezenet_download_convert_run.sh -d ${TARGET_DEV}"
