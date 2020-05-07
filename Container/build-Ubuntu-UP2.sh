@@ -24,6 +24,15 @@ cd ./Ubuntu
 
 TAG=ubuntu_${OS_VERSION}_cp${PYTHON_VERSION}
 
+if ! docker inspect --type=image ${MY_REGISTRY}/openvino-container:$TAG > /dev/null 2>&1; then
+    ./build-BaseOS.sh ${MY_REGISTRY} ${OS_VERSION} ${PYTHON_VERSION}
+fi
+
+if ! docker inspect --type=image ${MY_REGISTRY}/openvino-container:$TAG > /dev/null 2>&1; then
+    echo "Failed to create image"
+    exit
+fi
+
 ./build-Tensorflow.sh ${MY_REGISTRY} ${TAG} ${PYTHON_VERSION} ${TF_VERSION}
 TAG=${TAG}_tf${TF_VERSION}
 if ! docker inspect --type=image ${MY_REGISTRY}/openvino-container:$TAG > /dev/null 2>&1; then
