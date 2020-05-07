@@ -1,11 +1,4 @@
-if [ $# -ne 1 ]
-  then
-    echo "======================================="
-    echo "Please specify Container and Target Device"
-    echo "  Example ./verify-container.sh myregistry/container:tag"
-    echo "======================================="
-    exit
-fi
+if "%1" eq "" goto :HELP
 
 #
 # Build Container with verification script
@@ -25,3 +18,11 @@ echo "Running on ${TARGET_DEV}"
 echo '###################################################################################################'
 
 docker run --rm --isolation hyperv ${TARGET_TAG} cmd.exe /c "cd %INTEL_OPENVINO_DIR%\deployment_tools\demo && demo_squeezenet_download_convert_run.bat"
+
+goto :EOF
+
+:HELP
+echo "======================================="
+echo "Please specify Container and Target Device"
+echo "  Example ./verify-container.sh myregistry/container:tag"
+echo "======================================="
