@@ -17,10 +17,8 @@ RUN apt-get update && \
     apt install -y --no-install-recommends git && \
     rm -rf /var/lib/apt/lists/*
 
-RUN cp ${INSTALLDIR}/deployment_tools/inference_engine/external/97-myriad-usbboot.rules /etc/udev/rules.d/ && \
-    ldconfig
-
 WORKDIR /opt
+
 RUN curl -L https://github.com/libusb/libusb/archive/v1.0.22.zip --output v1.0.22.zip && \
     unzip v1.0.22.zip && \
     cd libusb-1.0.22 && \
@@ -33,6 +31,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt/libusb-1.0.22/libusb
+
 RUN /bin/mkdir -p '/usr/local/lib' && \
     /bin/bash ../libtool   --mode=install /usr/bin/install -c   libusb-1.0.la '/usr/local/lib' && \
     /bin/mkdir -p '/usr/local/include/libusb-1.0' && \
@@ -43,6 +42,7 @@ RUN /bin/mkdir -p '/usr/local/lib' && \
     ldconfig
 
 WORKDIR /opt
+
 RUN rm -r -f libusb-1.0.22 && \
     rm v1.0.22.zip
 
