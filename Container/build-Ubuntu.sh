@@ -40,15 +40,8 @@ fi
 
 BASE_TAG=${TAG}
 
-./build-Demo.sh ${MY_REGISTRY}/openvino-container:${BASE_TAG} 3.6
-TAG=${BASE_TAG}_demo_3.6
-if ! docker inspect --type=image ${MY_REGISTRY}/openvino-container:$TAG > /dev/null 2>&1; then
-    echo "Failed to create image"
-    exit
-fi
-
-./build-Demo.sh ${MY_REGISTRY}/openvino-container:${BASE_TAG} 3.7
-TAG=${BASE_TAG}_demo_3.7
+./build-Demo.sh ${MY_REGISTRY}/openvino-container:${BASE_TAG} ${PYTHON_VERSION}
+TAG=${BASE_TAG}_demo_${PYTHON_VERSION}
 if ! docker inspect --type=image ${MY_REGISTRY}/openvino-container:$TAG > /dev/null 2>&1; then
     echo "Failed to create image"
     exit
