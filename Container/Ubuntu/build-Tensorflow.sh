@@ -1,10 +1,9 @@
-if [ $# -ne 4 ]
+if [ $# -ne 3 ]
   then
     echo "======================================="
     echo "Please specify Ubuntu Version and reistry"
     echo "  Registry       : Your registry"
     echo "  Base Tag       : Tag of image to install Tensorflow"
-    echo "  Python         : Python Version"
     echo "  Tensorflow     : Tensorflow Version"
     echo ""
     echo "  Example : ${0##*/} myregistry ubuntu_18.04_cp3.7 3.7 1.15"
@@ -17,8 +16,7 @@ clear
 
 MY_REGISTRY=$1
 BASE_TAG=$2
-PYTHON_VERSION=$3
-TF_VERSION=$4
+TF_VERSION=$3
 
 TAG_BASE=${MY_REGISTRY}/openvino-container:${BASE_TAG}
 TAG_TF=${MY_REGISTRY}/openvino-container:tf_r${TF_VERSION}_data
@@ -52,7 +50,6 @@ echo "TF Image   : ${TAG_TF}"
 docker build --squash --rm -f ${SCRIPT_DIR}/Tensorflow/Dockerfile -t ${TAG} \
   --build-arg TAG_TF=${TAG_TF} \
   --build-arg TAG_BASE=${TAG_BASE} \
-  --build-arg PYTHON_VERSION=${PYTHON_VERSION} \
   ${SCRIPT_DIR}
 
 #

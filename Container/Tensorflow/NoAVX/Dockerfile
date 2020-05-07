@@ -6,7 +6,6 @@ FROM ubuntu:${OS_VERSION} as base
 
 ARG OS_VERSION=18.04
 ARG TF_VERSION=r1.14
-ARG PYTHON_VERSION=3.7
 
 #
 # https://github.com/tensorflow/tensorflow/blob/r1.14/configure.py#L1386
@@ -14,8 +13,7 @@ ARG PYTHON_VERSION=3.7
 ARG BAZEL_VERSION=0.26.1
 
 ENV LANG C.UTF-8
-ENV PYTHON=python${PYTHON_VERSION}
-RUN echo "Ubuntu Version ${OS_VERSION}"
+ARG PYTHON=python${PYTHON_VERSION}
 
 #
 # Run as root user

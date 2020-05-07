@@ -15,7 +15,6 @@ FROM ${TAG_BASE}
 #
 # Local variables
 #
-ARG PYTHON_VERSION=3.7
 ARG PYTHON=python${PYTHON_VERSION}
 
 #

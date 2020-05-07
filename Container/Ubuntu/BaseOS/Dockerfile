@@ -6,7 +6,7 @@ FROM ubuntu:${OS_VERSION}
 
 ARG OS_VERSION=18.04
 
-ARG PYTHON_VERSION=3.7
+ENV PYTHON_VERSION=3.7
 ARG PYTHON=python${PYTHON_VERSION}
 
 #
@@ -62,7 +62,9 @@ RUN apt-get update && \
     rm -rf /tmp/*
 
 RUN alias python3="${PYTHON}" && \
+    echo alias python3="${PYTHON}" >> ~/.bashrc && \
     echo alias python3="${PYTHON}" >> /home/openvino/.bashrc
+
 #
 # Change user to openvino
 #

@@ -12,7 +12,6 @@ FROM ${TAG_BASE}
 # Local variables
 #
 ARG INTEL_OPENVINO_DIR=/opt/intel/openvino
-ARG PYTHON_VERSION=3.7
 ARG PYTHON=python${PYTHON_VERSION}
 #
 # Switch to root to install dependencies
