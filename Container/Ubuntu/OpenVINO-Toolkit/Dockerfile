@@ -30,7 +30,8 @@ RUN apt-get update && \
     apt install -y --no-install-recommends sudo python3-yaml python3-requests && \
     rm -rf /var/lib/apt/lists/* && \
     echo "openvino ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
-    usermod -aG video openvino 
+    usermod -aG video openvino && \
+    usermod -aG users openvino
 
 #
 # Download OpenVINO Toolkit
@@ -43,11 +44,30 @@ RUN curl -LOJ "${OPENVINO_DOWNLOAD}" && \
     ./install.sh --list_components && \
     sed -i 's/decline/accept/g' silent.cfg && \
     ./install.sh -s silent.cfg && \
-    echo "source ${INSTALL_DIR}/bin/setupvars.sh" >> /home/openvino/.bashrc && \
-    /bin/bash -c "source ${INSTALL_DIR}/bin/setupvars.sh" && \
-    cd ${INSTALL_DIR}/install_dependencies && \
-    ./_install_all_dependencies.sh && \
-    rm -rf /tmp/*
+    ${INSTALL_DIR}/install_dependencies/_install_all_dependencies.sh
+
+RUN curl -L https://github.com/libusb/libusb/archive/v1.0.22.zip --output v1.0.22.zip && \
+    unzip v1.0.22.zip && \
+    cd libusb-1.0.22 && \
+    ./bootstrap.sh && \
+    ./configure --disable-udev --enable-shared && \
+    make -j4
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends libusb-1.0-0-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN cd /tmp/libusb-1.0.22/libusb && \
+    /bin/mkdir -p '/usr/local/lib' && \
+    /bin/bash ../libtool --mode=install /usr/bin/install -c libusb-1.0.la '/usr/local/lib' && \
+    /bin/mkdir -p '/usr/local/include/libusb-1.0' && \
+    /usr/bin/install -c -m 644 libusb.h '/usr/local/include/libusb-1.0' && \
+    /bin/mkdir -p '/usr/local/lib/pkgconfig' && \
+    cd /tmp/libusb-1.0.22/ && \
+    /usr/bin/install -c -m 644 libusb-1.0.pc '/usr/local/lib/pkgconfig' && \
+    ldconfig
+
+RUN cd /tmp && rm -rf /tmp/*
 
 #
 # Switch user to openvino and current directory to /home/openvino
@@ -60,6 +80,7 @@ WORKDIR /home/openvino
 #
 RUN /bin/bash -c "source ${INSTALL_DIR}/bin/setupvars.sh && \
     cd ${INSTALL_DIR}/install_dependencies && \
-    ./install_NCS_udev_rules.sh"
+    ./install_NCS_udev_rules.sh" && \
+    echo "source ${INSTALL_DIR}/bin/setupvars.sh" >> /home/openvino/.bashrc
 
 ENTRYPOINT []

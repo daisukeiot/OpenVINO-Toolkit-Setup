@@ -19,7 +19,7 @@ WORKDIR /tmp
 #
 # Create user `openvino`
 #
-RUN useradd -ms /bin/bash -G video,users openvino && \
+RUN useradd -ms /bin/bash openvino && \
     chown openvino -R /home/openvino
 
 #
