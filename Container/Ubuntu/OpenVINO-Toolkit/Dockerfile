@@ -48,7 +48,7 @@ SHELL ["/bin/bash", "-c"]
 # install USB rules
 #
 ENV USER openvino
-RUN . ${INTEL_OPENVINO_DIR}/bin/setupvars.sh -pyver ${PYTHON_VERSION} && \
+RUN source ${INTEL_OPENVINO_DIR}/bin/setupvars.sh -pyver ${PYTHON_VERSION} && \
     ./install_NEO_OCL_driver.sh && \
     ./install_NCS_udev_rules.sh && \
     echo "source ${INTEL_OPENVINO_DIR}/bin/setupvars.sh -pyver ${PYTHON_VERSION}" >> /home/openvino/.bashrc && \
