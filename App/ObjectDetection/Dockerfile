@@ -35,7 +35,6 @@ RUN alias python3="${PYTHON}" && \
 #
 RUN ${PYTHON} -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/open_model_zoo/tools/downloader/requirements.in && \
     ${PYTHON} -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/requirements.txt && \
-    ${PYTHON} -m pip install -r ${INTEL_OPENVINO_DIR}/inference_engine/samples/python/requirements.txt && \
     apt-get update && \
     apt install -y --no-install-recommends \
         python3-yaml \
@@ -48,7 +47,7 @@ ADD ./Python ./App
 ADD ./startapp.sh  /home/openvino
 RUN chmod a+x ./startapp.sh
 
-RUN chown ./App && \
+RUN chown openvino -R ./App && \
     cd ./App && \
     git clone https://github.com/opencv/open_model_zoo.git && \
     python3.7 -m pip install setuptools==41.0.0 && \
