@@ -23,18 +23,23 @@ USER root
 WORKDIR ${INTEL_OPENVINO_DIR}
 
 #
+# Install Git
+#
+RUN apt-get update && \
+    apt install -y --no-install-recommends git && \
+    rm -rf /var/lib/apt/lists/*
+
+#
 # Install OpenVINO Dependencies
 #
-RUN alias python3="${PYTHON}" && \
-    echo alias python3="${PYTHON}" >> /home/openvino/.bashrc && \
-    cd install_dependencies && \
+RUN cd install_dependencies && \
     ./install_openvino_dependencies.sh
 
 #
 # Install dependencies for Model Downloader and Model Optimizer
 #
-RUN ${PYTHON} -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/open_model_zoo/tools/downloader/requirements.in && \
-    ${PYTHON} -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/requirements.txt && \
+RUN python -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/open_model_zoo/tools/downloader/requirements.in && \
+    python -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/requirements.txt && \
     apt-get update && \
     apt install -y --no-install-recommends \
         python3-yaml \
