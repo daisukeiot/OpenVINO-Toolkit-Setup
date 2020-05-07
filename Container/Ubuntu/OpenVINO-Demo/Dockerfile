@@ -11,8 +11,6 @@ FROM ${TAG_BASE}
 #
 # Local variables
 #
-ARG PYTHON_VERSION=3.7
-ARG PYTHON=python${PYTHON_VERSION}
 ARG INTEL_OPENVINO_DIR=/opt/intel/openvino
 
 #
@@ -37,8 +35,7 @@ RUN ${PYTHON} -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/open_mode
     apt install -y --no-install-recommends \
         python3-yaml \
         python3-requests && \
-    rm -rf /var/lib/apt/lists/* && \
-    echo "source ${INTEL_OPENVINO_DIR}/bin/setupvars.sh -pyver ${PYTHON_VERSION}" >> /home/openvino/.bashrc
+    rm -rf /var/lib/apt/lists/*
 
 USER openvino
 #
