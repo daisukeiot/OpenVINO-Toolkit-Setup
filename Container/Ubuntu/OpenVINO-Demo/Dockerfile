@@ -47,8 +47,10 @@ USER openvino
 #
 WORKDIR ${INTEL_OPENVINO_DIR}/deployment_tools/demo
 RUN ./demo_squeezenet_download_convert_run.sh -d CPU && \
-    ./demo_squeezenet_download_convert_run.sh -d GPU && \
-    ./demo_squeezenet_download_convert_run.sh -d MYRIAD
+    echo ./demo_squeezenet_download_convert_run.sh -d CPU > ~/cpu.sh && \
+    echo ./demo_squeezenet_download_convert_run.sh -d GPU > ~/gpu.sh && \
+    echo ./demo_squeezenet_download_convert_run.sh -d MYRIAD > ~/vpu.sh && \
+    chmod a+x ~/*.sh
 #
 # Run hello query device sample
 #
