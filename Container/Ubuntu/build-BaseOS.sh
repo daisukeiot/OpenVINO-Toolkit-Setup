@@ -2,20 +2,23 @@ if [ $# -ne 3 ]
   then
     echo "======================================="
     echo "Please specify Ubuntu Version and reistry"
-    echo "  Ubuntu Version : 18.04 or 16.04"
     echo "  Registry       : Your registry"
+    echo "  Ubuntu Version : 18.04 or 16.04"
     echo "  Python         : Python Version"
-    echo "  Example ./build-BaseOS.sh 18.04 myregistry 3.7"
+    echo ""
+    echo "  Example : ${0##*/} myregistry 18.04 3.7"
     echo "======================================="
     exit
 fi
-clear
+[ "$DEBUG" ] && set -x
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
-OS_VERSION=$1
-MY_REGISTRY=$2
+clear
+
+MY_REGISTRY=$1
+OS_VERSION=$2
 PYTHON_VERSION=$3
 
-TAG=${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION}_cp${PYTHON_VERSION}
+TAG=${MY_REGISTRY}/openvino-container:ubuntu_${OS_VERSION}_cp${PYTHON_VERSION}
 
 if docker inspect --type=image $TAG > /dev/null 2>&1; then
     echo "Deleting image"
@@ -46,8 +49,9 @@ echo ' / / / / __ \/ / / / __ \/ / / / __/'
 echo '/ /_/ / /_/ / /_/ / / / / /_/ / /_  '
 echo '\____/_.___/\__,_/_/ /_/\__,_/\__/  '
 echo ''
-echo "Container built with Ubuntu version : ${OS_VERSION}"
-
+echo " Ubuntu version : ${OS_VERSION}"
+echo " Python version : ${PYTHON_VERSION}"
+echo " Image Tag      : ${TAG}"
 echo $'\n###############################################################################\n'
 docker run -it --rm ${TAG} /bin/bash -c "python${PYTHON_VERSION} --version;lsb_release -a"
 

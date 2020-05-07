@@ -51,22 +51,20 @@ RUN apt-get update && \
     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
     python3 get-pip.py && \
     ${PYTHON} get-pip.py && \
-    alias python="${PYTHON}" && \
-    echo alias python="${PYTHON}"  >> /home/openvino/.bashrc && \
-    alias python3="${PYTHON}" && \
-    echo alias python3="${PYTHON}"  >> /home/openvino/.bashrc && \
     cd /usr/lib/python3/dist-packages && \
     ln -s apt_pkg.cpython-{36m,37m}-x86_64-linux-gnu.so && \
     ${PYTHON} -m pip --no-cache-dir install --upgrade \
         pip \
-        setuptools==39.0.1 && \
+        setuptools==41.0.0 && \
+    python3 -m pip --no-cache-dir install --upgrade \
+        pip \
+        setuptools==41.0.0 && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /tmp/*
 
 #
 # Change user to openvino
 #
-ENV USER=openvino
 USER openvino
 WORKDIR /home/openvino
 

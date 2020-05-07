@@ -1,11 +1,13 @@
-if [ $# -ne 2 ]
+if [ $# -ne 4 ]
   then
     echo "======================================="
     echo "Please specify Ubuntu Version and reistry"
     echo "  Registry       : Your registry"
     echo "  Base Tag       : Tag of image to install Tensorflow"
+    echo "  Python         : Python Version"
+    echo "  Tensorflow     : Tensorflow Version"
     echo ""
-    echo "  Example : ${0##*/} myregistry ubuntu_18.04_cp3.7"
+    echo "  Example : ${0##*/} myregistry 18.04 3.7 1.15"
     echo "======================================="
     exit
 fi
@@ -16,13 +18,14 @@ clear
 MY_REGISTRY=$1
 BASE_TAG=$2
 PYTHON_VERSION=$3
+TF_VERSION=$4
 
 #
 # OpenVINO Toolkit ver 2020.2.120
 #
 OPENVINO_VER=2020.2.120
 
-TAG_BASE=${MY_REGISTRY}/openvino-container:${BASE_TAG}
+BASE_TAG=${MY_REGISTRY}/openvino-container:${BASE_TAG}
 TAG=${MY_REGISTRY}/openvino-container:${BASE_TAG}_ov${OPENVINO_VER}
 
 if docker inspect --type=image $TAG > /dev/null 2>&1; then
@@ -45,14 +48,14 @@ echo '\____/ .___/\___/_/ /_/|___/___/_/ |_/\____/    /_/  \____/\____/_/_/|_/_/
 echo '    /_/                                                                         '
 echo ''
 echo "Image Tag  : ${TAG}"
-echo "Base Image : ${TAG_BASE}"
+echo "Base Image : ${BASE_TAG}"
 echo "OpenVINO   : ${OPENVINO_VER}"
 echo ''
 #
 # Install OpenVINO Toolkit to Ubuntu Base Image
 #
 docker build --squash --rm -f ${SCRIPT_DIR}/OpenVINO-Toolkit/Dockerfile -t ${TAG} \
-  --build-arg TAG_BASE=${TAG_BASE} \
+  --build-arg BASE_IMAGE=${BASE_TAG} \
   --build-arg OPENVINO_VER=${OPENVINO_VER} \
   ${SCRIPT_DIR}
 

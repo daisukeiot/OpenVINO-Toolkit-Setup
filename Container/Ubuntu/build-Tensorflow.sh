@@ -1,11 +1,13 @@
-if [ $# -ne 2 ]
+if [ $# -ne 4 ]
   then
     echo "======================================="
     echo "Please specify Ubuntu Version and reistry"
     echo "  Registry       : Your registry"
     echo "  Base Tag       : Tag of image to install Tensorflow"
+    echo "  Python         : Python Version"
+    echo "  Tensorflow     : Tensorflow Version"
     echo ""
-    echo "  Example : ${0##*/} myregistry ubuntu_18.04_cp3.7"
+    echo "  Example : ${0##*/} myregistry ubuntu_18.04_cp3.7 3.7 1.15"
     echo "======================================="
     exit
 fi
@@ -16,14 +18,11 @@ clear
 MY_REGISTRY=$1
 BASE_TAG=$2
 PYTHON_VERSION=$3
-
-#
-# OpenVINO Toolkit ver 2020.2.120
-#
-OPENVINO_VER=2020.2.120
+TF_VERSION=$4
 
 TAG_BASE=${MY_REGISTRY}/openvino-container:${BASE_TAG}
-TAG=${MY_REGISTRY}/openvino-container:${BASE_TAG}_ov${OPENVINO_VER}
+TAG_TF=${MY_REGISTRY}/openvino-container:tf_r${TF_VERSION}_data
+TAG=${MY_REGISTRY}/openvino-container:${BASE_TAG}_tf${TF_VERSION}
 
 if docker inspect --type=image $TAG > /dev/null 2>&1; then
     echo "Deleting image"
@@ -37,23 +36,24 @@ echo '  / __  / / / / / / __  /   \__ \/ __/ __ `/ ___/ __/'
 echo ' / /_/ / /_/ / / / /_/ /   ___/ / /_/ /_/ / /  / /_  '
 echo '/_____/\__,_/_/_/\__,_/   /____/\__/\__,_/_/   \__/  '
 echo ''
-echo '   ____                 _    _______   ______     ______            ____   _ __ '
-echo '  / __ \____  ___  ____| |  / /  _/ | / / __ \   /_  __/___  ____  / / /__(_) /_'
-echo ' / / / / __ \/ _ \/ __ \ | / // //  |/ / / / /    / / / __ \/ __ \/ / //_/ / __/'
-echo '/ /_/ / /_/ /  __/ / / / |/ // // /|  / /_/ /    / / / /_/ / /_/ / / ,< / / /_  '
-echo '\____/ .___/\___/_/ /_/|___/___/_/ |_/\____/    /_/  \____/\____/_/_/|_/_/\__/  '
-echo '    /_/                                                                         '
+echo '  ______                           ______             '
+echo ' /_  __/__  ____  _________  _____/ __/ /___ _      __'
+echo '  / / / _ \/ __ \/ ___/ __ \/ ___/ /_/ / __ \ | /| / /'
+echo ' / / /  __/ / / (__  ) /_/ / /  / __/ / /_/ / |/ |/ / '
+echo '/_/  \___/_/ /_/____/\____/_/  /_/ /_/\____/|__/|__/  '
+echo '                                                                            '
 echo ''
 echo "Image Tag  : ${TAG}"
 echo "Base Image : ${TAG_BASE}"
-echo "OpenVINO   : ${OPENVINO_VER}"
+echo "TF Image   : ${TAG_TF}"
 echo ''
 #
 # Install OpenVINO Toolkit to Ubuntu Base Image
 #
-docker build --squash --rm -f ${SCRIPT_DIR}/OpenVINO-Toolkit/Dockerfile -t ${TAG} \
+docker build --squash --rm -f ${SCRIPT_DIR}/Tensorflow/Dockerfile -t ${TAG} \
+  --build-arg TAG_TF=${TAG_TF} \
   --build-arg TAG_BASE=${TAG_BASE} \
-  --build-arg OPENVINO_VER=${OPENVINO_VER} \
+  --build-arg PYTHON_VERSION=${PYTHON_VERSION} \
   ${SCRIPT_DIR}
 
 #
@@ -65,15 +65,15 @@ if ! docker inspect --type=image $TAG > /dev/null 2>&1; then
 fi
 
 echo $'\n###############################################################################'
-echo '   ____                 _    _______   ______     ______            ____   _ __ '
-echo '  / __ \____  ___  ____| |  / /  _/ | / / __ \   /_  __/___  ____  / / /__(_) /_'
-echo ' / / / / __ \/ _ \/ __ \ | / // //  |/ / / / /    / / / __ \/ __ \/ / //_/ / __/'
-echo '/ /_/ / /_/ /  __/ / / / |/ // // /|  / /_/ /    / / / /_/ / /_/ / / ,< / / /_  '
-echo '\____/ .___/\___/_/ /_/|___/___/_/ |_/\____/    /_/  \____/\____/_/_/|_/_/\__/  '
-echo '    /_/                                                                         '
+echo '  ______                           ______             '
+echo ' /_  __/__  ____  _________  _____/ __/ /___ _      __'
+echo '  / / / _ \/ __ \/ ___/ __ \/ ___/ /_/ / __ \ | /| / /'
+echo ' / / /  __/ / / (__  ) /_/ / /  / __/ / /_/ / |/ |/ / '
+echo '/_/  \___/_/ /_/____/\____/_/  /_/ /_/\____/|__/|__/  '
 echo ''
-echo "OpenVINO Toolkit : ${OPENVINO_VER}"
-echo "Image Tag        : ${TAG}"
+echo " Installed Tensorflow"
+echo " Tensorflow version : ${TF_VER}"
+echo " Image Tag          : ${TAG}"
 echo ''
 echo $'\n###############################################################################'
 echo 'CTLC+C to cancel docker push'
