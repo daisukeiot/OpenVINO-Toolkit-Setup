@@ -61,6 +61,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /tmp/*
 
+RUN alias python3="${PYTHON}" && \
+    echo alias python3="${PYTHON}" >> /home/openvino/.bashrc
 #
 # Change user to openvino
 #
