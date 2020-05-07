@@ -1,7 +1,7 @@
 #
 # Pass variables with --build-arg option
 # TAG_TF         : A container with Tensorflow Package
-# BASE_IMAGE     : Base Image to install Tensorflow
+# TAG_BASE       : Base Image to install Tensorflow
 # PYTHON_VERSION : Python version to use to install Tensorflow
 #
 ARG TAG_TF=
