@@ -46,8 +46,7 @@ USER openvino
 # Run Classification Sample on CPU/GPU/MYRIAD
 #
 WORKDIR ${INTEL_OPENVINO_DIR}/deployment_tools/demo
-RUN ./demo_squeezenet_download_convert_run.sh -d CPU && \
-    echo ./demo_squeezenet_download_convert_run.sh -d CPU > ~/cpu.sh && \
+RUN echo ./demo_squeezenet_download_convert_run.sh -d CPU > ~/cpu.sh && \
     echo ./demo_squeezenet_download_convert_run.sh -d GPU > ~/gpu.sh && \
     echo ./demo_squeezenet_download_convert_run.sh -d MYRIAD > ~/vpu.sh && \
     chmod a+x ~/*.sh
