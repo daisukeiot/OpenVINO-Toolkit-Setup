@@ -36,8 +36,7 @@ RUN curl -LOJ "${OPENVINO_DOWNLOAD}" && \
     cd l_openvino_toolkit* && \
     ./install.sh --list_components && \
     sed -i 's/decline/accept/g' silent.cfg && \
-    ./install.sh -s silent.cfg && \
-    echo "source ${INTEL_OPENVINO_DIR}/bin/setupvars.sh -pyver ${PYTHON_VERSION}" >> /home/openvino/.bashrc
+    ./install.sh -s silent.cfg
 
 WORKDIR ${INTEL_OPENVINO_DIR}/install_dependencies
 
@@ -47,7 +46,8 @@ WORKDIR ${INTEL_OPENVINO_DIR}/install_dependencies
 #
 ENV USER openvino
 RUN ./install_NEO_OCL_driver.sh && \
-    ./install_NCS_udev_rules.sh
+    ./install_NCS_udev_rules.sh && \
+    echo "source ${INTEL_OPENVINO_DIR}/bin/setupvars.sh -pyver ${PYTHON_VERSION}" >> ~/.bashrc
 #
 # Install libusb
 #
