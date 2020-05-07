@@ -40,51 +40,16 @@ fi
 
 BASE_TAG=TAG
 
-./build-Demo.sh ${MY_REGISTRY}/openvino-container:${TAG} 3.6
+./build-Demo.sh ${MY_REGISTRY}/openvino-container:${BASE_TAG} 3.6
 TAG=${BASE_TAG}_demo_3.6
 if ! docker inspect --type=image ${MY_REGISTRY}/openvino-container:$TAG > /dev/null 2>&1; then
     echo "Failed to create image"
     exit
 fi
 
-./build-Demo.sh ${MY_REGISTRY}/openvino-container:${TAG} 3.7
+./build-Demo.sh ${MY_REGISTRY}/openvino-container:${BASE_TAG} 3.7
 TAG=${BASE_TAG}_demo_3.7
 if ! docker inspect --type=image ${MY_REGISTRY}/openvino-container:$TAG > /dev/null 2>&1; then
     echo "Failed to create image"
     exit
 fi
-
-# For UP2
-
-TAG=ubuntu_${OS_VERSION}_cp${PYTHON_VERSION}
-
-./build-Tensorflow.sh ${MY_REGISTRY} ${TAG} ${PYTHON_VERSION} ${TF_VERSION}
-TAG=${TAG}_tf${TF_VERSION}
-if ! docker inspect --type=image ${MY_REGISTRY}/openvino-container:$TAG > /dev/null 2>&1; then
-    echo "Failed to create image"
-    exit
-fi
-
-./build-OpenVINO-Toolkit.sh ${MY_REGISTRY} ${TAG}
-TAG=${TAG}_ov${OPENVINO_VER}
-if ! docker inspect --type=image ${MY_REGISTRY}/openvino-container:$TAG > /dev/null 2>&1; then
-    echo "Failed to create image"
-    exit
-fi
-
-BASE_TAG=TAG
-
-./build-Demo.sh ${MY_REGISTRY}/openvino-container:${TAG} 3.6
-TAG=${BASE_TAG}_demo_3.6
-if ! docker inspect --type=image ${MY_REGISTRY}/openvino-container:$TAG > /dev/null 2>&1; then
-    echo "Failed to create image"
-    exit
-fi
-
-./build-Demo.sh ${MY_REGISTRY}/openvino-container:${TAG} 3.7
-TAG=${BASE_TAG}_demo_3.7
-if ! docker inspect --type=image ${MY_REGISTRY}/openvino-container:$TAG > /dev/null 2>&1; then
-    echo "Failed to create image"
-    exit
-fi
-# docker rmi -f $(docker images -f "dangling=true" -q)
