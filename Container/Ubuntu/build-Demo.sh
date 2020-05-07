@@ -1,8 +1,9 @@
-if [ $# -ne 1 ]
+if [ $# -ne 2 ]
   then
     echo "======================================="
     echo "Please specify Ubuntu Version and reistry"
     echo "  Base Tag       : Tag of image to run OpenVINO Demo"
+    echo "  Python         : Python Version"
     echo "  Example ./build-Demo.sh myregistry daisukeiot/openvino-container:ubuntu18.04_ov2020.2.120_cp3.7 3.7"
     echo "======================================="
     exit
@@ -12,6 +13,7 @@ fi
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
 
 BASE_TAG=$1
+PYTHON_VERSION=$2
 
 TAG_BASE=${BASE_TAG}
 TAG=${TAG_BASE}_demo
@@ -37,6 +39,7 @@ echo ''
 #
 docker build --squash --rm -f ${SCRIPT_DIR}/OpenVINO-Demo/Dockerfile -t ${TAG} \
   --build-arg TAG_BASE=${TAG_BASE} \
+  --build-arg PYTHON_VERSION=${PYTHON_VERSION} \
   ${SCRIPT_DIR}
 
 #

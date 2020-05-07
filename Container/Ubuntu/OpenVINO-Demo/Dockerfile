@@ -12,7 +12,8 @@ FROM ${TAG_BASE}
 # Local variables
 #
 ARG INTEL_OPENVINO_DIR=/opt/intel/openvino
-ENV PYTHON python3
+ARG PYTHON_VERSION=3.7
+ARG PYTHON=python${PYTHON_VERSION}
 #
 # Switch to root to install dependencies
 #
@@ -22,7 +23,9 @@ WORKDIR ${INTEL_OPENVINO_DIR}
 #
 # Install OpenVINO Dependencies
 #
-RUN cd install_dependencies && \
+RUN alias python3="${PYTHON}" && \
+    python3 --version && \
+    cd install_dependencies && \
     ./install_openvino_dependencies.sh
 
 #
