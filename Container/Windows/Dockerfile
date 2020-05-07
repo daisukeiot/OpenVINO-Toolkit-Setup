@@ -60,7 +60,6 @@ ARG OPENVINO_COMPONENTS='OPENVINO_COMMON,icl_redist,INFERENCE_ENGINE,INFERENCE_E
 #                         INFERENCE_ENGINE_VPU, `
 #                         VPU_DRV'
 
-RUN Write-Host $ENV:OPENVINO_COMPONENTS
 ARG PARAMS="--s --r yes --l C:\OV.TEMP\openvino_log.txt --a install --eula=accept --ignore-cpu --components=${OPENVINO_COMPONENTS} --output=C:\OV.TEMP\openvino_out.txt"
 RUN Start-Process C:\OV.TEMP\w_openvino_toolkit.exe `
         -ArgumentList $ENV:PARAMS `
@@ -75,6 +74,7 @@ WORKDIR C:\
 # Clean Up
 RUN Remove-Item -Path C:\OV.TEMP -recurse -force
 
+ENV INTEL_OPENVINO_DIR 'C:\Program Files (x86)\IntelSWTools\openvino'
 #
 # Change Shell to CMD.EXE
 #
