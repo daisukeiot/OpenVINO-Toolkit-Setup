@@ -46,9 +46,9 @@ USER openvino
 # Run Classification Sample on CPU/GPU/MYRIAD
 #
 WORKDIR ${INTEL_OPENVINO_DIR}/deployment_tools/demo
-RUN echo ./demo_squeezenet_download_convert_run.sh -d CPU > ~/cpu.sh && \
-    echo ./demo_squeezenet_download_convert_run.sh -d GPU > ~/gpu.sh && \
-    echo ./demo_squeezenet_download_convert_run.sh -d MYRIAD > ~/vpu.sh && \
+RUN echo ${INTEL_OPENVINO_DIR}/deployment_tools/demo/demo_squeezenet_download_convert_run.sh -d CPU > ~/cpu.sh && \
+    echo ${INTEL_OPENVINO_DIR}/deployment_tools/demo/demo_squeezenet_download_convert_run.sh -d GPU > ~/gpu.sh && \
+    echo ${INTEL_OPENVINO_DIR}/deployment_tools/demo/demo_squeezenet_download_convert_run.sh -d MYRIAD > ~/vpu.sh && \
     chmod a+x ~/*.sh
 #
 # Run hello query device sample
