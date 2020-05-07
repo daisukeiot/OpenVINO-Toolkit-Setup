@@ -47,7 +47,7 @@ if ! docker inspect --type=image ${MY_REGISTRY}/openvino-container:$TAG > /dev/n
     exit
 fi
 
-BASE_TAG=TAG
+BASE_TAG=${TAG}
 
 ./build-Demo.sh ${MY_REGISTRY}/openvino-container:${BASE_TAG} 3.6
 TAG=${BASE_TAG}_demo_3.6

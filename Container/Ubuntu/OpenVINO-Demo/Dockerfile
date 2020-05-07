@@ -25,6 +25,7 @@ WORKDIR ${INTEL_OPENVINO_DIR}
 # Install OpenVINO Dependencies
 #
 RUN alias python3="${PYTHON}" && \
+    echo alias python3="${PYTHON}" >> /home/openvino/.bashrc && \
     cd install_dependencies && \
     ./install_openvino_dependencies.sh
 
