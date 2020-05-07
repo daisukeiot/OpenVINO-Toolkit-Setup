@@ -46,7 +46,6 @@ echo ''
 echo "Image Tag  : ${TAG}"
 echo "Base Image : ${TAG_BASE}"
 echo "TF Image   : ${TAG_TF}"
-echo ''
 #
 # Install OpenVINO Toolkit to Ubuntu Base Image
 #
@@ -78,7 +77,6 @@ echo ''
 echo $'\n###############################################################################'
 echo 'CTLC+C to cancel docker push'
 echo $'###############################################################################\n'
-
 read -t 10
 echo "Pushing Image : ${TAG}"
 echo ''
