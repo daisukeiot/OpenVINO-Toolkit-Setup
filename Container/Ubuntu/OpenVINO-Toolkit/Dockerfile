@@ -39,8 +39,7 @@ RUN curl -LOJ "${OPENVINO_DOWNLOAD}" && \
     cd l_openvino_toolkit* && \
     ./install.sh --list_components && \
     sed -i 's/decline/accept/g' silent.cfg && \
-    ./install.sh -s silent.cfg && \
-    echo "source ${INTEL_OPENVINO_DIR}/bin/setupvars.sh" >> /home/openvino/.bashrc
+    ./install.sh -s silent.cfg
 
 WORKDIR ${INTEL_OPENVINO_DIR}/install_dependencies
 
