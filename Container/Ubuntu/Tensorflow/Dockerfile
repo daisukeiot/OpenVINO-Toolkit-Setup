@@ -15,7 +15,7 @@ FROM ${TAG_BASE}
 #
 # Local variables
 #
-ARG PYTHON=python${PYTHON_VERSION}
+ARG PYTHON_BIN=python${PYTHON_VERSION}
 
 #
 # Run as root to install Tensorflow Pacakge
@@ -31,7 +31,7 @@ COPY --from=TensorFlow /*.whl .
 #
 # Install Tensorflow Package
 #
-RUN ${PYTHON} -m pip install ./*.whl && \
+RUN ${PYTHON_BIN} -m pip install ./*.whl && \
     rm -rf /tmp/*
 
 #

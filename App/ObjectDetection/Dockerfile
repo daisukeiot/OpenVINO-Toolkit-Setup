@@ -5,7 +5,7 @@ FROM ${BASE_TAG}
 #
 # Local variables
 #
-ARG PYTHON=python${PYTHON_VERSION}
+ARG PYTHON_BIN=python${PYTHON_VERSION}
 
 #
 # Run as root
@@ -37,8 +37,8 @@ RUN cd install_dependencies && \
 #
 # Install dependencies for Model Downloader and Model Optimizer
 #
-RUN ${PYTHON} -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/open_model_zoo/tools/downloader/requirements.in && \
-    ${PYTHON} -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/requirements.txt && \
+RUN ${PYTHON_BIN} -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/open_model_zoo/tools/downloader/requirements.in && \
+    ${PYTHON_BIN} -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/requirements.txt && \
     apt-get update && \
     apt install -y --no-install-recommends \
         python3-yaml \
@@ -55,8 +55,8 @@ RUN chmod a+x ./startapp.sh
 RUN chown openvino -R ./App && \
     cd ./App && \
     git clone https://github.com/opencv/open_model_zoo.git && \
-    ${PYTHON} -m pip install setuptools==41.0.0 && \
-    ${PYTHON} -m pip install -r ./requirements.txt
+    ${PYTHON_BIN} -m pip install setuptools==41.0.0 && \
+    ${PYTHON_BIN} -m pip install -r ./requirements.txt
 
 EXPOSE 8080
 

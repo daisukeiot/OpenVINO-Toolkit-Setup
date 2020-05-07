@@ -12,7 +12,6 @@ ARG OPENVINO_VER=2020.2.120
 ARG OPENVINO=l_openvino_toolkit_p_${OPENVINO_VER}
 ARG INTEL_OPENVINO_DIR=/opt/intel/openvino
 ARG OPENVINO_DOWNLOAD=http://registrationcenter-download.intel.com/akdlm/irc_nas/16612/l_openvino_toolkit_p_2020.2.120.tgz
-ARG PYTHON=python${PYTHON_VERSION}
 
 #
 # Run as root to install OpenVINO Toolkit
@@ -40,12 +39,19 @@ RUN curl -LOJ "${OPENVINO_DOWNLOAD}" && \
 WORKDIR ${INTEL_OPENVINO_DIR}/install_dependencies
 
 #
+# Switch shell
+#
+SHELL ["/bin/bash", "-c"] 
+
+#
 # install_NEO_OCL_driver.sh needs user name
 # install USB rules
 #
 ENV USER openvino
-RUN ./install_NEO_OCL_driver.sh && \
+RUN . ${INTEL_OPENVINO_DIR}/bin/setupvars.sh -pyver ${PYTHON_VERSION} && \
+    ./install_NEO_OCL_driver.sh && \
     ./install_NCS_udev_rules.sh && \
+    echo "source ${INTEL_OPENVINO_DIR}/bin/setupvars.sh -pyver ${PYTHON_VERSION}" >> /home/openvino/.bashrc && \
     echo "source ${INTEL_OPENVINO_DIR}/bin/setupvars.sh -pyver ${PYTHON_VERSION}" >> ~/.bashrc
 #
 # Install libusb
@@ -76,6 +82,11 @@ RUN cd /tmp/libusb-1.0.22/libusb && \
 # Clean up
 #
 RUN cd /tmp && rm -rf /tmp/*
+
+#
+# Switch shell
+#
+SHELL ["/bin/sh", "-c"] 
 
 #
 # Switch user to openvino and current directory to /home/openvino

@@ -12,7 +12,7 @@ FROM ${TAG_BASE}
 # Local variables
 #
 ARG INTEL_OPENVINO_DIR=/opt/intel/openvino
-ARG PYTHON=python${PYTHON_VERSION}
+ARG PYTHON_BIN=python${PYTHON_VERSION}
 #
 # Switch to root to install dependencies
 #
@@ -22,7 +22,7 @@ WORKDIR ${INTEL_OPENVINO_DIR}
 #
 # Install OpenVINO Dependencies
 #
-RUN alias python3="${PYTHON}" && \
+RUN alias python3="${PYTHON_BIN}" && \
     python3 --version && \
     cd install_dependencies && \
     ./install_openvino_dependencies.sh
@@ -30,9 +30,9 @@ RUN alias python3="${PYTHON}" && \
 #
 # Install dependencies for Model Downloader and Model Optimizer
 #
-RUN ${PYTHON} -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/open_model_zoo/tools/downloader/requirements.in && \
-    ${PYTHON} -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/requirements.txt && \
-    ${PYTHON} -m pip install -r ${INTEL_OPENVINO_DIR}/inference_engine/samples/python/requirements.txt && \
+RUN ${PYTHON_BIN} -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/open_model_zoo/tools/downloader/requirements.in && \
+    ${PYTHON_BIN} -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/requirements.txt && \
+    ${PYTHON_BIN} -m pip install -r ${INTEL_OPENVINO_DIR}/inference_engine/samples/python/requirements.txt && \
     apt-get update && \
     apt install -y --no-install-recommends \
         python3-yaml \
@@ -53,7 +53,7 @@ RUN echo ${INTEL_OPENVINO_DIR}/deployment_tools/demo/demo_squeezenet_download_co
 #
 WORKDIR ${INTEL_OPENVINO_DIR}/inference_engine/samples/python
 RUN /bin/bash -c "source $INTEL_OPENVINO_DIR/bin/setupvars.sh -pyver ${PYTHON_VERSION} && \
-    ${PYTHON} ./hello_query_device/hello_query_device.py"
+    ${PYTHON_BIN} ./hello_query_device/hello_query_device.py"
     
 WORKDIR ${INTEL_OPENVINO_DIR}
 
