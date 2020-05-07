@@ -1,5 +1,5 @@
 @echo off
-cd "C:\Program Files (x86)\IntelSWTools\openvino\bin\"
+pushd "C:\Program Files (x86)\IntelSWTools\openvino\bin\"
 call setupvars.bat
 
 cd "%INTEL_OPENVINO_DIR%\deployment_tools\demo"
@@ -24,3 +24,4 @@ echo 'Running MYRIAD'
 echo '###############################################################################'
 classification_sample_async -i "%INTEL_OPENVINO_DIR%\deployment_tools\demo\car.png" -m "%USERPROFILE%\Documents\Intel\OpenVINO\openvino_models\ir\public\squeezenet1.1\FP16\squeezenet1.1.xml" -d MYRIAD  
 
+popd
