@@ -52,7 +52,7 @@ RUN echo ${INTEL_OPENVINO_DIR}/deployment_tools/demo/demo_squeezenet_download_co
     echo ${INTEL_OPENVINO_DIR}/deployment_tools/demo/demo_squeezenet_download_convert_run.sh -d MYRIAD > ~/vpu.sh && \
     chmod a+x ~/*.sh
 #
-# Run hello query device sample
+# Run hello query device sample as sanity check
 #
 WORKDIR ${INTEL_OPENVINO_DIR}/inference_engine/samples/python
 RUN /bin/bash -c "source $INTEL_OPENVINO_DIR/bin/setupvars.sh -pyver ${PYTHON_VERSION} && \
