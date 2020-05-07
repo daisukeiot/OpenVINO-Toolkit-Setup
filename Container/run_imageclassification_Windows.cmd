@@ -1,4 +1,4 @@
-if "%1" -eq "" goto :HELP
+if "%1" equ "" goto :HELP
 
 #
 # Build Container with verification script
