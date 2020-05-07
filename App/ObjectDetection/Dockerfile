@@ -3,6 +3,12 @@ ARG BASE_TAG
 FROM ${BASE_TAG}
 
 #
+# Local variables
+#
+ARG PYTHON_VERSION=3.7
+ARG PYTHON=python${PYTHON_VERSION}
+
+#
 # Run as root
 #
 USER root
