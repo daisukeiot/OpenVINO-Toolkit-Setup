@@ -2,12 +2,12 @@
 # Pass variables with --build-arg option
 # TAG_TF         : A container with Tensorflow Package
 # BASE_IMAGE     : Base Image to install Tensorflow
-# PYTHON_VERSION : Python version to install Tensorflow for
+# PYTHON_VERSION : Python version to use to install Tensorflow
 #
-
 ARG TAG_TF=
 ARG TAG_BASE=ubuntu:18.04
 
+# Container image containing Tensorflow wheel package
 FROM ${TAG_TF} as TensorFlow
 
 FROM ${TAG_BASE}

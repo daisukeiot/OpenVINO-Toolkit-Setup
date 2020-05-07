@@ -2,7 +2,7 @@ if [ $# -ne 2 ]
   then
     echo "======================================="
     echo "Please specify Container and Target Device"
-    echo "  Example ./verify-container.sh myregistry/container:tag CPU"
+    echo "  Example : ${0##*/} myregistry/container:tag CPU"
     echo "======================================="
     exit
 fi

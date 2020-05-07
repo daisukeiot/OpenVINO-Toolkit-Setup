@@ -4,7 +4,7 @@
 # 
 ARG TAG_BASE=ubuntu:18.04
 #
-# Use Base image built in the previous step
+# Image with OpenVINO Toolkit
 #
 FROM ${TAG_BASE}
 
@@ -15,6 +15,9 @@ ARG PYTHON_VERSION=3.7
 ARG PYTHON=python${PYTHON_VERSION}
 ARG INTEL_OPENVINO_DIR=/opt/intel/openvino
 
+#
+# Switch to root to install dependencies
+#
 USER root
 WORKDIR ${INTEL_OPENVINO_DIR}
 
@@ -25,6 +28,9 @@ RUN alias python3="${PYTHON}" && \
     cd install_dependencies && \
     ./install_openvino_dependencies.sh
 
+#
+# Install dependencies for Model Downloader and Model Optimizer
+#
 RUN ${PYTHON} -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/open_model_zoo/tools/downloader/requirements.in && \
     ${PYTHON} -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/requirements.txt && \
     ${PYTHON} -m pip install -r ${INTEL_OPENVINO_DIR}/inference_engine/samples/python/requirements.txt && \
@@ -37,10 +43,12 @@ RUN ${PYTHON} -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/open_mode
 
 USER openvino
 #
-# Run Classification Sample
+# Run Classification Sample on CPU/GPU/MYRIAD
 #
 WORKDIR ${INTEL_OPENVINO_DIR}/deployment_tools/demo
-RUN ./demo_squeezenet_download_convert_run.sh -d CPU
+RUN ./demo_squeezenet_download_convert_run.sh -d CPU && \
+    ./demo_squeezenet_download_convert_run.sh -d GPU && \
+    ./demo_squeezenet_download_convert_run.sh -d MYRIAD
 #
 # Run hello query device sample
 #

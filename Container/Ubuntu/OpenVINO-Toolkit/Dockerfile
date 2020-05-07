@@ -1,15 +1,12 @@
 #
 # Pass variables with --build-arg option
-# BASE_IMAGE  : Base OS Image
+# BASE_IMAGE  : Base Image to install OpenVINO 
 # 
 ARG TAG_BASE=ubuntu:18.04
-#
-# Use Base image built in the previous step
-#
 FROM ${TAG_BASE}
 
 #
-# Local variables
+# Variables that can be specified with --build-arg option
 #
 ARG OPENVINO_VER=2020.2.120
 ARG OPENVINO=l_openvino_toolkit_p_${OPENVINO_VER}
@@ -30,9 +27,7 @@ RUN apt-get update && \
     usermod -aG users openvino
 
 #
-# Download OpenVINO Toolkit
-# Run silent install
-# Setup environment variable
+# Download OpenVINO Toolkit and run silent install
 #
 RUN curl -LOJ "${OPENVINO_DOWNLOAD}" && \
     tar -xzf ./*.tgz && \
@@ -45,6 +40,7 @@ WORKDIR ${INTEL_OPENVINO_DIR}/install_dependencies
 
 #
 # install_NEO_OCL_driver.sh needs user name
+# install USB rules
 #
 ENV USER openvino
 RUN ./install_NEO_OCL_driver.sh && \
@@ -74,6 +70,9 @@ RUN cd /tmp/libusb-1.0.22/libusb && \
     /usr/bin/install -c -m 644 libusb-1.0.pc '/usr/local/lib/pkgconfig' && \
     ldconfig
 
+#
+# Clean up
+#
 RUN cd /tmp && rm -rf /tmp/*
 
 #
