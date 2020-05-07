@@ -12,7 +12,7 @@ FROM ${TAG_BASE}
 # Local variables
 #
 ARG INTEL_OPENVINO_DIR=/opt/intel/openvino
-
+ARG PYTHON=python3
 #
 # Switch to root to install dependencies
 #
