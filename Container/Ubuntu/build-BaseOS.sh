@@ -56,10 +56,10 @@ echo $'\n#######################################################################
 docker run -it --rm ${TAG} /bin/bash -c "python${PYTHON_VERSION} --version;lsb_release -a"
 
 echo $'\n###############################################################################'
-echo 'CTLC+C to cancel #docker push'
+echo 'CTLC+C to cancel docker push'
 echo $'###############################################################################\n'
 echo ''
 read -t 10
 echo "Pushing Image : ${TAG}"
 echo ''
-#docker push ${TAG}
+docker push ${TAG}
