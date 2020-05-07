@@ -4,9 +4,9 @@ if [ $# -ne 3 ]
     echo "Please specify Ubuntu Version and reistry"
     echo "  Registry       : Your registry"
     echo "  Python         : Python Version"
-    echo "  Base Tag       : Tag of image to install Tensorflow"
+    echo "  Base Tag       : Tag of image to install OpenVINO"
     echo ""
-    echo "  Example : ${0##*/} myregistry ubuntu_18.04_cp3.7"
+    echo "  Example : ${0##*/} myregistry 3.7 ubuntu_18.04_cp3.7"
     echo "======================================="
     exit
 fi
