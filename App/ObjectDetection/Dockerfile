@@ -58,6 +58,7 @@ RUN chmod a+x ./startapp.sh
 RUN chmod a+w ./App && \
     cd ./App && \
     git clone https://github.com/opencv/open_model_zoo.git && \
+    python3.7 -m pip install setuptools==41.0.0 && \
     python3.7 -m pip install -r ./requirements.txt
 
 USER openvino
