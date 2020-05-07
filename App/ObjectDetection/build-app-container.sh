@@ -3,7 +3,6 @@ if [ $# -ne 1 ]
     echo "======================================="
     echo "Please specify base image tag and reistry"
     echo "  Image Tag      : Image Tag for a container with OpenVINO toolkit"
-    echo "  Registry       : Your registry"
     echo "  Example ./build-app-container.sh myregistry/openvino-container:ubuntu18.04_openvino2020.2.120_cp3.7"
     echo "======================================="
     exit
