@@ -46,7 +46,7 @@ WORKDIR /opt
 RUN rm -r -f libusb-1.0.22 && \
     rm v1.0.22.zip
 
-RUN python3.7 -m pip install setuptools==41.0.0 && \
+RUN python3.6 -m pip install setuptools==41.0.0 && \
     cd ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/install_prerequisites && \
     ./install_prerequisites.sh
 
