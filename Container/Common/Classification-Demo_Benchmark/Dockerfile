@@ -14,7 +14,7 @@ ENV INTEL_OPENVINO_DIR=/opt/intel/openvino
 # Install sudo
 #
 RUN apt-get update && \
-    apt install -y --no-install-recommends sudo && \
+    apt-get install -y --no-install-recommends sudo && \
     rm -rf /var/lib/apt/lists/*
 
 # RUN adduser --home /home/openvino --disabled-password --gecos '' openvino && \

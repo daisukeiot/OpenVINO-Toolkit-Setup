@@ -3,19 +3,14 @@ if [ $# -ne 1 ]
     echo "======================================="
     echo "Please specify base image tag and reistry"
     echo "  Image Tag      : Image Tag for a container with OpenVINO toolkit"
-    echo "  Registry       : Your registry"
-    echo "  Example ./build-app-container.sh myregistry/openvino-container:ubuntu18.04_openvino2020.2.120_cp3.7"
+    echo "  Example : ${0##*/} myregistry/openvino-container:ubuntu18.04_openvino2020.2.120_cp3.7"
     echo "======================================="
     exit
 fi
-#
-# Build Container with verification script
-# Built container but do not push to registry
-#
+[ "$DEBUG" ] && set -x
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
+clear
 
-OPENVINO_VER=2020.2.120
-MY_REGISTRY=$2
 BASE_TAG=$1
 TARGET_TAG=${BASE_TAG}_app
 

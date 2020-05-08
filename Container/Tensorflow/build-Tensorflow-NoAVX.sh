@@ -4,9 +4,9 @@ if [ $# -ne 4 ]
     echo "Please specify Ubuntu Version and reistry"
     echo "  Ubuntu Version : 18.04 or 16.04"
     echo "  Registry       : Your registry"
-    echo "  Tensorflow     : Tensorflow Version"
     echo "  Python         : Python version"
-    echo "  Example ./build-Tensorflow.sh 18.04 myregistry r1.14 3.7"
+    echo "  Tensorflow     : Tensorflow Version"
+    echo "  Example ./build-Tensorflow.sh 18.04 myregistry 3.7 r1.14"
     echo "======================================="
     exit
 fi
@@ -14,8 +14,8 @@ SCRIPT_DIR=$(cd $(dirname $0); pwd)
 
 OS_VERSION=$1
 MY_REGISTRY=$2
-TF_VERSION=$3
-PYTHON_VERSION=$4
+PYTHON_VERSION=$3
+TF_VERSION=$4
 
 TAG=${MY_REGISTRY}/openvino-container:tf_${TF_VERSION}_cp${PYTHON_VERSION}
 

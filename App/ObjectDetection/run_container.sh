@@ -1,4 +1,4 @@
-if [ $# -ne 1 ]
+if [ $# -ne 2 ]
   then
     echo "======================================="
     echo "Please specify the container image"

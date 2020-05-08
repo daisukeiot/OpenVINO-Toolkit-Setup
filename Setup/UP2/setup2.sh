@@ -5,8 +5,8 @@ sudo apt-get remove -y --purge libreoffice* aisleriot gnome-sudoku *mahjongg ace
 sudo apt-get clean && \
 sudo apt-get autoremove -y && \
 # Install UP firmware
-sudo apt install -y firmware-ampak && \
-sudo apt install upboard-extras && \
+sudo apt-get install -y firmware-ampak && \
+sudo apt-get install upboard-extras && \
 sudo usermod -a -G gpio ${USER} && \
 sudo usermod -a -G leds ${USER} && \
 sudo usermod -a -G dialout ${USER} && \

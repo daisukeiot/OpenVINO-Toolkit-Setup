@@ -6,7 +6,6 @@ FROM ubuntu:${OS_VERSION} as base
 
 ARG OS_VERSION=18.04
 ARG TF_VERSION=r1.14
-ARG PYTHON_VERSION=3.7
 
 #
 # https://github.com/tensorflow/tensorflow/blob/r1.14/configure.py#L1386
@@ -14,8 +13,7 @@ ARG PYTHON_VERSION=3.7
 ARG BAZEL_VERSION=0.26.1
 
 ENV LANG C.UTF-8
-ENV PYTHON=python${PYTHON_VERSION}
-RUN echo "Ubuntu Version ${OS_VERSION}"
+ARG PYTHON_BIN=python${PYTHON_VERSION}
 
 #
 # Run as root user
@@ -46,13 +44,11 @@ RUN apt-get update && \
         openjdk-8-jre-headless \
 	python3-pip && \
     apt-get install -y --no-install-recommends \
-	${PYTHON} \
-	${PYTHON}-dev && \
+	${PYTHON_BIN} \
+	${PYTHON_BIN}-dev && \
     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
-    ${PYTHON} get-pip.py && \
+    ${PYTHON_BIN} get-pip.py && \
     rm get-pip.py && \
-    alias python='${PYTHON}' && \
-    echo alias python='${PYTHON}'  >> ~/.bashrc && \
     cd /usr/lib/python3/dist-packages && \
     sudo ln -s apt_pkg.cpython-{36m,37m}-x86_64-linux-gnu.so && \
     python3.7 -m pip install 'numpy==1.16' --force-reinstall && \
@@ -62,19 +58,19 @@ RUN apt-get update && \
 #
 # Some TF tools expect a "python" binary
 #
-# RUN ln -s /usr/bin/${PYTHON} /usr/local/bin/python
+# RUN ln -s /usr/bin/${PYTHON_BIN} /usr/local/bin/python
 
-RUN ${PYTHON} -m pip --no-cache-dir install --upgrade \
+RUN ${PYTHON_BIN} -m pip --no-cache-dir install --upgrade \
     pip \
     setuptools
 
-RUN ${PYTHON} -m pip --no-cache-dir install \
+RUN ${PYTHON_BIN} -m pip --no-cache-dir install \
     six \
     numpy \
     wheel \
     mock 'future>=0.17.1' && \
-    ${PYTHON} -m pip install -U --user keras_applications --no-deps && \
-    ${PYTHON} -m pip install -U --user keras_preprocessing --no-deps
+    ${PYTHON_BIN} -m pip install -U --user keras_applications --no-deps && \
+    ${PYTHON_BIN} -m pip install -U --user keras_preprocessing --no-deps
 
 #
 # Clone Tensorflow from GIT
@@ -101,7 +97,7 @@ RUN mkdir /bazel && \
 #
 ENV CI_BUILD_PYTHON=python \
     PYTHON_BIN_PATH=/usr/bin/python3 \
-    PYTHON_LIB_PATH=/usr/local/lib/${PYTHON}/dist-packages \
+    PYTHON_LIB_PATH=/usr/local/lib/${PYTHON_BIN}/dist-packages \
     PYTHONPATH=${TF_ROOT}/lib \
     PYTHON_ARG=${TF_ROOT}/lib
 

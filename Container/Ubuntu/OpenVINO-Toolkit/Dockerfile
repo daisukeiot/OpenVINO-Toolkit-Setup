@@ -1,72 +1,100 @@
 #
 # Pass variables with --build-arg option
-# OS_VERSION  : 16.04 or 18.04
-# MY_REGISTRY : Your Container Registry
+# BASE_IMAGE  : Base Image to install OpenVINO 
 # 
-ARG OS_VERSION=18.04
-ARG MY_REGISTRY=daisukeiot
-ARG PYTHON_VERSION=3.7
-#
-# Use Base image built in the previous step
-#
-FROM ${MY_REGISTRY}/openvino-container:baseos-ubuntu_${OS_VERSION}_cp${PYTHON_VERSION}
+ARG TAG_BASE=ubuntu:18.04
+FROM ${TAG_BASE}
 
 #
-# Local variables
+# Variables that can be specified with --build-arg option
 #
 ARG OPENVINO_VER=2020.2.120
 ARG OPENVINO=l_openvino_toolkit_p_${OPENVINO_VER}
-ARG OPENVINO_INSTALL=/opt/intel/openvino_${OPENVINO_VER}
-ARG INSTALL_DIR=/opt/intel/openvino
+ARG INTEL_OPENVINO_DIR=/opt/intel/openvino
 ARG OPENVINO_DOWNLOAD=http://registrationcenter-download.intel.com/akdlm/irc_nas/16612/l_openvino_toolkit_p_2020.2.120.tgz
 
 #
 # Run as root to install OpenVINO Toolkit
 #
 USER root
-
-#
-# Use /tmp folder
-#
 WORKDIR /tmp
 
 RUN apt-get update && \
-    apt install -y --no-install-recommends sudo && \
+    apt-get install -y --no-install-recommends \
+        sudo \
+        python3-yaml \
+        python3-requests && \
     rm -rf /var/lib/apt/lists/* && \
-    echo "openvino ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-#    echo "%sudo  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/nopasswd
+    echo "openvino ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
+    usermod -aG video openvino && \
+    usermod -aG users openvino
+
 #
-# Download OpenVINO Toolkit
-# Run silent install
-# Setup environment variable
+# Download OpenVINO Toolkit and run silent install
+#
 RUN curl -LOJ "${OPENVINO_DOWNLOAD}" && \
     tar -xzf ./*.tgz && \
     cd l_openvino_toolkit* && \
     ./install.sh --list_components && \
     sed -i 's/decline/accept/g' silent.cfg && \
-    ./install.sh -s silent.cfg && \
-    rm -rf /tmp/* && \
-    echo "source $OPENVINO_INSTALL/bin/setupvars.sh" >> /home/openvino/.bashrc
+    ./install.sh -s silent.cfg
 
-RUN cd $INSTALL_DIR/install_dependencies && \
-    sudo -E ./install_openvino_dependencies.sh && \
-    sudo -E ./install_NEO_OCL_driver.sh
-
-RUN usermod -aG video openvino
-
-ENV INSTALLDIR ${INSTALL_DIR}
+WORKDIR ${INTEL_OPENVINO_DIR}/install_dependencies
 
 #
-# Set user to openvino and current directory to /home/openvino
+# Switch shell
+#
+SHELL ["/bin/bash", "-c"] 
+
+#
+# install_NEO_OCL_driver.sh needs user name
+# install USB rules
+#
+ENV USER openvino
+RUN source ${INTEL_OPENVINO_DIR}/bin/setupvars.sh -pyver ${PYTHON_VERSION} && \
+    ./install_NEO_OCL_driver.sh && \
+    ./install_NCS_udev_rules.sh && \
+    echo "source ${INTEL_OPENVINO_DIR}/bin/setupvars.sh -pyver ${PYTHON_VERSION}" >> /home/openvino/.bashrc && \
+    echo "source ${INTEL_OPENVINO_DIR}/bin/setupvars.sh -pyver ${PYTHON_VERSION}" >> ~/.bashrc
+#
+# Install libusb
+#
+WORKDIR /tmp
+RUN curl -L https://github.com/libusb/libusb/archive/v1.0.22.zip --output v1.0.22.zip && \
+    unzip v1.0.22.zip && \
+    cd libusb-1.0.22 && \
+    ./bootstrap.sh && \
+    ./configure --disable-udev --enable-shared && \
+    make -j4
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends libusb-1.0-0-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN cd /tmp/libusb-1.0.22/libusb && \
+    /bin/mkdir -p '/usr/local/lib' && \
+    /bin/bash ../libtool --mode=install /usr/bin/install -c libusb-1.0.la '/usr/local/lib' && \
+    /bin/mkdir -p '/usr/local/include/libusb-1.0' && \
+    /usr/bin/install -c -m 644 libusb.h '/usr/local/include/libusb-1.0' && \
+    /bin/mkdir -p '/usr/local/lib/pkgconfig' && \
+    cd /tmp/libusb-1.0.22/ && \
+    /usr/bin/install -c -m 644 libusb-1.0.pc '/usr/local/lib/pkgconfig' && \
+    ldconfig
+
+#
+# Clean up
+#
+RUN cd /tmp && rm -rf /tmp/*
+
+#
+# Switch shell
+#
+SHELL ["/bin/sh", "-c"] 
+
+#
+# Switch user to openvino and current directory to /home/openvino
 #
 USER openvino
-WORKDIR /home/openvino
-
-#
-# Run as openvino user
-#
-RUN /bin/bash -c "source $INSTALL_DIR/bin/setupvars.sh && \
-    cd $INSTALL_DIR/install_dependencies && \
-    ./install_NCS_udev_rules.sh"
+WORKDIR ${INTEL_OPENVINO_DIR}
 
 ENTRYPOINT []

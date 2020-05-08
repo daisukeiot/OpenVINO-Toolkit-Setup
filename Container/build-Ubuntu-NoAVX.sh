@@ -21,10 +21,20 @@ TF_VERSION=1.15
 OPENVINO_VER=2020.2.120
 
 cd ./Ubuntu
-./build-BaseOS.sh ${MY_REGISTRY} ${OS_VERSION} ${PYTHON_VERSION}
 
 TAG=ubuntu_${OS_VERSION}_cp${PYTHON_VERSION}
 
+if ! docker inspect --type=image ${MY_REGISTRY}/openvino-container:$TAG > /dev/null 2>&1; then
+    ./build-BaseOS.sh ${MY_REGISTRY} ${OS_VERSION} ${PYTHON_VERSION}
+fi
+
+if ! docker inspect --type=image ${MY_REGISTRY}/openvino-container:$TAG > /dev/null 2>&1; then
+    echo "Failed to create image"
+    exit
+fi
+
+./build-Tensorflow.sh ${MY_REGISTRY} ${TAG} ${TF_VERSION}
+TAG=${TAG}_tf${TF_VERSION}
 if ! docker inspect --type=image ${MY_REGISTRY}/openvino-container:$TAG > /dev/null 2>&1; then
     echo "Failed to create image"
     exit
@@ -32,7 +42,6 @@ fi
 
 ./build-OpenVINO-Toolkit.sh ${MY_REGISTRY} ${TAG}
 TAG=${TAG}_ov${OPENVINO_VER}
-
 if ! docker inspect --type=image ${MY_REGISTRY}/openvino-container:$TAG > /dev/null 2>&1; then
     echo "Failed to create image"
     exit
@@ -44,3 +53,5 @@ if ! docker inspect --type=image ${MY_REGISTRY}/openvino-container:$TAG > /dev/n
     echo "Failed to create image"
     exit
 fi
+
+# docker rmi -f $(docker images -f "dangling=true" -q)
