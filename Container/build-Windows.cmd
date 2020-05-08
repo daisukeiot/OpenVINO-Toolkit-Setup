@@ -12,7 +12,7 @@ set OS_VERSION=%2
 set MY_REGISTRY=%3
 set PYTHON_VERSION=3.7.5
 
-set TAG=%MY_REGISTRY%/openvino-container:baseos-windows_%OS_VERSION%_openvino%OPENVINO_VER%_cp%PYTHON_VERSION%
+set TAG=%MY_REGISTRY%/openvino-container:%OS_TYPE%_%OS_VERSION%_ov%OPENVINO_VER%_cp%PYTHON_VERSION%
 
 echo ""
 echo "    ____        _ __    __   _____ __             __ "
