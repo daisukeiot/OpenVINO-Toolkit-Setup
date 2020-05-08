@@ -19,14 +19,12 @@ sudo docker rmi -f ${TAG} && \
 sudo apt-get remove -y --purge moby-cli
 sudo apt-get remove -y --purge moby-engine
 sudo apt-get install -y curl python3-pip python3.7 python3.7-dev && \
-PATH=$PATH:$HOME/.local/bin && \
-echo PATH=$PATH:$HOME/.local/bin >> ~/.bashrc && \
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
-python3.7 get-pip.py && \
+sudo python3.7 get-pip.py && \
 rm get-pip.py && \
 cd /usr/lib/python3/dist-packages && \
 sudo ln -s apt_pkg.cpython-{36m,37m}-x86_64-linux-gnu.so && \
 cd ~ && \
-python3.7 -m pip install 'numpy==1.16' --force-reinstall && \
-python3.7 -m pip install ./*.whl && \
+sudo python3.7 -m pip install 'numpy==1.16' --force-reinstall && \
+sudo python3.7 -m pip install ./*.whl && \
 rm ./*.whl

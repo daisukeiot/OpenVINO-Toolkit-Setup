@@ -8,11 +8,10 @@ git clone https://github.com/daisukeiot/OpenVINO-Toolkit-Setup.git && \
 
 # install pip for python3.7
 PATH=$PATH:$HOME/.local/bin && \
-echo PATH=$PATH:$HOME/.local/bin >> ~/.bashrc && \
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
-python3.7 get-pip.py && \
+sudo python3.7 get-pip.py && \
 rm get-pip.py && \
-echo export $HOME/.local/bin >> $HOME/.bashrc
+echo PATH=$PATH:$HOME/.local/bin >> $HOME/.bashrc
 
 cd /usr/lib/python3/dist-packages && \
 sudo ln -s apt_pkg.cpython-{36m,37m}-x86_64-linux-gnu.so
