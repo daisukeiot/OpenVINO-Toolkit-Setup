@@ -32,7 +32,7 @@ RUN source $INTEL_OPENVINO_DIR/bin/setupvars.sh -pyver ${PYTHON_VERSION} && \
     ${INTEL_OPENVINO_DIR}/install_dependencies/install_openvino_dependencies.sh && \
     python3 -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/open_model_zoo/tools/downloader/requirements.in && \
     python3 -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/requirements.txt && \
-    python3 -m pip install -r ${INTEL_OPENVINO_DIR}/inference_engine/samples/python/requirements.txt
+    ${PYTHON_BIN} -m pip install -r ${INTEL_OPENVINO_DIR}/inference_engine/samples/python/requirements.txt
 
 USER openvino
 

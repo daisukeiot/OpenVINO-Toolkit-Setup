@@ -58,11 +58,11 @@ RUN apt-get update && \
     python3 -m pip --no-cache-dir install --upgrade \
         pip \
         setuptools==41.0.0 && \
+    ${PYTHON_BIN} -m pip install 'numpy==1.16' --force-reinstall && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /tmp/*
 
-RUN alias python3="${PYTHON_BIN}" && \
-    echo alias python3="${PYTHON_BIN}" >> ~/.bashrc && \
+RUN echo alias python3="${PYTHON_BIN}" >> ~/.bashrc && \
     echo alias python3="${PYTHON_BIN}" >> /home/openvino/.bashrc
 
 #
