@@ -63,4 +63,4 @@ EXPOSE 8080
 USER openvino
 WORKDIR /home/openvino
 
-ENTRYPOINT ["bash", "/home/openvino/startapp.sh"]
+ENTRYPOINT ["/bin/bash", "-c", "/home/openvino/startapp.sh"]
