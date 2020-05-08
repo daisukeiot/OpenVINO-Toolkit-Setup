@@ -6,7 +6,7 @@ if [ $# -ne 3 ]
     echo "  Base Tag       : Tag of image to install Tensorflow"
     echo "  Tensorflow     : Tensorflow Version"
     echo ""
-    echo "  Example : ${0##*/} myregistry ubuntu_18.04_cp3.7 3.7 1.15"
+    echo "  Example : ${0##*/} myregistry ubuntu_18.04_cp3.7 1.15"
     echo "======================================="
     exit
 fi

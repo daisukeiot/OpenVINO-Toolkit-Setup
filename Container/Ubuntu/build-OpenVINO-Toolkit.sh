@@ -5,7 +5,7 @@ if [ $# -ne 2 ]
     echo "  Registry       : Your registry"
     echo "  Base Tag       : Tag of image to install OpenVINO"
     echo ""
-    echo "  Example : ${0##*/} myregistry 3.7 ubuntu_18.04_cp3.7"
+    echo "  Example : ${0##*/} myregistry ubuntu_18.04_cp3.7"
     echo "======================================="
     exit
 fi
@@ -52,7 +52,6 @@ echo ''
 #
 docker build --squash --rm -f ${SCRIPT_DIR}/OpenVINO-Toolkit/Dockerfile -t ${TAG} \
   --build-arg TAG_BASE=${TAG_BASE} \
-  --build-arg PYTHON_VERSION=${PYTHON_VERSION} \
   ${SCRIPT_DIR}
 
 #
