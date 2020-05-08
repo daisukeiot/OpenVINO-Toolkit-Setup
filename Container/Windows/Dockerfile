@@ -26,11 +26,22 @@ WORKDIR C:\OV.TEMP
 # Install Python
 #
 ADD ${PYTHON_DOWNLOAD} .\python3.exe
-ARG PARAMS="/quiet /log Python.log TargetDir=${PYTHON_DIR} InstallAllUsers=1 PrependPath=1 Include_test=0 Include_launcher=0 Include_tcltk=0 Include_doc=0 Shortcuts=0"
-RUN Start-Process C:\OV.TEMP\python3.exe -ArgumentList $ENV:PARAMS -Wait -PassThru -NoNewWindow
+RUN Start-Process C:\OV.TEMP\python3.exe `
+        -ArgumentList '/quiet', `
+                      'InstallAllUsers=1', `
+                      'PrependPath=1', `
+                      'Include_test=0', `
+                      'Include_launcher=0', `
+                      'Include_tcltk=0', `
+                      'Include_doc=0', `
+                      'Shortcuts=0', `
+                      "TargetDir=$ENV:PYTHON_DIR" `
+        -Wait -PassThru -NoNewWindow
+
+RUN dir C:\
 
 # Install cmake using PIP
-RUN Start-Process $ENV:PYTHON_BIN -ArgumentList '--version' ; `
+RUN Start-Process $ENV:PYTHON_BIN -ArgumentList '--version' -Wait -PassThru -NoNewWindow ; `
     Start-Process $ENV:PYTHON_BIN -ArgumentList '-m pip install --upgrade pip' -Wait -PassThru -NoNewWindow ; `
     Start-Process $ENV:PYTHON_BIN -ArgumentList '-m pip install cmake' -Wait -PassThru -NoNewWindow
 
@@ -39,13 +50,16 @@ RUN Start-Process $ENV:PYTHON_BIN -ArgumentList '--version' ; `
 #
 ADD ${VS_BUILT_DOWNLOAD} .\vs_buildtools.exe
 RUN Start-Process C:\OV.TEMP\vs_buildtools.exe `
-    -ArgumentList '--quiet --wait --norestart --nocache `
-                   --add Microsoft.VisualStudio.Workload.VCTools `
-                   --add Microsoft.VisualStudio.Component.Windows10SDK.17763 `
-                   --add Microsoft.Component.MSBuild `
-                   --remove Microsoft.VisualStudio.Component.Windows10SDK.18362 `
-                   --includeRecommended' `
-    -Wait -PassThru -NoNewWindow 
+        -ArgumentList @('--quiet', `
+                        '--wait', `
+                        '--norestart', `
+                        '--nocache ', `
+                        '--add Microsoft.VisualStudio.Workload.VCTools', `
+                        '--add Microsoft.VisualStudio.Component.Windows10SDK.17763', `
+                        '--add Microsoft.Component.MSBuild', `
+                        '--remove Microsoft.VisualStudio.Component.Windows10SDK.18362', `
+                        '--includeRecommended') `
+        -Wait -PassThru -NoNewWindow 
 
 #
 # Install OpenVINO Toolkit
@@ -56,14 +70,19 @@ ADD ${OPENVINO_DOWNLOAD} .\w_openvino_toolkit.exe
 # Do not install GPU and VPU
 # Don't split this line.  Installer does not like spaces
 #
-ARG OPENVINO_COMPONENTS='OPENVINO_COMMON,icl_redist,INFERENCE_ENGINE,INFERENCE_ENGINE_CPU,INFERENCE_ENGINE_SDK,INFERENCE_ENGINE_SAMPLES,POT,OMZ_TOOLS,MODEL_OPTIMIZER,OMZ_DEV,OPENCV,OPENCV_RUNTIME,OPENCV_PYTHON,SETUPVARS'
+ARG OV_COMP='OPENVINO_COMMON,icl_redist,INFERENCE_ENGINE,INFERENCE_ENGINE_CPU,INFERENCE_ENGINE_SDK,INFERENCE_ENGINE_SAMPLES,POT,OMZ_TOOLS,MODEL_OPTIMIZER,OMZ_DEV,OPENCV,OPENCV_RUNTIME,OPENCV_PYTHON,SETUPVARS'
 #                         INFERENCE_ENGINE_GPU, `
 #                         INFERENCE_ENGINE_VPU, `
 #                         VPU_DRV'
 
-ARG PARAMS="--s --r yes --l C:\OV.TEMP\openvino_log.txt --a install --eula=accept --ignore-cpu --components=${OPENVINO_COMPONENTS} --output=C:\OV.TEMP\openvino_out.txt"
 RUN Start-Process C:\OV.TEMP\w_openvino_toolkit.exe `
-        -ArgumentList $ENV:PARAMS `
+        -ArgumentList '--s', `
+                      '--r yes', `
+                      '--a install', `
+                      '--eula=accept', `
+                      '--ignore-cpu', `
+                      "--components=$ENV:OV_COMP", `
+                      '--output=C:\OV.TEMP\openvino_out.txt' `
         -Wait -PassThru -NoNewWindow
 
 WORKDIR 'C:\Program Files (x86)\IntelSWTools\openvino\deployment_tools\model_optimizer\install_prerequisites'
@@ -73,7 +92,8 @@ RUN .\install_prerequisites.bat ; `
 WORKDIR C:\
 
 # Clean Up
-RUN Remove-Item -Path C:\OV.TEMP -recurse -force
+RUN Remove-Item -Force -Recurse -Path C:\OV.TEMP ; `
+    Remove-Item -Force -Recurse -Path ${Env:TEMP}\*
 
 ENV INTEL_OPENVINO_DIR 'C:\Program Files (x86)\IntelSWTools\openvino'
 #
