@@ -25,7 +25,7 @@ WORKDIR ${INTEL_OPENVINO_DIR}
 # Install Git
 #
 RUN apt-get update && \
-    apt install -y --no-install-recommends git && \
+    apt-get install -y --no-install-recommends git && \
     rm -rf /var/lib/apt/lists/*
 
 #
@@ -40,7 +40,7 @@ RUN cd install_dependencies && \
 RUN ${PYTHON_BIN} -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/open_model_zoo/tools/downloader/requirements.in && \
     ${PYTHON_BIN} -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/requirements.txt && \
     apt-get update && \
-    apt install -y --no-install-recommends \
+    apt-get install -y --no-install-recommends \
         python3-yaml \
         python3-requests && \
     rm -rf /var/lib/apt/lists/* && \

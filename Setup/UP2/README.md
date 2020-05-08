@@ -21,7 +21,7 @@ Verified with :
 
     ```bash
     sudo apt update && \
-    sudo apt install -y git && \
+    sudo apt-get install -y git && \
     git clone https://github.com/daisukeiot/OpenVINO-Toolkit-Setup.git && \
     cd ~/OpenVINO-Toolkit-Setup/Setup/UP2 && \
     ./setup1.sh

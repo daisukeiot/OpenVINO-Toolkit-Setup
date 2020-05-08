@@ -20,7 +20,7 @@ USER root
 WORKDIR /tmp
 
 RUN apt-get update && \
-    apt install -y --no-install-recommends sudo && \
+    apt-get install -y --no-install-recommends sudo && \
     rm -rf /var/lib/apt/lists/* && \
     echo "openvino ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
     usermod -aG video openvino && \

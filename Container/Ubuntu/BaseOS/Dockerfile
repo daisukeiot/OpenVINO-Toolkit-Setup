@@ -25,7 +25,7 @@ RUN useradd -ms /bin/bash openvino && \
 # Install libraries
 #
 RUN apt-get update && \
-    apt install -y --no-install-recommends \
+    apt-get install -y --no-install-recommends \
                 autoconf \
                 automake \
                 build-essential \
