@@ -37,8 +37,8 @@ RUN cd install_dependencies && \
 #
 # Install dependencies for Model Downloader and Model Optimizer
 #
-RUN ${PYTHON_BIN} -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/open_model_zoo/tools/downloader/requirements.in && \
-    ${PYTHON_BIN} -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/requirements.txt && \
+RUN python3 -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/open_model_zoo/tools/downloader/requirements.in && \
+    python3 -m pip install -r ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/requirements.txt && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
         python3-yaml \
