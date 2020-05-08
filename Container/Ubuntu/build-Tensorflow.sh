@@ -68,7 +68,7 @@ echo ' / / /  __/ / / (__  ) /_/ / /  / __/ / /_/ / |/ |/ / '
 echo '/_/  \___/_/ /_/____/\____/_/  /_/ /_/\____/|__/|__/  '
 echo ''
 echo " Installed Tensorflow"
-echo " Tensorflow version : ${TF_VER}"
+echo " Tensorflow version : ${TF_VERSION}"
 echo " Image Tag          : ${TAG}"
 echo ''
 echo $'\n###############################################################################'
