@@ -4,9 +4,12 @@ if "%1" equ "" goto :HELP
 
 if "%2" equ "" goto :HELP
 
+if "%3" equ "" goto :HELP
+
 set SCRIPT_DIR=%~dp0
-set OS_VERSION=%1
-set MY_REGISTRY=%2
+set OS_TYPE=%1
+set OS_VERSION=%2
+set MY_REGISTRY=%3
 set PYTHON_VERSION=3.7.5
 
 set TAG=%MY_REGISTRY%/openvino-container:baseos-windows_%OS_VERSION%_openvino%OPENVINO_VER%_cp%PYTHON_VERSION%
@@ -22,7 +25,7 @@ echo ""
 REM
 REM Build Ubuntu Base Image
 REM
-docker build --rm --isolation hyperv -f %SCRIPT_DIR%\Windows\Dockerfile --build-arg OS_VERSION=%OS_VERSION% --build-arg PYTHON_VERSION=%PYTHON_VERSION% -t %TAG% -m 4GB %SCRIPT_DIR% 
+docker build --rm --isolation hyperv -f %SCRIPT_DIR%\Windows\Dockerfile --build-arg OS_TYPE=%OS_TYPE% --build-arg OS_VERSION=%OS_VERSION% --build-arg PYTHON_VERSION=%PYTHON_VERSION% -t %TAG% -m 4GB %SCRIPT_DIR% 
 
 echo "###############################################################################"
 echo " _       ___           __                  "
@@ -45,7 +48,8 @@ goto :EOF
 :HELP
 echo "======================================="
 echo "Please specify Windows Server Version and reistry"
-echo "  Server Version : ltsc2019"
+echo "  OS Type        : servercore or nanoserver"
+echo "  TAG            : ltsc2019, 1809, 1903"
 echo "  Registry       : Your registry"
 echo "  Example ./%~nx0 ltsc2019 myregistry"
 echo "======================================="

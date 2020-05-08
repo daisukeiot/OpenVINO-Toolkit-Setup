@@ -1,8 +1,9 @@
 # escape=`
 
+ARG OS_TYPE=servercore
 ARG OS_VERSION=ltsc2019
 
-FROM mcr.microsoft.com/windows/servercore:${OS_VERSION}
+FROM mcr.microsoft.com/windows/${OS_TYPE}:${OS_VERSION}
 
 #
 # Local variables
