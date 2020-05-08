@@ -33,7 +33,7 @@ if ! docker inspect --type=image ${MY_REGISTRY}/openvino-container:$TAG > /dev/n
     exit
 fi
 
-./build-Tensorflow.sh ${MY_REGISTRY} ${TAG} ${PYTHON_VERSION} ${TF_VERSION}
+./build-Tensorflow.sh ${MY_REGISTRY} ${TAG} ${TF_VERSION}
 TAG=${TAG}_tf${TF_VERSION}
 if ! docker inspect --type=image ${MY_REGISTRY}/openvino-container:$TAG > /dev/null 2>&1; then
     echo "Failed to create image"
