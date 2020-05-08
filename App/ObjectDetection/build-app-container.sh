@@ -1,4 +1,4 @@
-if [ $# -ne 2 ]
+if [ $# -ne 1 ]
   then
     echo "======================================="
     echo "Please specify base image tag and reistry"
