@@ -54,14 +54,6 @@ docker build --squash --rm -f ${SCRIPT_DIR}/OpenVINO-Toolkit/Dockerfile -t ${TAG
   --build-arg TAG_BASE=${TAG_BASE} \
   ${SCRIPT_DIR}
 
-#
-# Check if the image exists or not
-#
-if ! docker inspect --type=image $TAG > /dev/null 2>&1; then
-    echo "Failed to create image"
-    exit
-fi
-
 echo $'\n###############################################################################'
 echo '   ____                 _    _______   ______     ______            ____   _ __ '
 echo '  / __ \____  ___  ____| |  / /  _/ | / / __ \   /_  __/___  ____  / / /__(_) /_'
@@ -73,6 +65,14 @@ echo ''
 echo "OpenVINO Toolkit : ${OPENVINO_VER}"
 echo "Image Tag        : ${TAG}"
 echo ''
+#
+# Check if the image exists or not
+#
+if ! docker inspect --type=image $TAG > /dev/null 2>&1; then
+    echo "Failed to create image"
+    exit
+fi
+
 echo $'\n###############################################################################'
 echo 'CTLC+C to cancel docker push'
 echo $'###############################################################################\n'
