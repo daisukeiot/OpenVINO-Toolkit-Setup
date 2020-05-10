@@ -6,7 +6,8 @@ ARG TAG_BASE=servercore:ltsc2019
 #
 # Image with OpenVINO Toolkit
 #
-FROM $ENV:TAG_BASE}
+FROM ${TAG_BASE}
+ENV INTEL_OPENVINO_DIR 'C:\Program Files (x86)\IntelSWTools\openvino'
 
 #
 # Local variables
