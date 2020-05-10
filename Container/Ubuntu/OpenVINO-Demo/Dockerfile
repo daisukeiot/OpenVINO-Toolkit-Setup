@@ -50,4 +50,4 @@ RUN source $INTEL_OPENVINO_DIR/bin/setupvars.sh -pyver ${PYTHON_VERSION} && \
     
 WORKDIR /home/openvino
 
-ENTRYPOINT ["./verify.sh"]
+ENTRYPOINT ["/bin/bash", "-C", "~/verify.sh"]
