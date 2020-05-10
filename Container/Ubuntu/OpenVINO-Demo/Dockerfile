@@ -39,9 +39,7 @@ USER openvino
 #
 # Run Classification Sample on CPU/GPU/MYRIAD
 #
-RUN echo ${INTEL_OPENVINO_DIR}/deployment_tools/demo/demo_squeezenet_download_convert_run.sh -d CPU > ~/cpu.sh && \
-    echo ${INTEL_OPENVINO_DIR}/deployment_tools/demo/demo_squeezenet_download_convert_run.sh -d GPU > ~/gpu.sh && \
-    echo ${INTEL_OPENVINO_DIR}/deployment_tools/demo/demo_squeezenet_download_convert_run.sh -d MYRIAD > ~/vpu.sh && \
+RUN echo ${INTEL_OPENVINO_DIR}/deployment_tools/demo/demo_squeezenet_download_convert_run.sh > ~/verify.sh \
     chmod a+x ~/*.sh
 
 #
@@ -52,4 +50,4 @@ RUN source $INTEL_OPENVINO_DIR/bin/setupvars.sh -pyver ${PYTHON_VERSION} && \
     
 WORKDIR ${INTEL_OPENVINO_DIR}
 
-ENTRYPOINT []
+ENTRYPOINT ["~/verify.sh"]
