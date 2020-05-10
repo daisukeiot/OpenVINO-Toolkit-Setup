@@ -41,6 +41,7 @@ RUN Start-Process C:\OV.TEMP\python3.exe `
 RUN dir C:\
 
 # Install cmake using PIP
+# Run --version to be sure (for debugging purpose)
 RUN Start-Process $ENV:PYTHON_BIN -ArgumentList '--version' -Wait -PassThru -NoNewWindow ; `
     Start-Process $ENV:PYTHON_BIN -ArgumentList '-m pip install --upgrade pip' -Wait -PassThru -NoNewWindow ; `
     Start-Process $ENV:PYTHON_BIN -ArgumentList '-m pip install cmake' -Wait -PassThru -NoNewWindow
