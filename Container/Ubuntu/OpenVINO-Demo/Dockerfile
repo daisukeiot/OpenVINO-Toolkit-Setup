@@ -39,7 +39,7 @@ USER openvino
 #
 # Run Classification Sample on CPU/GPU/MYRIAD
 #
-RUN echo ${INTEL_OPENVINO_DIR}/deployment_tools/demo/demo_squeezenet_download_convert_run.sh > ~/verify.sh \
+RUN echo ${INTEL_OPENVINO_DIR}/deployment_tools/demo/demo_squeezenet_download_convert_run.sh > ~/verify.sh && \
     chmod a+x ~/verify.sh
 
 #
