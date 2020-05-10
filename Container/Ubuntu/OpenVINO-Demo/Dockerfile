@@ -37,17 +37,17 @@ RUN source $INTEL_OPENVINO_DIR/bin/setupvars.sh -pyver ${PYTHON_VERSION} && \
 USER openvino
 
 #
-# Run Classification Sample on CPU/GPU/MYRIAD
-#
-RUN echo ${INTEL_OPENVINO_DIR}/deployment_tools/demo/demo_squeezenet_download_convert_run.sh > ./verify.sh && \
-    chmod a+x ./verify.sh
-
-#
 # Run hello query device sample as sanity check
 #
 RUN source $INTEL_OPENVINO_DIR/bin/setupvars.sh -pyver ${PYTHON_VERSION} && \
     ${PYTHON_BIN} ${INTEL_OPENVINO_DIR}/inference_engine/samples/python/hello_query_device/hello_query_device.py
     
 WORKDIR /home/openvino
+
+#
+# create script to run Classification Sample on CPU/GPU/MYRIAD
+#
+RUN echo ${INTEL_OPENVINO_DIR}/deployment_tools/demo/demo_squeezenet_download_convert_run.sh > ./verify.sh && \
+    sudo chmod a+x ./verify.sh
 
 ENTRYPOINT ["/bin/bash", "-C", "~/verify.sh"]
