@@ -28,17 +28,19 @@ echo .
 REM
 REM Install OpenVINO Toolkit to Ubuntu Base Image
 REM
-docker build --squash --rm -f %SCRIPT_DIR%/OpenVINO-Demo/Dockerfile -t %TAG% \
+docker build --squash --rm -f %SCRIPT_DIR%\OpenVINO-Demo\Dockerfile -t %TAG% \
   --build-arg TAG_BASE=%TAG_BASE% \
   %SCRIPT_DIR%
 
 REM
 REM Check if the image exists or not
 REM
-if ! docker inspect --type=image $TAG > /dev/null 2>&1; then
-    echo Failed to create image"
-    exit
-fi
+docker inspect --type=image %TAG% > nul 2>&1
+
+if %errorlevel% == 1 (
+    echo "Failed to create image"
+    goto :EOF
+)
 
 echo ###############################################################################
 echo .
@@ -54,10 +56,12 @@ echo .
 REM
 REM Check if the image exists or not
 REM
-if ! docker inspect --type=image $TAG > /dev/null 2>&1; then
-    echo Failed to create image
-    exit
-fi
+docker inspect --type=image %TAG% > nul 2>&1
+
+if %errorlevel% == 1 (
+    echo "Failed to create image"
+    goto :EOF
+)
 
 echo ###############################################################################
 echo CTLC+C to cancel docker push
