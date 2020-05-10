@@ -48,6 +48,6 @@ WORKDIR /home/openvino
 # create script to run Classification Sample on CPU/GPU/MYRIAD
 #
 RUN echo ${INTEL_OPENVINO_DIR}/deployment_tools/demo/demo_squeezenet_download_convert_run.sh > ./verify.sh && \
-    sudo chmod a+x ./verify.sh
+    chmod a+x ./verify.sh
 
 ENTRYPOINT ["/bin/bash", "-C", "~/verify.sh"]
