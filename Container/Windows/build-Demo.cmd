@@ -75,3 +75,12 @@ timeout 10
 echo Pushing Image : %TAG%
 echo .
 docker push %TAG%
+
+goto :EOF
+
+:HELP
+echo =======================================
+echo Please specify Windows Server Version and reistry
+echo   Base Tag       : Tag of image to install OpenVINO
+echo   Example ./%~nx0 myregistry/openvino-container:servercore_ltsc2019_cp3.7
+echo =======================================
