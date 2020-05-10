@@ -28,8 +28,8 @@ echo .
 REM
 REM Install OpenVINO Toolkit to Ubuntu Base Image
 REM
-docker build --isolation hyperv --squash --rm -f %SCRIPT_DIR%\OpenVINO-Demo\Dockerfile -t %TAG% \
-  --build-arg TAG_BASE=%TAG_BASE% \
+docker build --isolation hyperv --squash --rm -f %SCRIPT_DIR%\OpenVINO-Demo\Dockerfile -t %TAG% ^
+  --build-arg TAG_BASE=%TAG_BASE% ^
   %SCRIPT_DIR%
 
 REM
