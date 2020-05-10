@@ -48,6 +48,6 @@ RUN echo ${INTEL_OPENVINO_DIR}/deployment_tools/demo/demo_squeezenet_download_co
 RUN source $INTEL_OPENVINO_DIR/bin/setupvars.sh -pyver ${PYTHON_VERSION} && \
     ${PYTHON_BIN} ${INTEL_OPENVINO_DIR}/inference_engine/samples/python/hello_query_device/hello_query_device.py
     
-WORKDIR ${INTEL_OPENVINO_DIR}
+WORKDIR /home/openvino
 
 ENTRYPOINT ["~/verify.sh"]
