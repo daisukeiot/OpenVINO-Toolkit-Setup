@@ -29,7 +29,7 @@ sudo apt-get remove -y --purge moby-engine
 #
 # Install Python 3.7 so we can install numpy v 1.16 before tensorflow
 #
-sudo apt-get install -y curl python3.7 python3.7-dev 
+sudo apt-get install -y curl python3.7 python3.7-dev python3-pip
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py 
 sudo python3.6 get-pip.py 
 sudo python3.7 get-pip.py 
