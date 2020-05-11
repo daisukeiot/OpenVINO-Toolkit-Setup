@@ -17,9 +17,8 @@ wget ${OPENVINO_DOWNLOAD}
 sudo tar xf l_openvino_toolkit_runtime_raspbian_p*.tgz --strip 1 -C ${INSTALL_DIR} 
 echo "source $INSTALL_DIR/bin/setupvars.sh" >> ${HOME}/.bashrc 
 source ${INSTALL_DIR}/bin/setupvars.sh 
-sh /opt/intel/openvino/install_dependencies/install_NCS_udev_rules.sh 
 sudo usermod -a -G users "$(whoami)" 
-sudo usermod -a -G video "$(whoami)" 
+sh /opt/intel/openvino/install_dependencies/install_NCS_udev_rules.sh 
 rm -r -f ~/OV.Work 
 sudo echo gpu_mem=16 >> /boot/config.txt 
 sudo raspi-config nonint do_hostname $newHostName 
