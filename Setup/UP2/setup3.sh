@@ -32,8 +32,9 @@ sudo apt-get install -y curl python3.7 python3.7-dev python3-pip
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py 
 sudo -H python3.6 get-pip.py 
 sudo -H python3.7 get-pip.py 
-rm get-pip.py 
-if [! -d "/usr/lib/python3/dist-packages/apt_pkg.cpython-37m-x86_64-linux-gnu.so " ]; then
+rm get-pip.py
+
+if [ ! -d "/usr/lib/python3/dist-packages/apt_pkg.cpython-37m-x86_64-linux-gnu.so" ]; then
     cd /usr/lib/python3/dist-packages
     sudo ln -s apt_pkg.cpython-{36m,37m}-x86_64-linux-gnu.so 
 fi
