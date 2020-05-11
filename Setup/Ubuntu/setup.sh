@@ -12,9 +12,9 @@ sudo -H python3.7 get-pip.py
 rm get-pip.py 
 sudo -H python3.6 -m pip --no-cache-dir install --upgrade pip setuptools==41.0.0 
 sudo -H python3.7 -m pip --no-cache-dir install --upgrade pip setuptools==41.0.0 
-cd /usr/lib/python3/dist-packages
 
 if [! -d "/usr/lib/python3/dist-packages/apt_pkg.cpython-{36m,37m}-x86_64-linux-gnu.so " ]; then
+    cd /usr/lib/python3/dist-packages
     sudo ln -s apt_pkg.cpython-{36m,37m}-x86_64-linux-gnu.so 
 fi
 #
