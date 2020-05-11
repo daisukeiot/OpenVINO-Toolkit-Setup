@@ -15,3 +15,15 @@ sudo apt-get update && \
 sudo apt-get install -y git && \
 git clone https://github.com/daisukeiot/OpenVINO-Toolkit-Setup.git
 ```
+
+## OpenVINO Toolkit Setup
+
+Run setup script to setup OS and install OpenVINO Toolkit with :
+
+```bash
+cd ~/OpenVINO-Toolkit-Setup/Setup/Raspbian && \
+./setup.sh
+```
+
+> [!NOTE]  
+> The script will change hostname to RP-OpenVINO

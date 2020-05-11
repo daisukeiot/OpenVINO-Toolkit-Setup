@@ -2,7 +2,6 @@
 
 Verified with :
 
-- UP2 with Myriad X
 - UP2 Kernel
 - Ubuntu 18.04 LTS
 - OpenVINO 2020.2.120
