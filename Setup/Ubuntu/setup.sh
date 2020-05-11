@@ -13,7 +13,7 @@ rm get-pip.py
 sudo -H python3.6 -m pip --no-cache-dir install --upgrade pip setuptools==41.0.0 
 sudo -H python3.7 -m pip --no-cache-dir install --upgrade pip setuptools==41.0.0 
 
-if [! -d "/usr/lib/python3/dist-packages/apt_pkg.cpython-{36m,37m}-x86_64-linux-gnu.so " ]; then
+if [ ! -f "/usr/lib/python3/dist-packages/apt_pkg.cpython-37m-x86_64-linux-gnu.so" ]; then
     cd /usr/lib/python3/dist-packages
     sudo ln -s apt_pkg.cpython-{36m,37m}-x86_64-linux-gnu.so 
 fi
@@ -74,4 +74,4 @@ sudo usermod -a -G video "$(whoami)"
 cd ${INTEL_OPENVINO_DIR}/install_dependencies 
 sudo -E ./install_NCS_udev_rules.sh 
 
-sudo reboot now
+# sudo reboot now
