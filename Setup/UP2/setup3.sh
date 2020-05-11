@@ -21,8 +21,7 @@ sudo docker cp tensorflow:/tensorflow-1.15.2-cp37-cp37m-linux_x86_64.whl ./
 #
 # Clean up
 #
-sudo docker rm tensorflow 
-sudo docker rmi -f ${TAG} 
+sudo docker system prune -a -f
 sudo apt-get remove -y --purge moby-cli
 sudo apt-get remove -y --purge moby-engine
 
@@ -38,5 +37,5 @@ cd /usr/lib/python3/dist-packages
 sudo ln -s apt_pkg.cpython-{36m,37m}-x86_64-linux-gnu.so 
 cd /tmp
 sudo -H python3.7 -m pip install 'numpy==1.16' --force-reinstall 
-sudo -H python3.7 -m pip install ./*.whl 
+sudo -H python3.7 -m pip install ./*.whl && \
 rm ./*.whl
