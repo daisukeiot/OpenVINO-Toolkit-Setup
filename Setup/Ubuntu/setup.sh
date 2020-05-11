@@ -38,8 +38,6 @@ mkdir /tmp/openvino
 cd /tmp/openvino 
 curl -LOJ "${OPENVINO_DOWNLOAD}" 
 tar -xzf ./*.tgz 
-echo ${OPENVINO_INSTALL} 
-echo ${OPENVINO_PKG} 
 cd ${OPENVINO_PKG} 
 ./install.sh --list_components 
 sed -i 's/decline/accept/g' silent.cfg 
@@ -52,9 +50,9 @@ rm -rf /tmp/openvino
 source /opt/intel/openvino/bin/setupvars.sh -pyver 3.7 
 echo "source ${INTEL_OPENVINO_DIR}/bin/setupvars.sh -pyver 3.7" >> ~/.bashrc 
 cd ${INTEL_OPENVINO_DIR}/install_dependencies 
-sudo -E ${INTEL_OPENVINO_DIR}/install_dependencies/install_openvino_dependencies.sh 
-sudo -E ${INTEL_OPENVINO_DIR}/install_dependencies/install_NEO_OCL_driver.sh 
-sudo ./install_NCS_udev_rules.sh 
+sudo -E ./install_openvino_dependencies.sh 
+sudo -E ./install_NEO_OCL_driver.sh 
+sudo -E ./install_NCS_udev_rules.sh 
 sudo usermod -a -G video "$(whoami)" 
 sudo usermod -a -G users "$(whoami)" 
 #
@@ -62,4 +60,4 @@ sudo usermod -a -G users "$(whoami)"
 #
 cd ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/install_prerequisites 
 sudo ./install_prerequisites.sh
-# sudo reboot now
+sudo reboot now
