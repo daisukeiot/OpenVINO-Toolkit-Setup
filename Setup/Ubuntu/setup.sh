@@ -13,7 +13,7 @@ rm get-pip.py
 python3.6 -m pip --no-cache-dir install --upgrade pip setuptools==41.0.0 
 python3.7 -m pip --no-cache-dir install --upgrade pip setuptools==41.0.0 
 cd /usr/lib/python3/dist-packages 
-#sudo ln -s apt_pkg.cpython-{36m,37m}-x86_64-linux-gnu.so 
+sudo ln -s apt_pkg.cpython-{36m,37m}-x86_64-linux-gnu.so 
 #
 # Install OpenVINO
 #
