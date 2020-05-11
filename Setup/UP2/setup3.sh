@@ -42,4 +42,5 @@ cd /tmp
 sudo -H python3.7 -m pip install 'numpy==1.16' --force-reinstall
 sudo -H python3.7 -m pip install ./*.whl
 sudo rm ./*.whl
-sudo apt autoremove
+sudo apt autoremove -y
+sudo reboot now
