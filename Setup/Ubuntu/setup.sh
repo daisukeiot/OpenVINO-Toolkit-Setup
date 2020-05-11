@@ -47,17 +47,28 @@ rm -rf /tmp/openvino
 #
 # install all dependencies
 #
-source /opt/intel/openvino/bin/setupvars.sh -pyver 3.7 
-echo "source ${INTEL_OPENVINO_DIR}/bin/setupvars.sh -pyver 3.7" >> ~/.bashrc 
 cd ${INTEL_OPENVINO_DIR}/install_dependencies 
 sudo -E ./install_openvino_dependencies.sh 
-sudo -E ./install_NEO_OCL_driver.sh 
-sudo -E ./install_NCS_udev_rules.sh 
-sudo usermod -a -G video "$(whoami)" 
-sudo usermod -a -G users "$(whoami)" 
+source /opt/intel/openvino/bin/setupvars.sh -pyver 3.7 
+echo "source ${INTEL_OPENVINO_DIR}/bin/setupvars.sh -pyver 3.7" >> ~/.bashrc 
+
 #
-# install pre-req for model optimizer
+# Configure Model Optimizer
 #
 cd ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/install_prerequisites 
 sudo ./install_prerequisites.sh
+
+#
+# GPU
+#
+cd ${INTEL_OPENVINO_DIR}/install_dependencies 
+sudo -E ./install_NEO_OCL_driver.sh 
+sudo usermod -a -G video "$(whoami)" 
+
+#
+# VPU
+#
+cd ${INTEL_OPENVINO_DIR}/install_dependencies 
+sudo -E ./install_NCS_udev_rules.sh 
+
 sudo reboot now
