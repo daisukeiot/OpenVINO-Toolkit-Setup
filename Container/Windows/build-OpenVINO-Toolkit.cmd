@@ -47,7 +47,6 @@ REM Install OpenVINO Toolkit to Windows Base Image
 REM
 docker build ^
     --isolation hyperv ^
-    --squash ^
     --rm ^
     -f %SCRIPT_DIR%/OpenVINO-Toolkit/Dockerfile ^
     -t %TAG% ^

@@ -14,23 +14,22 @@ if %errorlevel% == 0 (
     docker rmi -f %TAG%
 )
 
-echo .
+echo.
 echo     ____        _ __    __   _____ __             __ 
 echo    / __ )__  __(_) /___/ /  / ___// /_____ ______/ /_
 echo   / __  / / / / / / __  /   \__ \/ __/ __ `/ ___/ __/
 echo  / /_/ / /_/ / / / /_/ /   ___/ / /_/ /_/ / /  / /_  
 echo /_____/\__,_/_/_/\__,_/   /____/\__/\__,_/_/   \__/  
-echo .
-echo .
+echo.
+echo.
 echo Image Tag  : %TAG%
 echo Base Image : %TAG_BASE%
-echo .
-REM
+echo.
+echo %SCRIPT_DIR%OpenVINO-Demo\Dockerfile
 REM Install OpenVINO Toolkit to Ubuntu Base Image
 REM
 docker build ^
     --isolation hyperv ^
-    --squash ^
     --rm ^
     -f %SCRIPT_DIR%\OpenVINO-Demo\Dockerfile ^
     -t %TAG% ^
@@ -48,16 +47,16 @@ if %errorlevel% == 1 (
 )
 
 echo ###############################################################################
-echo .
+echo.
 echo    ____                 _    _______   ______     ____                     
-echo   / __ \____  ___  ____| |  / /  _/ | / / __ \   / __ \___  ____ ___  ____ 
-echo  / / / / __ \/ _ \/ __ \ | / // //  |/ / / / /  / / / / _ \/ __ `__ \/ __ \
-echo / /_/ / /_/ /  __/ / / / |/ // // /|  / /_/ /  / /_/ /  __/ / / / / / /_/ /
-echo \____/ .___/\___/_/ /_/|___/___/_/ |_/\____/  /_____/\___/_/ /_/ /_/\____/ 
+echo   / __ \____  ___  ____^| ^|  / /  _/ ^| / / __ \   / __ \___  ____ ___  ____ 
+echo  / / / / __ \/ _ \/ __ \ ^| / // //  ^|/ / / / /  / / / / _ \/ __ `__ \/ __ \
+echo / /_/ / /_/ /  __/ / / / ^|/ // // /^|  / /_/ /  / /_/ /  __/ / / / / / /_/ /
+echo \____/ .___/\___/_/ /_/^|___/___/_/ ^|_/\____/  /_____/\___/_/ /_/ /_/\____/ 
 echo     /_/                                                                    
-echo .
+echo.
 echo Image Tag : %TAG%
-echo .
+echo.
 REM
 REM Check if the image exists or not
 REM
@@ -73,7 +72,7 @@ echo CTLC+C to cancel docker push
 echo ###############################################################################
 timeout 10
 echo Pushing Image : %TAG%
-echo .
+echo.
 docker push %TAG%
 
 goto :EOF

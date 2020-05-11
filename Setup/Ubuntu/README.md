@@ -15,27 +15,33 @@ git clone https://github.com/daisukeiot/OpenVINO-Toolkit-Setup.git && \
 cd ./OpenVINO-Toolkit-Setup/Setup/Ubuntu
 ```
 
-## Ubuntu Setup
+## OpenVINO Toolkit Setup
 
-Run setup script :
+Run setup script to setup OS and install OpenVINO Toolkit with :
 
 ```bash
 cd ~/OpenVINO-Toolkit-Setup/Setup/Ubuntu && \
 ./setup.sh
 ```
 
-## Verification
+## OpenVINO Toolkit Verification
 
-Run verification on CPU, GPU, and MYRIAD with :
+The verification script will test :
+
+- Model Downloader
+- Model Optimizer
+- OpenVINO inference on CPU, GPU, and MYRIAD
 
 ```bash
 cd ~/OpenVINO-Toolkit-Setup/Setup/Ubuntu && \
 ./verification.sh
 ```
 
-## Container
+## Container Runtime Setup
 
-If you are planning to run IoT Edge or containerized OpenVINO application, install Docker/Moby
+If you are planning to run containerized OpenVINO application, install Docker or Moby :
+
+Install Moby runtime with :
 
 ```bash
 sudo apt-get install -y curl && \
@@ -50,3 +56,14 @@ sudo usermod -aG docker $USER && \
 rm ./microsoft* && \
 sudo reboot now
 ```
+
+If you plan to run IoT Edge, install IoT Edge runtime with :
+
+```bash
+sudo apt-get update && \
+sudo apt-get install iotedge
+```
+
+### Reference
+
+- [Install the Azure IoT Edge runtime on Debian-based Linux systems](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-install-iot-edge-linux)

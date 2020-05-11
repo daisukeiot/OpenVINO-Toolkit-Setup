@@ -12,7 +12,6 @@ ARG PYTHON_VERSION=3.7.5
 ARG PYTHON_DIR=C:\\python${PYTHON_VERSION}
 ARG PYTHON_BIN=${PYTHON_DIR}\python.exe
 ARG PYTHON_EXE_DOWNLOAD=https://www.python.org/ftp/python/${PYTHON_VERSION}/python-${PYTHON_VERSION}-amd64.exe
-ARG PYTHON_ZIP_DOWNLOAD=https://www.python.org/ftp/python/${PYTHON_VERSION}/python-${PYTHON_VERSION}-embed-amd64.zip
 ARG VS_BUILT_DOWNLOAD=https://aka.ms/vs/16/release/vs_buildtools.exe
 
 #
@@ -24,14 +23,15 @@ WORKDIR C:\OV.TEMP
 
 #
 # Install Python
+# Set Python Version to Environment Variable to refer later (so we don't have to pass this in each stage)
 #
 RUN if ($ENV:OS_TYPE -eq 'nanoserver') { `
         echo "Nano Server Not Supported" ; `
         exit 1 `
     } else { `
         $response = Invoke-WebRequest `
-            -Uri $ENV:PYTHON_EXE_DOWNLOAD `
-            -OutFile 'C:\\OV.TEMP\\python3.exe' `
+            -Uri ${ENV:PYTHON_EXE_DOWNLOAD} `
+            -OutFile 'C:\OV.TEMP\python3_installer.exe' `
             -UseBasicParsing `
             -Verbose `
             -PassThru ; `
@@ -39,7 +39,7 @@ RUN if ($ENV:OS_TYPE -eq 'nanoserver') { `
             Write-Host $('Download Error : ' + $response.StatusDescription) `
             exit 1 ; `
         } ; `
-        Start-Process C:\OV.TEMP\python3.exe `
+        Start-Process C:\OV.TEMP\python3_installer.exe `
             -ArgumentList '/quiet', `
                         'InstallAllUsers=1', `
                         'PrependPath=1', `
@@ -48,17 +48,19 @@ RUN if ($ENV:OS_TYPE -eq 'nanoserver') { `
                         'Include_tcltk=0', `
                         'Include_doc=0', `
                         'Shortcuts=0', `
-                        "TargetDir=$ENV:PYTHON_DIR" `
-            -Wait -PassThru -NoNewWindow `
+                        "TargetDir=${ENV:PYTHON_DIR}" `
+            -Wait -PassThru -NoNewWindow -Verbose ; `
+        $Python_Version_Digits = ${ENV:PYTHON_VERSION}.Split('.') ; `
+        $PYTHON_VERSION_SHORT = $($Python_Version_Digits[0] + '.' + $Python_Version_Digits[1]) ; `
+        [System.Environment]::SetEnvironmentVariable('PYTHON_VERSION', $PYTHON_VERSION_SHORT, [System.EnvironmentVariableTarget]::Machine) ; `
     } 
 
 # Install cmake using PIP
-# Run --version to be sure (for debugging purpose)
-RUN Start-Process $ENV:PYTHON_BIN -ArgumentList '--version' -Wait -PassThru -NoNewWindow ; `
-    Start-Process $ENV:PYTHON_BIN -ArgumentList '-m pip install --upgrade pip' -Wait -PassThru -NoNewWindow ; `
-    Start-Process $ENV:PYTHON_BIN -ArgumentList '-m pip install cmake' -Wait -PassThru -NoNewWindow
+# Run python.exe --version to be sure (for debugging purpose)
+RUN Start-Process ${ENV:PYTHON_BIN} -ArgumentList '--version' -Wait -PassThru -NoNewWindow -Verbose; `
+    Start-Process ${ENV:PYTHON_BIN} -ArgumentList '-m pip install --upgrade pip' -Wait -PassThru -NoNewWindow -Verbose; `
+    Start-Process ${ENV:PYTHON_BIN} -ArgumentList '-m pip install cmake' -Wait -PassThru -NoNewWindow -Verbose
 
-#
 # Install VS Build Tools
 #
 ADD ${VS_BUILT_DOWNLOAD} .\vs_buildtools.exe
@@ -72,7 +74,7 @@ RUN Start-Process C:\OV.TEMP\vs_buildtools.exe `
                         '--add Microsoft.Component.MSBuild', `
                         '--remove Microsoft.VisualStudio.Component.Windows10SDK.18362', `
                         '--includeRecommended') `
-        -Wait -PassThru -NoNewWindow 
+        -Wait -PassThru -NoNewWindow -Verbose
 
 WORKDIR C:\
 
@@ -80,10 +82,9 @@ WORKDIR C:\
 RUN Remove-Item -Force -Recurse -Path C:\OV.TEMP ; `
     Remove-Item -Force -Recurse -Path ${Env:TEMP}\*
 
-ENV INTEL_OPENVINO_DIR 'C:\Program Files (x86)\IntelSWTools\openvino'
 #
 # Change Shell to CMD.EXE
 #
 SHELL ["cmd", "/S", "/C"]
 
-CMD cmd.exe
+CMD [ "cmd.exe" ]

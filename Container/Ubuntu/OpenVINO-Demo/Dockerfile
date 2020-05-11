@@ -51,4 +51,4 @@ RUN echo '#!/bin/bash' > ./verify.sh && \
     chmod a+x ./verify.sh
 
 ENTRYPOINT ["/bin/bash", "/home/openvino/verify.sh"]
-CMD ["-d", "GPU"]
+CMD ["-d", "CPU"]
