@@ -7,13 +7,16 @@ sudo apt-get install -y git curl python3-pip python3.7 python3.7-dev
 # install pip for python3.7
 #
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py 
-sudo python3.6 get-pip.py 
-sudo python3.7 get-pip.py 
+sudo -H python3.6 get-pip.py 
+sudo -H python3.7 get-pip.py 
 rm get-pip.py 
-python3.6 -m pip --no-cache-dir install --upgrade pip setuptools==41.0.0 
-python3.7 -m pip --no-cache-dir install --upgrade pip setuptools==41.0.0 
-cd /usr/lib/python3/dist-packages 
-sudo ln -s apt_pkg.cpython-{36m,37m}-x86_64-linux-gnu.so 
+sudo -H python3.6 -m pip --no-cache-dir install --upgrade pip setuptools==41.0.0 
+sudo -H python3.7 -m pip --no-cache-dir install --upgrade pip setuptools==41.0.0 
+cd /usr/lib/python3/dist-packages
+
+if [! -d "/usr/lib/python3/dist-packages/apt_pkg.cpython-{36m,37m}-x86_64-linux-gnu.so " ]; then
+    sudo ln -s apt_pkg.cpython-{36m,37m}-x86_64-linux-gnu.so 
+fi
 #
 # Install OpenVINO
 #
