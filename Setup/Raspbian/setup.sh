@@ -9,7 +9,24 @@ OPENVINO_DOWNLOAD=https://download.01.org/opencv/2020/openvinotoolkit/2020.2/${O
 
 sudo apt-get update 
 sudo apt-get upgrade -y 
-sudo apt-get install -y cmake 
+sudo apt-get install -y \
+    build-essential \
+    cmake \
+    unzip \
+    pkg-config \
+    libjpeg-dev \
+    libpng-dev \
+    libtiff-dev \
+    libavcodec-dev \
+    libavformat-dev \
+    libswscale-dev \
+    libv4l-dev \
+    libxvidcore-dev \
+    libx264-dev \
+    libgtk-3-dev \
+    libcanberra-gtk* \
+    libatlas-base-dev \
+    gfortran \
 mkdir ~/OV.Work 
 cd ~/OV.Work 
 sudo mkdir -p /opt/intel/openvino 
