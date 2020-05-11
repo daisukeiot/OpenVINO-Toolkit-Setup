@@ -5,6 +5,6 @@ if [ ! -d "open_model_zoo" ]; then
 fi
 
 cd ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer
-sudo -E python3.7 -m pip install -r requirements.txt
+sudo -H python3.7 -m pip install -r requirements.txt
 cd ${SCRIPT_DIR}
-sudo -E python3.7 -m pip install -r ./requirements.txt
+sudo -H python3.7 -m pip install -r ./requirements.txt

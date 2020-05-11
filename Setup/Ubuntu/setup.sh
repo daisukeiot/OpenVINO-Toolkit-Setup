@@ -72,7 +72,7 @@ sudo usermod -a -G video "$(whoami)"
 # VPU
 #
 cd ${INTEL_OPENVINO_DIR}/install_dependencies 
-sudo -E ./install_NCS_udev_rules.sh
 sudo usermod -a -G users "$(whoami)"
+sudo -E ./install_NCS_udev_rules.sh
 
 sudo reboot now
