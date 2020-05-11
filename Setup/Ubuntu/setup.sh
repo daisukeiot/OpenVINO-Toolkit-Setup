@@ -33,7 +33,7 @@ alias python3='python3.7'
 #
 # install numpy
 #
-sudo python3.7 -m pip install 'numpy==1.16' --force-reinstall 
+sudo -H python3.7 -m pip install 'numpy==1.16' --force-reinstall 
 #
 # downlaod and install OpenVINO toolkit
 #
