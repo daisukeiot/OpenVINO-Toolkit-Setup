@@ -33,9 +33,11 @@ curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 sudo -H python3.6 get-pip.py 
 sudo -H python3.7 get-pip.py 
 rm get-pip.py 
-cd /usr/lib/python3/dist-packages
-sudo ln -s apt_pkg.cpython-{36m,37m}-x86_64-linux-gnu.so 
+if [! -d "/usr/lib/python3/dist-packages/apt_pkg.cpython-37m-x86_64-linux-gnu.so " ]; then
+    cd /usr/lib/python3/dist-packages
+    sudo ln -s apt_pkg.cpython-{36m,37m}-x86_64-linux-gnu.so 
+fi
 cd /tmp
-sudo -H python3.7 -m pip install 'numpy==1.16' --force-reinstall 
-sudo -H python3.7 -m pip install ./*.whl && \
-rm ./*.whl
+sudo -H python3.7 -m pip install 'numpy==1.16' --force-reinstall
+sudo -H python3.7 -m pip install ./*.whl
+sudo rm ./*.whl
