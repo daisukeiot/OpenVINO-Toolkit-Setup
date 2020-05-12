@@ -199,7 +199,7 @@ class OpenVINO_Engine(object):
 
                         # No conversion for ARM processors
                         if 'ARM' in cpuinfo.get_cpu_info()['arch']:
-                            if model['framework'] != 'dtdl':
+                            if model['framework'] != 'dldt':
                                 continue
 
                         # Yolo v3 has 3 outputs

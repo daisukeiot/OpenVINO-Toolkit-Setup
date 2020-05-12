@@ -75,12 +75,16 @@ class OpenVINO_Core:
         print('=================================================')
 
     def get_signature(self):
-        cpu = self.ie.get_versions('CPU')
+        if len(self.ie.available_devices) > 0:
+            device = self.ie.available_devices[0]
+            version = self.ie.get_versions(device)
 
-        if os.getenv('OPENVINO_OBJECT_DETECTION_PYTHON'):
-            signature = 'OpenVINO {}.{}.{} in Container'.format(cpu['CPU'].major,cpu['CPU'].minor, cpu['CPU'].build_number)
+            if os.getenv('OPENVINO_OBJECT_DETECTION_PYTHON'):
+                signature = 'OpenVINO {}.{}.{} in Container'.format(version[device].major,version[device].minor, version[device].build_number)
+            else:
+                signature = 'OpenVINO {}.{}.{}'.format(version[device].major,version[device].minor, version[device].build_number)
         else:
-            signature = 'OpenVINO {}.{}.{}'.format(cpu['CPU'].major,cpu['CPU'].minor, cpu['CPU'].build_number)
+            signature = 'OpenVINO No Hardware Found'
 
         return signature
 

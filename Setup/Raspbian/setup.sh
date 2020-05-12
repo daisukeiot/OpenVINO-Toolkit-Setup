@@ -17,6 +17,7 @@ sudo apt-get install -y \
     libjpeg-dev \
     libpng-dev \
     libtiff-dev \
+    libpng12-dev \
     libavcodec-dev \
     libavformat-dev \
     libswscale-dev \
@@ -26,7 +27,8 @@ sudo apt-get install -y \
     libgtk-3-dev \
     libcanberra-gtk* \
     libatlas-base-dev \
-    gfortran
+    gfortran \
+    python3-pip
 mkdir ~/OV.Work 
 cd ~/OV.Work 
 sudo mkdir -p /opt/intel/openvino 
@@ -37,13 +39,15 @@ source ${INSTALL_DIR}/bin/setupvars.sh
 sudo usermod -a -G users "$(whoami)" 
 sh /opt/intel/openvino/install_dependencies/install_NCS_udev_rules.sh 
 rm -r -f ~/OV.Work 
-sudo echo gpu_mem=16 >> /boot/config.txt 
-sudo raspi-config nonint do_hostname $newHostName 
+cd ~/
 sudo raspi-config nonint do_expand_rootfs 
 sudo raspi-config nonint do_memory_split 16 
 sudo raspi-config nonint do_spi 0 
+sudo raspi-config nonint do_boot_behaviour B2
 sudo raspi-config nonint do_i2c 0 
 sudo raspi-config nonint do_wifi_country US 
 sudo raspi-config nonint do_change_locale en_US.UTF-8 
-sudo raspi-config nonint do_configure_keyboard us 
+sudo raspi-config nonint do_configure_keyboard us
+sudo raspi-config nonint do_change_timezone US/Pacific
+sudo raspi-config nonint do_hostname $newHostName 
 sudo reboot now
