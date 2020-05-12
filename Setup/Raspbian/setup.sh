@@ -5,7 +5,7 @@ newHostName=RP-OpenVINO
 OPENVINO_VER=2020.1.023
 OPENVINO=l_openvino_toolkit_runtime_raspbian_p_${OPENVINO_VER}
 INSTALL_DIR=/opt/intel/openvino
-OPENVINO_DOWNLOAD=https://download.01.org/opencv/2020/openvinotoolkit/2020.2/${OPENVINO}.tgz
+OPENVINO_DOWNLOAD=https://download.01.org/opencv/2020/openvinotoolkit/2020.1/${OPENVINO}.tgz
 
 sudo apt-get update 
 sudo apt-get upgrade -y 
