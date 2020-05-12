@@ -1,12 +1,12 @@
-SCRIPT_DIR=$(cd $(dirname $0); pwd)
+SAMPLE_DIR=/home/${whoami}/build
 
 cd ~/
 
-if [ ! -d "build" ]; then
-  mkdir build
+if [ ! -d "${SAMPLE_DIR}" ]; then
+  mkdir ${SAMPLE_DIR}
 fi
 
-cd build
+cd ${SAMPLE_DIR}
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-march=armv7-a" /opt/intel/openvino/deployment_tools/inference_engine/samples/cpp
 make -j2 object_detection_sample_ssd
 
@@ -21,4 +21,4 @@ fi
 if [ ! -f "face.jpg" ]; then
     wget --no-check-certificate https://github.com/intel-iot-devkit/inference-tutorials-generic/raw/openvino_toolkit_2019_r1_0/face_detection_tutorial/data/face.jpg
 fi
-./armv7l/Release/object_detection_sample_ssd -m ${SCRIPT_DIR}/face-detection-adas-0001.xml -d MYRIAD -i ${SCRIPT_DIR}/face.jpg
+./armv7l/Release/object_detection_sample_ssd -m ${SAMPLE_DIR}/face-detection-adas-0001.xml -d MYRIAD -i ${SAMPLE_DIR}/face.jpg
