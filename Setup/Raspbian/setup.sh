@@ -26,7 +26,7 @@ sudo apt-get install -y \
     libgtk-3-dev \
     libcanberra-gtk* \
     libatlas-base-dev \
-    gfortran \
+    gfortran
 mkdir ~/OV.Work 
 cd ~/OV.Work 
 sudo mkdir -p /opt/intel/openvino 
