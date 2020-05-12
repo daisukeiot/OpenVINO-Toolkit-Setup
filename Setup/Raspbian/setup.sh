@@ -32,7 +32,7 @@ cd ~/OV.Work
 sudo mkdir -p /opt/intel/openvino 
 wget ${OPENVINO_DOWNLOAD} 
 sudo tar xf l_openvino_toolkit_runtime_raspbian_p*.tgz --strip 1 -C ${INSTALL_DIR} 
-echo "source $INSTALL_DIR/bin/setupvars.sh" >> ${HOME}/.bashrc 
+echo "source $INSTALL_DIR/bin/setupvars.sh -pyver 3.7" >> ${HOME}/.bashrc 
 source ${INSTALL_DIR}/bin/setupvars.sh 
 sudo usermod -a -G users "$(whoami)" 
 sh /opt/intel/openvino/install_dependencies/install_NCS_udev_rules.sh 
