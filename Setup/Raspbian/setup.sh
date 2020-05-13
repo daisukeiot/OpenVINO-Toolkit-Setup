@@ -45,8 +45,8 @@ sudo cp ./microsoft-prod.list /etc/apt/sources.list.d/
 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg && \
 sudo cp ./microsoft.gpg /etc/apt/trusted.gpg.d/
 sudo apt-get update
-sudo apt-get install moby-engine
-sudo apt-get install moby-cli
+sudo apt-get install -y moby-engine
+sudo apt-get install -y moby-cli
 rm ./microsoft* && \
 sudo docker run --name opencv daisukeiot/openvino-container:raspbian_opencv_data /bin/true 
 sudo docker cp opencv:/opencv.tar.gz ./
