@@ -53,6 +53,14 @@ echo " Ubuntu version : ${OS_VERSION}"
 echo " Python version : ${PYTHON_VERSION}"
 echo " Image Tag      : ${TAG}"
 echo $'\n###############################################################################\n'
+#
+# Check if the image exists or not
+#
+if ! docker inspect --type=image $TAG > /dev/null 2>&1; then
+    echo "Failed to create image"
+    exit
+fi
+
 docker run -it --rm ${TAG} /bin/bash -c "python${PYTHON_VERSION} --version;lsb_release -a"
 
 echo $'\n###############################################################################'

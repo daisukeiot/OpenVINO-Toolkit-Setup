@@ -10,6 +10,7 @@ from pathlib import Path
 import yaml
 import cv2
 import time
+import cpuinfo
 
 class OpenVINO_Util(object):
 
@@ -195,6 +196,11 @@ class OpenVINO_Engine(object):
 
                     for model in json_data['Models']:
                         isSupported = False
+
+                        # No conversion for ARM processors
+                        if 'ARM' in cpuinfo.get_cpu_info()['arch']:
+                            if model['framework'] != 'dldt':
+                                continue
 
                         # Yolo v3 has 3 outputs
                         if model['outputs']['count'] > 3:

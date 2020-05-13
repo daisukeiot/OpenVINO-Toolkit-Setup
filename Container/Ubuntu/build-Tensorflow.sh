@@ -52,14 +52,6 @@ docker build --squash --rm -f ${SCRIPT_DIR}/Tensorflow/Dockerfile -t ${TAG} \
   --build-arg TAG_BASE=${TAG_BASE} \
   ${SCRIPT_DIR}
 
-#
-# Check if the image exists or not
-#
-if ! docker inspect --type=image $TAG > /dev/null 2>&1; then
-    echo "Failed to create image"
-    exit
-fi
-
 echo $'\n###############################################################################'
 echo '  ______                           ______             '
 echo ' /_  __/__  ____  _________  _____/ __/ /___ _      __'
@@ -71,6 +63,13 @@ echo " Installed Tensorflow"
 echo " Tensorflow version : ${TF_VERSION}"
 echo " Image Tag          : ${TAG}"
 echo ''
+#
+# Check if the image exists or not
+#
+if ! docker inspect --type=image $TAG > /dev/null 2>&1; then
+    echo "Failed to create image"
+    exit
+fi
 echo $'\n###############################################################################'
 echo 'CTLC+C to cancel docker push'
 echo $'###############################################################################\n'

@@ -55,9 +55,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 #
 # Create user `openvino`
 #
-RUN useradd -ms /bin/bash -G users openvino && \
-   chown openvino -R /home/openvino
-
+RUN useradd -ms /bin/bash openvino && \
+    chown openvino -R /home/openvino && \
+    usermod -aG video openvino && \
+    usermod -aG users openvino
 #
 # Use /tmp folder
 #
@@ -75,8 +76,7 @@ RUN mkdir -p $INSTALL_DIR && \
 #
 # Add USB Rule
 #
-RUN sudo usermod -a -G users "$(whoami)" && \
-	/bin/bash -c "source $INSTALL_DIR/bin/setupvars.sh && \
+RUN /bin/bash -c "source $INSTALL_DIR/bin/setupvars.sh && \
 	sh $INSTALL_DIR/install_dependencies/install_NCS_udev_rules.sh"
 
 ENV INSTALLDIR ${INSTALL_DIR}
