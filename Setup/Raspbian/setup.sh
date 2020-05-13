@@ -94,4 +94,4 @@ sudo raspi-config nonint do_change_locale en_US.UTF-8
 sudo raspi-config nonint do_configure_keyboard us
 sudo raspi-config nonint do_change_timezone US/Pacific
 sudo raspi-config nonint do_hostname $newHostName 
-# sudo reboot now
+sudo reboot now
