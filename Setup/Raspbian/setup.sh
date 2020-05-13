@@ -17,6 +17,19 @@ sudo apt-get install -y \
     gfortran \
     curl
 
+sudo apt-get install -y \
+    libgtk-3-dev \
+    libatlas-base-dev \
+    libcanberra-gtk* \
+    libatlas-base-dev \
+    gstreamer1.0-tools \
+    libgstreamer1.0-0 \
+    gstreamer1.0-plugins-base \
+    gstreamer1.0-plugins-good \
+    gstreamer1.0-plugins-bad \
+    gstreamer1.0-plugins-ugly \
+    gstreamer1.0-libav
+#    gstreamer1.0-doc \
 # sudo apt-get install -y libjpeg-dev libpng-dev libtiff-dev
 # sudo apt-get install -y libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
 # sudo apt-get install -y libxvidcore-dev libx264-dev
@@ -81,4 +94,4 @@ sudo raspi-config nonint do_change_locale en_US.UTF-8
 sudo raspi-config nonint do_configure_keyboard us
 sudo raspi-config nonint do_change_timezone US/Pacific
 sudo raspi-config nonint do_hostname $newHostName 
-sudo reboot now
+# sudo reboot now
