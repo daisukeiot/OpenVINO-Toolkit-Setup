@@ -28,12 +28,38 @@ sudo apt-get install -y \
     libcanberra-gtk* \
     libatlas-base-dev \
     gfortran \
-    python3-pip
+    python3-pip \
+    curl
 mkdir ~/OV.Work 
 cd ~/OV.Work 
 sudo mkdir -p /opt/intel/openvino 
 wget ${OPENVINO_DOWNLOAD} 
-sudo tar xf l_openvino_toolkit_runtime_raspbian_p*.tgz --strip 1 -C ${INSTALL_DIR} 
+sudo tar xf l_openvino_toolkit_runtime_raspbian_p*.tgz --strip 1 -C ${INSTALL_DIR}
+#
+# Replace OpenCV
+#
+sudo rm -r -f ${INSTALL_DIR}/opencv
+
+curl https://packages.microsoft.com/config/debian/stretch/multiarch/prod.list > ./microsoft-prod.list
+sudo cp ./microsoft-prod.list /etc/apt/sources.list.d/
+curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg && \
+sudo cp ./microsoft.gpg /etc/apt/trusted.gpg.d/
+sudo apt-get update
+sudo apt-get install moby-engine
+sudo apt-get install moby-cli
+rm ./microsoft* && \
+sudo docker run --name opencv daisukeiot/openvino-container:raspbian_opencv_data /bin/true 
+sudo docker cp opencv:/opencv.tar.gz ./
+mkdir ${INSTALL_DIR}/opencv
+tar -xf opencv.tar.gz -C ${INSTALL_DIR}/opencv --strip-components 1
+rm ./opencv.tar.gz
+#
+# Clean up docker
+#
+sudo docker system prune -a -f
+sudo apt-get remove -y --purge moby-cli
+sudo apt-get remove -y --purge moby-engine
+
 echo "source $INSTALL_DIR/bin/setupvars.sh -pyver 3.7" >> ${HOME}/.bashrc 
 source ${INSTALL_DIR}/bin/setupvars.sh 
 sudo usermod -a -G users "$(whoami)" 

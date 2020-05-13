@@ -8,7 +8,12 @@ if [ $# -ne 1 ]
     exit
 fi
 
-TAG=${MY_REGISTRY}/openvino-container:raspbian-opencv
+# https://github.com/opencv/opencv/wiki/Intel's-Deep-Learning-Inference-Engine-backend
+
+SCRIPT_DIR=$(cd $(dirname $0); pwd)
+MY_REGISTRY=$1
+
+TAG=${MY_REGISTRY}/openvino-container:raspbian_opencv
 
 if docker inspect --type=image $TAG > /dev/null 2>&1; then
     echo "Deleting image"
@@ -26,11 +31,29 @@ echo ''
 echo "Image Tag : ${TAG}"
 echo ''
 #
-# Install OpenVINO Toolkit to Raspbian Base Image
+# Build OpenCV for Raspbian
 #
 docker build --squash --rm -f \
-  ${SCRIPT_DIR}/OpenVINO-Toolkit/Dockerfile \
+  ${SCRIPT_DIR}/OpenCV-Python3.7/Dockerfile \
   -t ${TAG} \
-  --build-arg OS_VERSION=${OS_VERSION} \
-  --build-arg OPENVINO_VER=${OPENVINO_VER} \
   ${SCRIPT_DIR}
+
+echo ''
+echo ''
+docker run  --name opencv ${TAG} /bin/true
+docker cp opencv:/opencv.tar.gz .
+docker rm opencv
+
+TAG=${MY_REGISTRY}/openvino-container:raspbian_opencv_data
+
+if docker inspect --type=image $TAG > /dev/null 2>&1; then
+    echo "Deleting image"
+    docker rmi -f ${TAG}
+fi
+
+docker build --squash --rm -f \
+  ${SCRIPT_DIR}/OpenCV-Data/Dockerfile \
+  -t ${TAG} \
+  ${SCRIPT_DIR}
+
+docker push ${TAG}
