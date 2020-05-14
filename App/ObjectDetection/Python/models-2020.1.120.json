@@ -1,0 +1,6794 @@
+{
+    "Models": [
+      {
+        "name": "Sphereface",
+        "path": "/2020.1.120/ir/public/Sphereface/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                112,
+                96
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "fc5",
+              "layout": "NC",
+              "shape": [
+                1,
+                512
+              ],
+              "output_type": "FullyConnected"
+            }
+          ]
+        }
+      },
+      {
+        "name": "action-recognition-0001-decoder",
+        "path": "/2020.1.120/intel/action-recognition-0001-decoder/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "0",
+              "layout": "CHW",
+              "shape": [
+                1,
+                16,
+                512
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "674",
+              "layout": "NC",
+              "shape": [
+                1,
+                400
+              ],
+              "output_type": "Reshape"
+            }
+          ]
+        }
+      },
+      {
+        "name": "action-recognition-0001-encoder",
+        "path": "/2020.1.120/intel/action-recognition-0001-encoder/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "0",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "371",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                512,
+                1,
+                1
+              ],
+              "output_type": "Pooling"
+            }
+          ]
+        }
+      },
+      {
+        "name": "age-gender-recognition-retail-0013",
+        "path": "/2020.1.120/intel/age-gender-recognition-retail-0013/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                62,
+                62
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "output_name": "age_conv3",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "output_type": "Convolution"
+            },
+            {
+              "output_name": "prob",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "alexnet",
+        "path": "/2020.1.120/ir/public/alexnet/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                227,
+                227
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "prob",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "asl-recognition-0004",
+        "path": "/2020.1.120/intel/asl-recognition-0004/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input",
+              "layout": "NCDHW",
+              "shape": [
+                1,
+                3,
+                16,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "output",
+              "layout": "NC",
+              "shape": [
+                1,
+                100
+              ],
+              "output_type": "FullyConnected"
+            }
+          ]
+        }
+      },
+      {
+        "name": "brain-tumor-segmentation-0001",
+        "path": "/2020.1.120/ir/public/brain-tumor-segmentation-0001/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data_crop",
+              "layout": "NCDHW",
+              "shape": [
+                1,
+                4,
+                128,
+                128,
+                128
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "softmax_lbl3",
+              "layout": "NCDHW",
+              "shape": [
+                1,
+                4,
+                128,
+                128,
+                128
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "brain-tumor-segmentation-0002",
+        "path": "/2020.1.120/ir/public/brain-tumor-segmentation-0002/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "0",
+              "layout": "NCDHW",
+              "shape": [
+                1,
+                4,
+                128,
+                128,
+                128
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "304",
+              "layout": "NCDHW",
+              "shape": [
+                1,
+                3,
+                128,
+                128,
+                128
+              ],
+              "output_type": "Sigmoid"
+            }
+          ]
+        }
+      },
+      {
+        "name": "caffenet",
+        "path": "/2020.1.120/ir/public/caffenet/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                227,
+                227
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "prob",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "ctdet_coco_dlav0_384",
+        "path": "/2020.1.120/ir/public/ctdet_coco_dlav0_384/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input.1",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                384,
+                384
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 3,
+          "blobs": [
+            {
+              "output_name": "508",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                80,
+                96,
+                96
+              ],
+              "output_type": "Convolution"
+            },
+            {
+              "output_name": "511",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                2,
+                96,
+                96
+              ],
+              "output_type": "Convolution"
+            },
+            {
+              "output_name": "514",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                2,
+                96,
+                96
+              ],
+              "output_type": "Convolution"
+            }
+          ]
+        }
+      },
+      {
+        "name": "ctdet_coco_dlav0_512",
+        "path": "/2020.1.120/ir/public/ctdet_coco_dlav0_512/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input.1",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                512,
+                512
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 3,
+          "blobs": [
+            {
+              "output_name": "508",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                80,
+                128,
+                128
+              ],
+              "output_type": "Convolution"
+            },
+            {
+              "output_name": "511",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                2,
+                128,
+                128
+              ],
+              "output_type": "Convolution"
+            },
+            {
+              "output_name": "514",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                2,
+                128,
+                128
+              ],
+              "output_type": "Convolution"
+            }
+          ]
+        }
+      },
+      {
+        "name": "ctpn",
+        "path": "/2020.1.120/ir/public/ctpn/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "Placeholder",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                600,
+                600
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "output_name": "Reshape_2/Transpose",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                20,
+                37,
+                37
+              ],
+              "output_type": "Permute"
+            },
+            {
+              "output_name": "rpn_bbox_pred/Reshape_1/Transpose",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                40,
+                37,
+                37
+              ],
+              "output_type": "Permute"
+            }
+          ]
+        }
+      },
+      {
+        "name": "densenet-121",
+        "path": "/2020.1.120/ir/public/densenet-121/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "fc6",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1000,
+                1,
+                1
+              ],
+              "output_type": "Convolution"
+            }
+          ]
+        }
+      },
+      {
+        "name": "densenet-161",
+        "path": "/2020.1.120/ir/public/densenet-161/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "fc6",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1000,
+                1,
+                1
+              ],
+              "output_type": "Convolution"
+            }
+          ]
+        }
+      },
+      {
+        "name": "densenet-169",
+        "path": "/2020.1.120/ir/public/densenet-169/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "fc6",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1000,
+                1,
+                1
+              ],
+              "output_type": "Convolution"
+            }
+          ]
+        }
+      },
+      {
+        "name": "densenet-169-tf",
+        "path": "/2020.1.120/ir/public/densenet-169-tf/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "Placeholder",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "densenet169/predictions/Reshape_1/Transpose",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1000,
+                1,
+                1
+              ],
+              "output_type": "Permute"
+            }
+          ]
+        }
+      },
+      {
+        "name": "densenet-201",
+        "path": "/2020.1.120/ir/public/densenet-201/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "fc6",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1000,
+                1,
+                1
+              ],
+              "output_type": "Convolution"
+            }
+          ]
+        }
+      },
+      {
+        "name": "driver-action-recognition-adas-0002-decoder",
+        "path": "/2020.1.120/intel/driver-action-recognition-adas-0002-decoder/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "0",
+              "layout": "CHW",
+              "shape": [
+                1,
+                16,
+                512
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "804",
+              "layout": "NC",
+              "shape": [
+                1,
+                9
+              ],
+              "output_type": "Reshape"
+            }
+          ]
+        }
+      },
+      {
+        "name": "driver-action-recognition-adas-0002-encoder",
+        "path": "/2020.1.120/intel/driver-action-recognition-adas-0002-encoder/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "0",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "513",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                512,
+                1,
+                1
+              ],
+              "output_type": "Pooling"
+            }
+          ]
+        }
+      },
+      {
+        "name": "efficientnet-b0",
+        "path": "/2020.1.120/ir/public/efficientnet-b0/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "sub/placeholder_port_0",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "efficientnet-b0/model/head/dense/BiasAdd/Add",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "FullyConnected"
+            }
+          ]
+        }
+      },
+      {
+        "name": "efficientnet-b0_auto_aug",
+        "path": "/2020.1.120/ir/public/efficientnet-b0_auto_aug/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "sub/placeholder_port_0",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "efficientnet-b0/model/head/dense/BiasAdd/Add",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "FullyConnected"
+            }
+          ]
+        }
+      },
+      {
+        "name": "efficientnet-b5",
+        "path": "/2020.1.120/ir/public/efficientnet-b5/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "sub/placeholder_port_0",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                456,
+                456
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "efficientnet-b5/model/head/dense/BiasAdd/Add",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "FullyConnected"
+            }
+          ]
+        }
+      },
+      {
+        "name": "efficientnet-b7_auto_aug",
+        "path": "/2020.1.120/ir/public/efficientnet-b7_auto_aug/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "sub/placeholder_port_0",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                600,
+                600
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "efficientnet-b7/model/head/dense/BiasAdd/Add",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "FullyConnected"
+            }
+          ]
+        }
+      },
+      {
+        "name": "emotions-recognition-retail-0003",
+        "path": "/2020.1.120/intel/emotions-recognition-retail-0003/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                64,
+                64
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "prob_emotion",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                5,
+                1,
+                1
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "face-detection-0100",
+        "path": "/2020.1.120/intel/face-detection-0100/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "image",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                256,
+                256
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "detection_out",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                200,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 2
+            }
+          ]
+        }
+      },
+      {
+        "name": "face-detection-0102",
+        "path": "/2020.1.120/intel/face-detection-0102/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "image",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                384,
+                384
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "detection_out",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                200,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 2
+            }
+          ]
+        }
+      },
+      {
+        "name": "face-detection-0104",
+        "path": "/2020.1.120/intel/face-detection-0104/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "image",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                448,
+                448
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "detection_out",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                200,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 2
+            }
+          ]
+        }
+      },
+      {
+        "name": "face-detection-0105",
+        "path": "/2020.1.120/intel/face-detection-0105/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "image",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                416,
+                416
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 4,
+          "blobs": [
+            {
+              "output_name": "1746.0",
+              "layout": "C",
+              "shape": [
+                200
+              ]
+            },
+            {
+              "output_name": "boxes/Split.0",
+              "layout": "NC",
+              "shape": [
+                200,
+                5
+              ]
+            },
+            {
+              "output_name": "boxes/Split.1",
+              "layout": "NC",
+              "shape": [
+                200,
+                1
+              ]
+            },
+            {
+              "output_name": "labels",
+              "layout": "C",
+              "shape": [
+                200
+              ],
+              "output_type": "Reshape"
+            }
+          ]
+        }
+      },
+      {
+        "name": "face-detection-0106",
+        "path": "/2020.1.120/intel/face-detection-0106/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "image",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                640,
+                640
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 4,
+          "blobs": [
+            {
+              "output_name": "3488.0",
+              "layout": "C",
+              "shape": [
+                750
+              ]
+            },
+            {
+              "output_name": "boxes/Split.0",
+              "layout": "NC",
+              "shape": [
+                750,
+                5
+              ]
+            },
+            {
+              "output_name": "boxes/Split.1",
+              "layout": "NC",
+              "shape": [
+                750,
+                1
+              ]
+            },
+            {
+              "output_name": "labels",
+              "layout": "C",
+              "shape": [
+                750
+              ],
+              "output_type": "Reshape"
+            }
+          ]
+        }
+      },
+      {
+        "name": "face-detection-adas-0001",
+        "path": "/2020.1.120/intel/face-detection-adas-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                384,
+                672
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "detection_out",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                200,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 2
+            }
+          ]
+        }
+      },
+      {
+        "name": "face-detection-retail-0004",
+        "path": "/2020.1.120/intel/face-detection-retail-0004/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                300,
+                300
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "detection_out",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                200,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 2
+            }
+          ]
+        }
+      },
+      {
+        "name": "face-detection-retail-0005",
+        "path": "/2020.1.120/intel/face-detection-retail-0005/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input.1",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                300,
+                300
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "527",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                200,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 2
+            }
+          ]
+        }
+      },
+      {
+        "name": "face-detection-retail-0044",
+        "path": "/2020.1.120/ir/public/face-detection-retail-0044/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                300,
+                300
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "detection_out",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                200,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 2
+            }
+          ]
+        }
+      },
+      {
+        "name": "face-recognition-mobilefacenet-arcface",
+        "path": "/2020.1.120/ir/public/face-recognition-mobilefacenet-arcface/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                112,
+                112
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "pre_fc1/Fused_Add_",
+              "layout": "NC",
+              "shape": [
+                1,
+                128
+              ],
+              "output_type": "FullyConnected"
+            }
+          ]
+        }
+      },
+      {
+        "name": "face-recognition-resnet100-arcface",
+        "path": "/2020.1.120/ir/public/face-recognition-resnet100-arcface/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                112,
+                112
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "pre_fc1/Fused_Add_",
+              "layout": "NC",
+              "shape": [
+                1,
+                512
+              ],
+              "output_type": "FullyConnected"
+            }
+          ]
+        }
+      },
+      {
+        "name": "face-recognition-resnet34-arcface",
+        "path": "/2020.1.120/ir/public/face-recognition-resnet34-arcface/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                112,
+                112
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "pre_fc1/Fused_Add_",
+              "layout": "NC",
+              "shape": [
+                1,
+                512
+              ],
+              "output_type": "FullyConnected"
+            }
+          ]
+        }
+      },
+      {
+        "name": "face-recognition-resnet50-arcface",
+        "path": "/2020.1.120/ir/public/face-recognition-resnet50-arcface/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                112,
+                112
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "pre_fc1/Fused_Add_",
+              "layout": "NC",
+              "shape": [
+                1,
+                512
+              ],
+              "output_type": "FullyConnected"
+            }
+          ]
+        }
+      },
+      {
+        "name": "face-reidentification-retail-0095",
+        "path": "/2020.1.120/intel/face-reidentification-retail-0095/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "0",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                128,
+                128
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "658",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                256,
+                1,
+                1
+              ],
+              "output_type": "Convolution"
+            }
+          ]
+        }
+      },
+      {
+        "name": "facenet-20180408-102900",
+        "path": "/2020.1.120/ir/public/facenet-20180408-102900/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "image_batch/placeholder_port_0",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                160,
+                160
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "embeddings",
+              "layout": "NC",
+              "shape": [
+                1,
+                512
+              ],
+              "output_type": "Normalize"
+            }
+          ]
+        }
+      },
+      {
+        "name": "facial-landmarks-35-adas-0002",
+        "path": "/2020.1.120/intel/facial-landmarks-35-adas-0002/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                60,
+                60
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "align_fc3",
+              "layout": "NC",
+              "shape": [
+                1,
+                70
+              ],
+              "output_type": "Reshape"
+            }
+          ]
+        }
+      },
+      {
+        "name": "faster-rcnn-resnet101-coco-sparse-60-0001",
+        "path": "/2020.1.120/intel/faster-rcnn-resnet101-coco-sparse-60-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "input_name": "image",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                800,
+                1280
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "image_info",
+              "layout": "NC",
+              "shape": [
+                1,
+                3
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "detection_output",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                100,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 81
+            }
+          ]
+        }
+      },
+      {
+        "name": "faster_rcnn_inception_resnet_v2_atrous_coco",
+        "path": "/2020.1.120/ir/public/faster_rcnn_inception_resnet_v2_atrous_coco/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "input_name": "image_info",
+              "layout": "NC",
+              "shape": [
+                1,
+                3
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "image_tensor",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                600,
+                1024
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "detection_output",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                100,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 91
+            }
+          ]
+        }
+      },
+      {
+        "name": "faster_rcnn_inception_v2_coco",
+        "path": "/2020.1.120/ir/public/faster_rcnn_inception_v2_coco/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "input_name": "image_info",
+              "layout": "NC",
+              "shape": [
+                1,
+                3
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "image_tensor",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                600,
+                1024
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "detection_output",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                100,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 91
+            }
+          ]
+        }
+      },
+      {
+        "name": "faster_rcnn_resnet101_coco",
+        "path": "/2020.1.120/ir/public/faster_rcnn_resnet101_coco/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "input_name": "image_info",
+              "layout": "NC",
+              "shape": [
+                1,
+                3
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "image_tensor",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                600,
+                1024
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "detection_output",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                100,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 91
+            }
+          ]
+        }
+      },
+      {
+        "name": "faster_rcnn_resnet50_coco",
+        "path": "/2020.1.120/ir/public/faster_rcnn_resnet50_coco/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "input_name": "image_info",
+              "layout": "NC",
+              "shape": [
+                1,
+                3
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "image_tensor",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                600,
+                1024
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "detection_output",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                100,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 91
+            }
+          ]
+        }
+      },
+      {
+        "name": "gaze-estimation-adas-0002",
+        "path": "/2020.1.120/intel/gaze-estimation-adas-0002/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 3,
+          "blobs": [
+            {
+              "input_name": "head_pose_angles",
+              "layout": "NC",
+              "shape": [
+                1,
+                3
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "left_eye_image",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                60,
+                60
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "right_eye_image",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                60,
+                60
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "gaze_vector",
+              "layout": "NC",
+              "shape": [
+                1,
+                3
+              ],
+              "output_type": "Squeeze"
+            }
+          ]
+        }
+      },
+      {
+        "name": "gmcnn-places2-tf",
+        "path": "/2020.1.120/ir/public/gmcnn-places2-tf/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "input_name": "Placeholder",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                512,
+                680
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "Placeholder_1",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                512,
+                680
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "Minimum",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                512,
+                680
+              ],
+              "output_type": "Power"
+            }
+          ]
+        }
+      },
+      {
+        "name": "googlenet-v1",
+        "path": "/2020.1.120/ir/public/googlenet-v1/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "prob",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "googlenet-v1-tf",
+        "path": "/2020.1.120/ir/public/googlenet-v1-tf/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "InceptionV1/Logits/Predictions/Softmax",
+              "layout": "NC",
+              "shape": [
+                1,
+                1001
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "googlenet-v2",
+        "path": "/2020.1.120/ir/public/googlenet-v2/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "prob",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "googlenet-v3",
+        "path": "/2020.1.120/ir/public/googlenet-v3/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                299,
+                299
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "InceptionV3/Predictions/Softmax",
+              "layout": "NC",
+              "shape": [
+                1,
+                1001
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "googlenet-v4-tf",
+        "path": "/2020.1.120/ir/public/googlenet-v4-tf/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                299,
+                299
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "InceptionV4/Logits/Predictions",
+              "layout": "NC",
+              "shape": [
+                1,
+                1001
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "handwritten-japanese-recognition-0001",
+        "path": "/2020.1.120/intel/handwritten-japanese-recognition-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "actual_input",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                96,
+                2000
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "output",
+              "layout": "CHW",
+              "shape": [
+                186,
+                1,
+                4442
+              ],
+              "output_type": "Permute"
+            }
+          ]
+        }
+      },
+      {
+        "name": "handwritten-score-recognition-0003",
+        "path": "/2020.1.120/intel/handwritten-score-recognition-0003/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "Placeholder",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                32,
+                64
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "shadow/LSTMLayers/transpose_time_major",
+              "layout": "CHW",
+              "shape": [
+                16,
+                1,
+                13
+              ],
+              "output_type": "Permute"
+            }
+          ]
+        }
+      },
+      {
+        "name": "head-pose-estimation-adas-0001",
+        "path": "/2020.1.120/intel/head-pose-estimation-adas-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                60,
+                60
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 3,
+          "blobs": [
+            {
+              "output_name": "angle_p_fc",
+              "layout": "NC",
+              "shape": [
+                1,
+                1
+              ],
+              "output_type": "FullyConnected"
+            },
+            {
+              "output_name": "angle_r_fc",
+              "layout": "NC",
+              "shape": [
+                1,
+                1
+              ],
+              "output_type": "FullyConnected"
+            },
+            {
+              "output_name": "angle_y_fc",
+              "layout": "NC",
+              "shape": [
+                1,
+                1
+              ],
+              "output_type": "FullyConnected"
+            }
+          ]
+        }
+      },
+      {
+        "name": "human-pose-estimation-0001",
+        "path": "/2020.1.120/intel/human-pose-estimation-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                256,
+                456
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "output_name": "Mconv7_stage2_L1",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                38,
+                32,
+                57
+              ],
+              "output_type": "Convolution"
+            },
+            {
+              "output_name": "Mconv7_stage2_L2",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                19,
+                32,
+                57
+              ],
+              "output_type": "Convolution"
+            }
+          ]
+        }
+      },
+      {
+        "name": "i3d-rgb-tf",
+        "path": "/2020.1.120/ir/public/i3d-rgb-tf/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "Placeholder",
+              "layout": "NCDHW",
+              "shape": [
+                1,
+                3,
+                79,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "Softmax",
+              "layout": "NC",
+              "shape": [
+                1,
+                400
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "icnet-camvid-ava-0001",
+        "path": "/2020.1.120/intel/icnet-camvid-ava-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                720,
+                960
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "segmentation_output/Squeeze",
+              "layout": "CHW",
+              "shape": [
+                1,
+                720,
+                960
+              ],
+              "output_type": "Squeeze"
+            }
+          ]
+        }
+      },
+      {
+        "name": "icnet-camvid-ava-sparse-30-0001",
+        "path": "/2020.1.120/intel/icnet-camvid-ava-sparse-30-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                720,
+                960
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "segmentation_output/Squeeze",
+              "layout": "CHW",
+              "shape": [
+                1,
+                720,
+                960
+              ],
+              "output_type": "Squeeze"
+            }
+          ]
+        }
+      },
+      {
+        "name": "icnet-camvid-ava-sparse-60-0001",
+        "path": "/2020.1.120/intel/icnet-camvid-ava-sparse-60-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                720,
+                960
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "segmentation_output/Squeeze",
+              "layout": "CHW",
+              "shape": [
+                1,
+                720,
+                960
+              ],
+              "output_type": "Squeeze"
+            }
+          ]
+        }
+      },
+      {
+        "name": "image-retrieval-0001",
+        "path": "/2020.1.120/intel/image-retrieval-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "Placeholder",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "model/tf_op_layer_l2_normalize/l2_normalize",
+              "layout": "NC",
+              "shape": [
+                1,
+                256
+              ],
+              "output_type": "Normalize"
+            }
+          ]
+        }
+      },
+      {
+        "name": "inception-resnet-v2-tf",
+        "path": "/2020.1.120/ir/public/inception-resnet-v2-tf/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                299,
+                299
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "InceptionResnetV2/AuxLogits/Logits/BiasAdd/Add",
+              "layout": "NC",
+              "shape": [
+                1,
+                1001
+              ],
+              "output_type": "FullyConnected"
+            }
+          ]
+        }
+      },
+      {
+        "name": "instance-segmentation-security-0010",
+        "path": "/2020.1.120/intel/instance-segmentation-security-0010/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "input_name": "im_data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                800,
+                1344
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "im_info",
+              "layout": "NC",
+              "shape": [
+                1,
+                3
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 4,
+          "blobs": [
+            {
+              "output_name": "boxes",
+              "layout": "NC",
+              "shape": [
+                100,
+                4
+              ],
+              "output_type": "Power"
+            },
+            {
+              "output_name": "classes",
+              "layout": "C",
+              "shape": [
+                100
+              ],
+              "output_type": "Eltwise"
+            },
+            {
+              "output_name": "raw_masks",
+              "layout": "NCHW",
+              "shape": [
+                100,
+                81,
+                28,
+                28
+              ],
+              "output_type": "Sigmoid"
+            },
+            {
+              "output_name": "scores",
+              "layout": "C",
+              "shape": [
+                100
+              ],
+              "output_type": "Power"
+            }
+          ]
+        }
+      },
+      {
+        "name": "instance-segmentation-security-0050",
+        "path": "/2020.1.120/intel/instance-segmentation-security-0050/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "input_name": "im_data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                480,
+                480
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "im_info",
+              "layout": "NC",
+              "shape": [
+                1,
+                3
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 4,
+          "blobs": [
+            {
+              "output_name": "boxes",
+              "layout": "NC",
+              "shape": [
+                100,
+                4
+              ],
+              "output_type": "Power"
+            },
+            {
+              "output_name": "classes",
+              "layout": "C",
+              "shape": [
+                100
+              ],
+              "output_type": "Eltwise"
+            },
+            {
+              "output_name": "raw_masks",
+              "layout": "NCHW",
+              "shape": [
+                100,
+                81,
+                14,
+                14
+              ],
+              "output_type": "Sigmoid"
+            },
+            {
+              "output_name": "scores",
+              "layout": "C",
+              "shape": [
+                100
+              ],
+              "output_type": "Power"
+            }
+          ]
+        }
+      },
+      {
+        "name": "instance-segmentation-security-0083",
+        "path": "/2020.1.120/intel/instance-segmentation-security-0083/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "input_name": "im_data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                480,
+                640
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "im_info",
+              "layout": "NC",
+              "shape": [
+                1,
+                3
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 4,
+          "blobs": [
+            {
+              "output_name": "boxes",
+              "layout": "NC",
+              "shape": [
+                100,
+                4
+              ],
+              "output_type": "Power"
+            },
+            {
+              "output_name": "classes",
+              "layout": "C",
+              "shape": [
+                100
+              ],
+              "output_type": "Eltwise"
+            },
+            {
+              "output_name": "raw_masks",
+              "layout": "NCHW",
+              "shape": [
+                100,
+                81,
+                28,
+                28
+              ],
+              "output_type": "Sigmoid"
+            },
+            {
+              "output_name": "scores",
+              "layout": "C",
+              "shape": [
+                100
+              ],
+              "output_type": "Power"
+            }
+          ]
+        }
+      },
+      {
+        "name": "instance-segmentation-security-1025",
+        "path": "/2020.1.120/intel/instance-segmentation-security-1025/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "input_name": "im_data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                480,
+                480
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "im_info",
+              "layout": "NC",
+              "shape": [
+                1,
+                3
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 4,
+          "blobs": [
+            {
+              "output_name": "boxes",
+              "layout": "NC",
+              "shape": [
+                100,
+                4
+              ],
+              "output_type": "Power"
+            },
+            {
+              "output_name": "classes",
+              "layout": "C",
+              "shape": [
+                100
+              ],
+              "output_type": "Eltwise"
+            },
+            {
+              "output_name": "raw_masks",
+              "layout": "NCHW",
+              "shape": [
+                100,
+                81,
+                14,
+                14
+              ],
+              "output_type": "Sigmoid"
+            },
+            {
+              "output_name": "scores",
+              "layout": "C",
+              "shape": [
+                100
+              ],
+              "output_type": "Power"
+            }
+          ]
+        }
+      },
+      {
+        "name": "landmarks-regression-retail-0009",
+        "path": "/2020.1.120/intel/landmarks-regression-retail-0009/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "0",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                48,
+                48
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "95",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                10,
+                1,
+                1
+              ],
+              "output_type": "Sigmoid"
+            }
+          ]
+        }
+      },
+      {
+        "name": "license-plate-recognition-barrier-0001",
+        "path": "/2020.1.120/intel/license-plate-recognition-barrier-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                24,
+                94
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "seq_ind",
+              "layout": "NC",
+              "shape": [
+                88,
+                1
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "decode",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                88,
+                1,
+                1
+              ],
+              "output_type": "CTCGreedyDecoder"
+            }
+          ]
+        }
+      },
+      {
+        "name": "license-plate-recognition-barrier-0007",
+        "path": "/2020.1.120/ir/public/license-plate-recognition-barrier-0007/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                24,
+                94
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "CTCGreedyDecoder",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                88,
+                1,
+                1
+              ],
+              "output_type": "CTCGreedyDecoder"
+            }
+          ]
+        }
+      },
+      {
+        "name": "mask_rcnn_inception_resnet_v2_atrous_coco",
+        "path": "/2020.1.120/ir/public/mask_rcnn_inception_resnet_v2_atrous_coco/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "input_name": "image_info",
+              "layout": "NC",
+              "shape": [
+                1,
+                3
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "image_tensor",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                800,
+                1365
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "output_name": "masks",
+              "layout": "NCHW",
+              "shape": [
+                100,
+                90,
+                33,
+                33
+              ],
+              "output_type": "Sigmoid"
+            },
+            {
+              "output_name": "reshape_do_2d",
+              "layout": "NC",
+              "shape": [
+                100,
+                7
+              ],
+              "output_type": "Reshape"
+            }
+          ]
+        }
+      },
+      {
+        "name": "mask_rcnn_inception_v2_coco",
+        "path": "/2020.1.120/ir/public/mask_rcnn_inception_v2_coco/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "input_name": "image_info",
+              "layout": "NC",
+              "shape": [
+                1,
+                3
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "image_tensor",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                800,
+                1365
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "output_name": "masks",
+              "layout": "NCHW",
+              "shape": [
+                100,
+                90,
+                15,
+                15
+              ],
+              "output_type": "Sigmoid"
+            },
+            {
+              "output_name": "reshape_do_2d",
+              "layout": "NC",
+              "shape": [
+                100,
+                7
+              ],
+              "output_type": "Reshape"
+            }
+          ]
+        }
+      },
+      {
+        "name": "mask_rcnn_resnet101_atrous_coco",
+        "path": "/2020.1.120/ir/public/mask_rcnn_resnet101_atrous_coco/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "input_name": "image_info",
+              "layout": "NC",
+              "shape": [
+                1,
+                3
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "image_tensor",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                800,
+                1365
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "output_name": "masks",
+              "layout": "NCHW",
+              "shape": [
+                100,
+                90,
+                33,
+                33
+              ],
+              "output_type": "Sigmoid"
+            },
+            {
+              "output_name": "reshape_do_2d",
+              "layout": "NC",
+              "shape": [
+                100,
+                7
+              ],
+              "output_type": "Reshape"
+            }
+          ]
+        }
+      },
+      {
+        "name": "mask_rcnn_resnet50_atrous_coco",
+        "path": "/2020.1.120/ir/public/mask_rcnn_resnet50_atrous_coco/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "input_name": "image_info",
+              "layout": "NC",
+              "shape": [
+                1,
+                3
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "image_tensor",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                800,
+                1365
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "output_name": "masks",
+              "layout": "NCHW",
+              "shape": [
+                100,
+                90,
+                33,
+                33
+              ],
+              "output_type": "Sigmoid"
+            },
+            {
+              "output_name": "reshape_do_2d",
+              "layout": "NC",
+              "shape": [
+                100,
+                7
+              ],
+              "output_type": "Reshape"
+            }
+          ]
+        }
+      },
+      {
+        "name": "mobilenet-ssd",
+        "path": "/2020.1.120/ir/public/mobilenet-ssd/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                300,
+                300
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "detection_out",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                100,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 21
+            }
+          ]
+        }
+      },
+      {
+        "name": "mobilenet-v1-0.25-128",
+        "path": "/2020.1.120/ir/public/mobilenet-v1-0.25-128/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                128,
+                128
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "MobilenetV1/Predictions/Softmax",
+              "layout": "NC",
+              "shape": [
+                1,
+                1001
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "mobilenet-v1-0.50-160",
+        "path": "/2020.1.120/ir/public/mobilenet-v1-0.50-160/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                160,
+                160
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "MobilenetV1/Predictions/Softmax",
+              "layout": "NC",
+              "shape": [
+                1,
+                1001
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "mobilenet-v1-0.50-224",
+        "path": "/2020.1.120/ir/public/mobilenet-v1-0.50-224/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "MobilenetV1/Predictions/Softmax",
+              "layout": "NC",
+              "shape": [
+                1,
+                1001
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "mobilenet-v1-1.0-224",
+        "path": "/2020.1.120/ir/public/mobilenet-v1-1.0-224/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "prob",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1000,
+                1,
+                1
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "mobilenet-v1-1.0-224-tf",
+        "path": "/2020.1.120/ir/public/mobilenet-v1-1.0-224-tf/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "MobilenetV1/Predictions/Softmax",
+              "layout": "NC",
+              "shape": [
+                1,
+                1001
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "mobilenet-v2",
+        "path": "/2020.1.120/ir/public/mobilenet-v2/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "prob",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1000,
+                1,
+                1
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "mobilenet-v2-1.0-224",
+        "path": "/2020.1.120/ir/public/mobilenet-v2-1.0-224/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "MobilenetV2/Predictions/Softmax",
+              "layout": "NC",
+              "shape": [
+                1,
+                1001
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "mobilenet-v2-1.4-224",
+        "path": "/2020.1.120/ir/public/mobilenet-v2-1.4-224/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "MobilenetV2/Predictions/Softmax",
+              "layout": "NC",
+              "shape": [
+                1,
+                1001
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "mtcnn-o",
+        "path": "/2020.1.120/ir/public/mtcnn-o/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                48,
+                48
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 3,
+          "blobs": [
+            {
+              "output_name": "conv6-2",
+              "layout": "NC",
+              "shape": [
+                1,
+                4
+              ],
+              "output_type": "FullyConnected"
+            },
+            {
+              "output_name": "conv6-3",
+              "layout": "NC",
+              "shape": [
+                1,
+                10
+              ],
+              "output_type": "FullyConnected"
+            },
+            {
+              "output_name": "prob1",
+              "layout": "NC",
+              "shape": [
+                1,
+                2
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "mtcnn-p",
+        "path": "/2020.1.120/ir/public/mtcnn-p/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                720,
+                1280
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "output_name": "conv4-2",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                4,
+                355,
+                635
+              ],
+              "output_type": "Convolution"
+            },
+            {
+              "output_name": "prob1",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                2,
+                355,
+                635
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "mtcnn-r",
+        "path": "/2020.1.120/ir/public/mtcnn-r/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                24,
+                24
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "output_name": "conv5-2",
+              "layout": "NC",
+              "shape": [
+                1,
+                4
+              ],
+              "output_type": "FullyConnected"
+            },
+            {
+              "output_name": "prob1",
+              "layout": "NC",
+              "shape": [
+                1,
+                2
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "octave-densenet-121-0.125",
+        "path": "/2020.1.120/ir/public/octave-densenet-121-0.125/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "softmax",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "octave-resnet-101-0.125",
+        "path": "/2020.1.120/ir/public/octave-resnet-101-0.125/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "softmax",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "octave-resnet-200-0.125",
+        "path": "/2020.1.120/ir/public/octave-resnet-200-0.125/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "softmax",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "octave-resnet-26-0.25",
+        "path": "/2020.1.120/ir/public/octave-resnet-26-0.25/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "softmax",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "octave-resnet-50-0.125",
+        "path": "/2020.1.120/ir/public/octave-resnet-50-0.125/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "softmax",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "octave-resnext-101-0.25",
+        "path": "/2020.1.120/ir/public/octave-resnext-101-0.25/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "softmax",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "octave-resnext-50-0.25",
+        "path": "/2020.1.120/ir/public/octave-resnext-50-0.25/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "softmax",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "octave-se-resnet-50-0.125",
+        "path": "/2020.1.120/ir/public/octave-se-resnet-50-0.125/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "softmax",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "pedestrian-and-vehicle-detector-adas-0001",
+        "path": "/2020.1.120/intel/pedestrian-and-vehicle-detector-adas-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                384,
+                672
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "detection_out",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                200,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 3
+            }
+          ]
+        }
+      },
+      {
+        "name": "pedestrian-detection-adas-0002",
+        "path": "/2020.1.120/intel/pedestrian-detection-adas-0002/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                384,
+                672
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "detection_out",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                200,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 2
+            }
+          ]
+        }
+      },
+      {
+        "name": "person-attributes-recognition-crossroad-0230",
+        "path": "/2020.1.120/intel/person-attributes-recognition-crossroad-0230/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "0",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                160,
+                80
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 3,
+          "blobs": [
+            {
+              "output_name": "453",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                8,
+                1,
+                1
+              ],
+              "output_type": "Sigmoid"
+            },
+            {
+              "output_name": "456",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "output_type": "Sigmoid"
+            },
+            {
+              "output_name": "459",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                2,
+                1,
+                1
+              ],
+              "output_type": "Sigmoid"
+            }
+          ]
+        }
+      },
+      {
+        "name": "person-detection-action-recognition-0005",
+        "path": "/2020.1.120/intel/person-detection-action-recognition-0005/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                400,
+                680
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 7,
+          "blobs": [
+            {
+              "output_name": "mbox/priorbox",
+              "layout": "CHW",
+              "shape": [
+                1,
+                2,
+                17200
+              ],
+              "output_type": "PriorBoxClustered"
+            },
+            {
+              "output_name": "mbox_loc1/out/conv/flat",
+              "layout": "NC",
+              "shape": [
+                1,
+                17200
+              ],
+              "output_type": "Reshape"
+            },
+            {
+              "output_name": "mbox_main_conf/out/conv/flat/softmax/flat",
+              "layout": "NC",
+              "shape": [
+                1,
+                8600
+              ],
+              "output_type": "Reshape"
+            },
+            {
+              "output_name": "out/anchor1",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                25,
+                43,
+                3
+              ],
+              "output_type": "Permute"
+            },
+            {
+              "output_name": "out/anchor2",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                25,
+                43,
+                3
+              ],
+              "output_type": "Permute"
+            },
+            {
+              "output_name": "out/anchor3",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                25,
+                43,
+                3
+              ],
+              "output_type": "Permute"
+            },
+            {
+              "output_name": "out/anchor4",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                25,
+                43,
+                3
+              ],
+              "output_type": "Permute"
+            }
+          ]
+        }
+      },
+      {
+        "name": "person-detection-action-recognition-0006",
+        "path": "/2020.1.120/intel/person-detection-action-recognition-0006/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                400,
+                680
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 7,
+          "blobs": [
+            {
+              "output_name": "ActionNet/action_heads/out_head_1_anchor_1",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                6,
+                50,
+                85
+              ],
+              "output_type": "Convolution"
+            },
+            {
+              "output_name": "ActionNet/action_heads/out_head_2_anchor_1",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                6,
+                25,
+                43
+              ],
+              "output_type": "Convolution"
+            },
+            {
+              "output_name": "ActionNet/action_heads/out_head_2_anchor_2",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                6,
+                25,
+                43
+              ],
+              "output_type": "Convolution"
+            },
+            {
+              "output_name": "ActionNet/action_heads/out_head_2_anchor_3",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                6,
+                25,
+                43
+              ],
+              "output_type": "Convolution"
+            },
+            {
+              "output_name": "ActionNet/action_heads/out_head_2_anchor_4",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                6,
+                25,
+                43
+              ],
+              "output_type": "Convolution"
+            },
+            {
+              "output_name": "ActionNet/out_detection_conf",
+              "layout": "CHW",
+              "shape": [
+                1,
+                8550,
+                2
+              ],
+              "output_type": "SoftMax"
+            },
+            {
+              "output_name": "ActionNet/out_detection_loc",
+              "layout": "CHW",
+              "shape": [
+                1,
+                8550,
+                4
+              ],
+              "output_type": "Concat"
+            }
+          ]
+        }
+      },
+      {
+        "name": "person-detection-action-recognition-teacher-0002",
+        "path": "/2020.1.120/intel/person-detection-action-recognition-teacher-0002/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                400,
+                680
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 7,
+          "blobs": [
+            {
+              "output_name": "mbox/priorbox",
+              "layout": "CHW",
+              "shape": [
+                1,
+                2,
+                17200
+              ],
+              "output_type": "PriorBoxClustered"
+            },
+            {
+              "output_name": "mbox_loc1/out/conv/flat",
+              "layout": "NC",
+              "shape": [
+                1,
+                17200
+              ],
+              "output_type": "Reshape"
+            },
+            {
+              "output_name": "mbox_main_conf/out/conv/flat/softmax/flat",
+              "layout": "NC",
+              "shape": [
+                1,
+                8600
+              ],
+              "output_type": "Reshape"
+            },
+            {
+              "output_name": "out/anchor1",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                25,
+                43,
+                3
+              ],
+              "output_type": "Permute"
+            },
+            {
+              "output_name": "out/anchor2",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                25,
+                43,
+                3
+              ],
+              "output_type": "Permute"
+            },
+            {
+              "output_name": "out/anchor3",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                25,
+                43,
+                3
+              ],
+              "output_type": "Permute"
+            },
+            {
+              "output_name": "out/anchor4",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                25,
+                43,
+                3
+              ],
+              "output_type": "Permute"
+            }
+          ]
+        }
+      },
+      {
+        "name": "person-detection-asl-0001",
+        "path": "/2020.1.120/intel/person-detection-asl-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "image",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                320,
+                320
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 9,
+          "blobs": [
+            {
+              "output_name": "1319.0",
+              "layout": "C",
+              "shape": [
+                1000
+              ]
+            },
+            {
+              "output_name": "1382.0",
+              "layout": "C",
+              "shape": [
+                400
+              ]
+            },
+            {
+              "output_name": "1445.0",
+              "layout": "C",
+              "shape": [
+                100
+              ]
+            },
+            {
+              "output_name": "1508.0",
+              "layout": "C",
+              "shape": [
+                25
+              ]
+            },
+            {
+              "output_name": "1571.0",
+              "layout": "C",
+              "shape": [
+                9
+              ]
+            },
+            {
+              "output_name": "1640/Split.1",
+              "layout": "NC",
+              "shape": [
+                100,
+                1
+              ]
+            },
+            {
+              "output_name": "1681.0",
+              "layout": "C",
+              "shape": [
+                100
+              ]
+            },
+            {
+              "output_name": "boxes/Split.0",
+              "layout": "NC",
+              "shape": [
+                100,
+                5
+              ]
+            },
+            {
+              "output_name": "boxes/Split.1",
+              "layout": "NC",
+              "shape": [
+                100,
+                1
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "person-detection-raisinghand-recognition-0001",
+        "path": "/2020.1.120/intel/person-detection-raisinghand-recognition-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                400,
+                680
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 7,
+          "blobs": [
+            {
+              "output_name": "mbox/priorbox",
+              "layout": "CHW",
+              "shape": [
+                1,
+                2,
+                17200
+              ],
+              "output_type": "PriorBoxClustered"
+            },
+            {
+              "output_name": "mbox_loc1/out/conv/flat",
+              "layout": "NC",
+              "shape": [
+                1,
+                17200
+              ],
+              "output_type": "Reshape"
+            },
+            {
+              "output_name": "mbox_main_conf/out/conv/flat/softmax/flat",
+              "layout": "NC",
+              "shape": [
+                1,
+                8600
+              ],
+              "output_type": "Reshape"
+            },
+            {
+              "output_name": "out/anchor1",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                25,
+                43,
+                2
+              ],
+              "output_type": "Permute"
+            },
+            {
+              "output_name": "out/anchor2",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                25,
+                43,
+                2
+              ],
+              "output_type": "Permute"
+            },
+            {
+              "output_name": "out/anchor3",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                25,
+                43,
+                2
+              ],
+              "output_type": "Permute"
+            },
+            {
+              "output_name": "out/anchor4",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                25,
+                43,
+                2
+              ],
+              "output_type": "Permute"
+            }
+          ]
+        }
+      },
+      {
+        "name": "person-detection-retail-0002",
+        "path": "/2020.1.120/intel/person-detection-retail-0002/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                544,
+                992
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "im_info",
+              "layout": "NC",
+              "shape": [
+                1,
+                6
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "detection_out",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                200,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 2
+            }
+          ]
+        }
+      },
+      {
+        "name": "person-detection-retail-0013",
+        "path": "/2020.1.120/intel/person-detection-retail-0013/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                320,
+                544
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "detection_out",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                200,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 2
+            }
+          ]
+        }
+      },
+      {
+        "name": "person-reidentification-retail-0031",
+        "path": "/2020.1.120/intel/person-reidentification-retail-0031/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                96,
+                48
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "ip_reid",
+              "layout": "NC",
+              "shape": [
+                1,
+                256
+              ],
+              "output_type": "FullyConnected"
+            }
+          ]
+        }
+      },
+      {
+        "name": "person-reidentification-retail-0248",
+        "path": "/2020.1.120/intel/person-reidentification-retail-0248/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                256,
+                128
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "reid_embedding",
+              "layout": "NC",
+              "shape": [
+                1,
+                256
+              ],
+              "output_type": "Reshape"
+            }
+          ]
+        }
+      },
+      {
+        "name": "person-reidentification-retail-0249",
+        "path": "/2020.1.120/intel/person-reidentification-retail-0249/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                256,
+                128
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "reid_embedding",
+              "layout": "NC",
+              "shape": [
+                1,
+                256
+              ],
+              "output_type": "Reshape"
+            }
+          ]
+        }
+      },
+      {
+        "name": "person-reidentification-retail-0300",
+        "path": "/2020.1.120/intel/person-reidentification-retail-0300/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                256,
+                128
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "reid_embedding",
+              "layout": "NC",
+              "shape": [
+                1,
+                512
+              ],
+              "output_type": "Reshape"
+            }
+          ]
+        }
+      },
+      {
+        "name": "person-vehicle-bike-detection-crossroad-0078",
+        "path": "/2020.1.120/intel/person-vehicle-bike-detection-crossroad-0078/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                1024,
+                1024
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "detection_out",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                200,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 4
+            }
+          ]
+        }
+      },
+      {
+        "name": "person-vehicle-bike-detection-crossroad-1016",
+        "path": "/2020.1.120/intel/person-vehicle-bike-detection-crossroad-1016/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input.1",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                512,
+                512
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "653",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                200,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 4
+            }
+          ]
+        }
+      },
+      {
+        "name": "product-detection-0001",
+        "path": "/2020.1.120/intel/product-detection-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input.1",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                512,
+                512
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "868",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                200,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 14
+            }
+          ]
+        }
+      },
+      {
+        "name": "resnet-101",
+        "path": "/2020.1.120/ir/public/resnet-101/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "prob",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "resnet-152",
+        "path": "/2020.1.120/ir/public/resnet-152/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "prob",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "resnet-50",
+        "path": "/2020.1.120/ir/public/resnet-50/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "prob",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "resnet-50-tf",
+        "path": "/2020.1.120/ir/public/resnet-50-tf/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "map/TensorArrayStack/TensorArrayGatherV3",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "softmax_tensor",
+              "layout": "NC",
+              "shape": [
+                1,
+                1001
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "rfcn-resnet101-coco-tf",
+        "path": "/2020.1.120/ir/public/rfcn-resnet101-coco-tf/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "input_name": "image_info",
+              "layout": "NC",
+              "shape": [
+                1,
+                3
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "image_tensor",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                600,
+                600
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "detection_output",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                100,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 91
+            }
+          ]
+        }
+      },
+      {
+        "name": "road-segmentation-adas-0001",
+        "path": "/2020.1.120/intel/road-segmentation-adas-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                512,
+                896
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "L0317_ReWeight_SoftMax",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                4,
+                512,
+                896
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "se-inception",
+        "path": "/2020.1.120/ir/public/se-inception/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "prob",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "se-resnet-101",
+        "path": "/2020.1.120/ir/public/se-resnet-101/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "prob",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "se-resnet-152",
+        "path": "/2020.1.120/ir/public/se-resnet-152/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "prob",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "se-resnet-50",
+        "path": "/2020.1.120/ir/public/se-resnet-50/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "prob",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "se-resnext-101",
+        "path": "/2020.1.120/ir/public/se-resnext-101/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "prob",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "se-resnext-50",
+        "path": "/2020.1.120/ir/public/se-resnext-50/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "prob",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "semantic-segmentation-adas-0001",
+        "path": "/2020.1.120/intel/semantic-segmentation-adas-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                1024,
+                2048
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "4262.1",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                1024,
+                2048
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "single-image-super-resolution-1032",
+        "path": "/2020.1.120/intel/single-image-super-resolution-1032/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "input_name": "0",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                270,
+                480
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "1",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                1080,
+                1920
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "129",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                1080,
+                1920
+              ],
+              "output_type": "Eltwise"
+            }
+          ]
+        }
+      },
+      {
+        "name": "single-image-super-resolution-1033",
+        "path": "/2020.1.120/intel/single-image-super-resolution-1033/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "input_name": "0",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                360,
+                640
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "1",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                1080,
+                1920
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "90",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                1080,
+                1920
+              ],
+              "output_type": "Eltwise"
+            }
+          ]
+        }
+      },
+      {
+        "name": "squeezenet1.0",
+        "path": "/2020.1.120/ir/public/squeezenet1.0/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                227,
+                227
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "prob",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1000,
+                1,
+                1
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "squeezenet1.1",
+        "path": "/2020.1.120/ir/public/squeezenet1.1/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                227,
+                227
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "prob",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1000,
+                1,
+                1
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "ssd300",
+        "path": "/2020.1.120/ir/public/ssd300/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                300,
+                300
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "detection_out",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                200,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 21
+            }
+          ]
+        }
+      },
+      {
+        "name": "ssd512",
+        "path": "/2020.1.120/ir/public/ssd512/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                512,
+                512
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "detection_out",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                200,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 21
+            }
+          ]
+        }
+      },
+      {
+        "name": "ssd_mobilenet_v1_coco",
+        "path": "/2020.1.120/ir/public/ssd_mobilenet_v1_coco/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "image_tensor",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                300,
+                300
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "DetectionOutput",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                100,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 91
+            }
+          ]
+        }
+      },
+      {
+        "name": "ssd_mobilenet_v1_fpn_coco",
+        "path": "/2020.1.120/ir/public/ssd_mobilenet_v1_fpn_coco/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "image_tensor",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                640,
+                640
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "DetectionOutput",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                100,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 91
+            }
+          ]
+        }
+      },
+      {
+        "name": "ssd_mobilenet_v2_coco",
+        "path": "/2020.1.120/ir/public/ssd_mobilenet_v2_coco/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "image_tensor",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                300,
+                300
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "DetectionOutput",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                100,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 91
+            }
+          ]
+        }
+      },
+      {
+        "name": "ssdlite_mobilenet_v2",
+        "path": "/2020.1.120/ir/public/ssdlite_mobilenet_v2/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "image_tensor",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                300,
+                300
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "DetectionOutput",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                100,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 91
+            }
+          ]
+        }
+      },
+      {
+        "name": "text-detection-0003",
+        "path": "/2020.1.120/intel/text-detection-0003/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "Placeholder",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                768,
+                1280
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "output_name": "model/link_logits_/add",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                16,
+                192,
+                320
+              ],
+              "output_type": "Eltwise"
+            },
+            {
+              "output_name": "model/segm_logits/add",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                2,
+                192,
+                320
+              ],
+              "output_type": "Eltwise"
+            }
+          ]
+        }
+      },
+      {
+        "name": "text-detection-0004",
+        "path": "/2020.1.120/intel/text-detection-0004/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "Placeholder",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                768,
+                1280
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "output_name": "model/link_logits_/add",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                16,
+                192,
+                320
+              ],
+              "output_type": "Eltwise"
+            },
+            {
+              "output_name": "model/segm_logits/add",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                2,
+                192,
+                320
+              ],
+              "output_type": "Eltwise"
+            }
+          ]
+        }
+      },
+      {
+        "name": "text-image-super-resolution-0001",
+        "path": "/2020.1.120/intel/text-image-super-resolution-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "0",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                360,
+                640
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "14",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                1080,
+                1920
+              ],
+              "output_type": "Convolution"
+            }
+          ]
+        }
+      },
+      {
+        "name": "text-recognition-0012",
+        "path": "/2020.1.120/intel/text-recognition-0012/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "Placeholder",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                32,
+                120
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "shadow/LSTMLayers/transpose_time_major",
+              "layout": "CHW",
+              "shape": [
+                30,
+                1,
+                37
+              ],
+              "output_type": "Permute"
+            }
+          ]
+        }
+      },
+      {
+        "name": "text-spotting-0002-detector",
+        "path": "/2020.1.120/intel/text-spotting-0002-detector/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "input_name": "im_data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                768,
+                1280
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "im_info",
+              "layout": "NC",
+              "shape": [
+                1,
+                3
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 5,
+          "blobs": [
+            {
+              "output_name": "boxes",
+              "layout": "NC",
+              "shape": [
+                100,
+                4
+              ],
+              "output_type": "Power"
+            },
+            {
+              "output_name": "classes",
+              "layout": "C",
+              "shape": [
+                100
+              ],
+              "output_type": "Eltwise"
+            },
+            {
+              "output_name": "raw_masks",
+              "layout": "NCHW",
+              "shape": [
+                100,
+                2,
+                28,
+                28
+              ],
+              "output_type": "Sigmoid"
+            },
+            {
+              "output_name": "scores",
+              "layout": "C",
+              "shape": [
+                100
+              ],
+              "output_type": "Power"
+            },
+            {
+              "output_name": "text_features",
+              "layout": "NCHW",
+              "shape": [
+                100,
+                64,
+                28,
+                28
+              ],
+              "output_type": "ExperimentalDetectronROIFeatureExtractor"
+            }
+          ]
+        }
+      },
+      {
+        "name": "text-spotting-0002-recognizer-decoder",
+        "path": "/2020.1.120/intel/text-spotting-0002-recognizer-decoder/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 3,
+          "blobs": [
+            {
+              "input_name": "encoder_outputs",
+              "layout": "CHW",
+              "shape": [
+                1,
+                784,
+                256
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "prev_hidden",
+              "layout": "CHW",
+              "shape": [
+                1,
+                1,
+                256
+              ],
+              "input_type": "Input"
+            },
+            {
+              "input_name": "prev_symbol",
+              "layout": "C",
+              "shape": [
+                1
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "output_name": "hidden",
+              "layout": "CHW",
+              "shape": [
+                1,
+                1,
+                256
+              ],
+              "output_type": "Reshape"
+            },
+            {
+              "output_name": "output",
+              "layout": "NC",
+              "shape": [
+                1,
+                38
+              ],
+              "output_type": "FullyConnected"
+            }
+          ]
+        }
+      },
+      {
+        "name": "text-spotting-0002-recognizer-encoder",
+        "path": "/2020.1.120/intel/text-spotting-0002-recognizer-encoder/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                64,
+                28,
+                28
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "output",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                256,
+                28,
+                28
+              ],
+              "output_type": "ReLU"
+            }
+          ]
+        }
+      },
+      {
+        "name": "unet-camvid-onnx-0001",
+        "path": "/2020.1.120/intel/unet-camvid-onnx-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input.1",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                368,
+                480
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "206",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                12,
+                368,
+                480
+              ],
+              "output_type": "Eltwise"
+            }
+          ]
+        }
+      },
+      {
+        "name": "vehicle-attributes-recognition-barrier-0039",
+        "path": "/2020.1.120/intel/vehicle-attributes-recognition-barrier-0039/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                72,
+                72
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 2,
+          "blobs": [
+            {
+              "output_name": "color",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                7,
+                1,
+                1
+              ],
+              "output_type": "SoftMax"
+            },
+            {
+              "output_name": "type",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                4,
+                1,
+                1
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "vehicle-detection-adas-0002",
+        "path": "/2020.1.120/intel/vehicle-detection-adas-0002/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                384,
+                672
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "detection_out",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                200,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 2
+            }
+          ]
+        }
+      },
+      {
+        "name": "vehicle-license-plate-detection-barrier-0106",
+        "path": "/2020.1.120/intel/vehicle-license-plate-detection-barrier-0106/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "Placeholder",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                300,
+                300
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "DetectionOutput_",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                200,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 3
+            }
+          ]
+        }
+      },
+      {
+        "name": "vehicle-license-plate-detection-barrier-0123",
+        "path": "/2020.1.120/ir/public/vehicle-license-plate-detection-barrier-0123/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "Placeholder",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                256,
+                256
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "DetectionOutput_",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                1,
+                200,
+                7
+              ],
+              "output_type": "DetectionOutput",
+              "num_class": 3
+            }
+          ]
+        }
+      },
+      {
+        "name": "vgg16",
+        "path": "/2020.1.120/ir/public/vgg16/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                224,
+                224
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "prob",
+              "layout": "NC",
+              "shape": [
+                1,
+                1000
+              ],
+              "output_type": "SoftMax"
+            }
+          ]
+        }
+      },
+      {
+        "name": "yolo-v1-tiny-tf",
+        "path": "/2020.1.120/ir/public/yolo-v1-tiny-tf/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input_1",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                416,
+                416
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "conv2d_9/BiasAdd/YoloRegion",
+              "layout": "NC",
+              "shape": [
+                1,
+                21125
+              ],
+              "output_type": "RegionYolo",
+              "num_class": 20
+            }
+          ]
+        }
+      },
+      {
+        "name": "yolo-v2-ava-0001",
+        "path": "/2020.1.120/intel/yolo-v2-ava-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                416,
+                416
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "yolo_out_postprocess/YoloRegion",
+              "layout": "NC",
+              "shape": [
+                1,
+                21125
+              ],
+              "output_type": "RegionYolo",
+              "num_class": 20
+            }
+          ]
+        }
+      },
+      {
+        "name": "yolo-v2-ava-sparse-35-0001",
+        "path": "/2020.1.120/intel/yolo-v2-ava-sparse-35-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                416,
+                416
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "yolo_out_postprocess/YoloRegion",
+              "layout": "NC",
+              "shape": [
+                1,
+                21125
+              ],
+              "output_type": "RegionYolo",
+              "num_class": 20
+            }
+          ]
+        }
+      },
+      {
+        "name": "yolo-v2-ava-sparse-70-0001",
+        "path": "/2020.1.120/intel/yolo-v2-ava-sparse-70-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                416,
+                416
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "yolo_out_postprocess/YoloRegion",
+              "layout": "NC",
+              "shape": [
+                1,
+                21125
+              ],
+              "output_type": "RegionYolo",
+              "num_class": 20
+            }
+          ]
+        }
+      },
+      {
+        "name": "yolo-v2-tf",
+        "path": "/2020.1.120/ir/public/yolo-v2-tf/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input_1",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                608,
+                608
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "conv2d_23/BiasAdd/YoloRegion",
+              "layout": "NC",
+              "shape": [
+                1,
+                153425
+              ],
+              "output_type": "RegionYolo",
+              "num_class": 80
+            }
+          ]
+        }
+      },
+      {
+        "name": "yolo-v2-tiny-ava-0001",
+        "path": "/2020.1.120/intel/yolo-v2-tiny-ava-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                416,
+                416
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "yolo_out_postprocess/YoloRegion",
+              "layout": "NC",
+              "shape": [
+                1,
+                21125
+              ],
+              "output_type": "RegionYolo",
+              "num_class": 20
+            }
+          ]
+        }
+      },
+      {
+        "name": "yolo-v2-tiny-ava-sparse-30-0001",
+        "path": "/2020.1.120/intel/yolo-v2-tiny-ava-sparse-30-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                416,
+                416
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "yolo_out_postprocess/YoloRegion",
+              "layout": "NC",
+              "shape": [
+                1,
+                21125
+              ],
+              "output_type": "RegionYolo",
+              "num_class": 20
+            }
+          ]
+        }
+      },
+      {
+        "name": "yolo-v2-tiny-ava-sparse-60-0001",
+        "path": "/2020.1.120/intel/yolo-v2-tiny-ava-sparse-60-0001/FP16",
+        "framework": "dldt",
+        "IrVersion": "10",
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "data",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                416,
+                416
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "yolo_out_postprocess/YoloRegion",
+              "layout": "NC",
+              "shape": [
+                1,
+                21125
+              ],
+              "output_type": "RegionYolo",
+              "num_class": 20
+            }
+          ]
+        }
+      },
+      {
+        "name": "yolo-v2-tiny-tf",
+        "path": "/2020.1.120/ir/public/yolo-v2-tiny-tf/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input_1",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                416,
+                416
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "output_name": "conv2d_9/BiasAdd/YoloRegion",
+              "layout": "NC",
+              "shape": [
+                1,
+                71825
+              ],
+              "output_type": "RegionYolo",
+              "num_class": 80
+            }
+          ]
+        }
+      },
+      {
+        "name": "yolo-v3-tf",
+        "path": "/2020.1.120/ir/public/yolo-v3-tf/FP16",
+        "framework": "",
+        "IrVersion": 0,
+        "inputs": {
+          "count": 1,
+          "blobs": [
+            {
+              "input_name": "input_1",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                3,
+                416,
+                416
+              ],
+              "input_type": "Input"
+            }
+          ]
+        },
+        "outputs": {
+          "count": 3,
+          "blobs": [
+            {
+              "output_name": "conv2d_58/Conv2D/YoloRegion",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                255,
+                13,
+                13
+              ],
+              "output_type": "RegionYolo",
+              "num_class": 80
+            },
+            {
+              "output_name": "conv2d_66/Conv2D/YoloRegion",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                255,
+                26,
+                26
+              ],
+              "output_type": "RegionYolo",
+              "num_class": 80
+            },
+            {
+              "output_name": "conv2d_74/Conv2D/YoloRegion",
+              "layout": "NCHW",
+              "shape": [
+                1,
+                255,
+                52,
+                52
+              ],
+              "output_type": "RegionYolo",
+              "num_class": 80
+            }
+          ]
+        }
+      }
+    ]
+  }
