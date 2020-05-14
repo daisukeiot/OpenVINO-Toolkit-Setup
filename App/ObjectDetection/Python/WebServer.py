@@ -7,6 +7,7 @@ import asyncio
 from tornado import websocket, web, ioloop, platform
 from tornado.platform.asyncio import AnyThreadEventLoopPolicy
 from tornado.ioloop import IOLoop
+from tornado.websocket import WebSocketClosedError
 import base64
 
 class WebServer(object):
@@ -250,6 +251,9 @@ class ImageStreamHandler(websocket.WebSocketHandler):
                 else:
                     logging.warning('Unknown Message {}'.format(msg))
 
+        except WebSocketClosedError:
+            logging.warning('!! Websocket already closed')
+
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             traceback.print_exception(exc_type, exc_obj, exc_tb)
@@ -262,9 +266,14 @@ class ImageStreamHandler(websocket.WebSocketHandler):
             frame, fps = self.videoProcessor.get_display_frame()
             if frame != None:
                 encoded = base64.b64encode(frame)
-                self.write_message('{{\"Image\":\"{0}\", \"FPS\":\"{1:5.1f}\"}}'.format(encoded.decode(), fps), binary=False)
+                if not self.ws_connection.stream.closed():
+                    self.write_message('{{\"Image\":\"{0}\", \"FPS\":\"{1:5.1f}\"}}'.format(encoded.decode(), fps), binary=False)
+                else:
+                    logging.warning('>> Websocket already closed')
             else:
                 logging.warning('<< {0}:{1}() : Empty Frame'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
+        except WebSocketClosedError:
+            logging.warning('!! Websocket already closed')
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             traceback.print_exception(exc_type, exc_obj, exc_tb)
@@ -278,12 +287,15 @@ class ImageStreamHandler(websocket.WebSocketHandler):
         if ImageStreamHandler.debug:
             logging.info('>> {} : {}'.format(sys._getframe().f_code.co_name, msg[0:200]))
 
-        for client in ImageStreamHandler.clients:
-            if client.ws_connection.stream.socket:
-                client.write_message(msg)
-            else:
-                ImageStreamHandler.clients.remove(client)
+        try:
+            for client in ImageStreamHandler.clients:
+                if client.ws_connection.stream.socket:
+                    client.write_message(msg)
+                else:
+                    ImageStreamHandler.clients.remove(client)
 
+        except WebSocketClosedError:
+            logging.warning('!! Websocket already closed')
 
 #
 # Class method to broadcast message
@@ -293,13 +305,16 @@ class ImageStreamHandler(websocket.WebSocketHandler):
         if ImageStreamHandler.debug:
             logging.info('>> {}()'.format(sys._getframe().f_code.co_name))
 
-        if not frame == None:
-            encoded = base64.b64encode(frame)
-            for client in ImageStreamHandler.clients:
-                if client.ws_connection.stream.socket:
-                    client.write_message('{{\"Image\":\"{0}\"}}'.format(encoded.decode()), binary=False)
-                else:
-                    ImageStreamHandler.clients.remove(client)
-        else:
-            logging.warning('<< {0}() : Empty Frame'.format(sys._getframe().f_code.co_name))
+        try:
+            if not frame == None:
+                encoded = base64.b64encode(frame)
+                for client in ImageStreamHandler.clients:
+                    if client.ws_connection.stream.socket:
+                        client.write_message('{{\"Image\":\"{0}\"}}'.format(encoded.decode()), binary=False)
+                    else:
+                        ImageStreamHandler.clients.remove(client)
+            else:
+                logging.warning('<< {0}() : Empty Frame'.format(sys._getframe().f_code.co_name))
 
+        except WebSocketClosedError:
+            logging.warning('!! Websocket already closed')
