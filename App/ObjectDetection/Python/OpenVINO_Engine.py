@@ -81,6 +81,8 @@ class OpenVINO_Engine(object):
 
         self.useModelsJson = True
 
+        self.processor = cpuinfo.get_cpu_info()['arch']
+
     def __enter__(self):
         if self._debug:
             logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
@@ -186,7 +188,12 @@ class OpenVINO_Engine(object):
         else:
             # process Json file for models
 
-            models_json_file = Path(Path('./').resolve() / 'models.json')
+            if 'ARM' in self.processor:
+                models_json_file = Path(Path('./').resolve() / 'models-2019_R3.1.json')
+            else:
+                models_json_file = Path(Path('./').resolve() / 'models-2020.1.120.json')
+
+            logging.info('>> Model Json : {}'.format(str(models_json_file)))
 
             if models_json_file.exists():
 
@@ -198,7 +205,7 @@ class OpenVINO_Engine(object):
                         isSupported = False
 
                         # No conversion for ARM processors
-                        if 'ARM' in cpuinfo.get_cpu_info()['arch']:
+                        if 'ARM' in self.processor:
                             if model['framework'] != 'dldt':
                                 continue
 
@@ -257,7 +264,7 @@ class OpenVINO_Engine(object):
 
             self.engineState |= Engine_State.Initialized
         else:
-            logging.error('OpenVINO Engine initialization failed')
+            logging.error('!!! OpenVINO Engine initialization failed')
 
 #
 # Helper functions / macros

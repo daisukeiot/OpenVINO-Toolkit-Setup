@@ -292,12 +292,15 @@
           <td colspan="2">
             <table class="child-table">
               <tr>
-                <td style="width: 8em;">
-                  <label class="main-label" style="float: left; margin-right: 0;color: yellow;padding-left: 0;" id="textFps">00.0</label>
-                  <label class="main-label" style="float: left;color: yellow;">&nbspFPS</label>
+                <td style="width: 20em;">
+                  <label class="child-label" style="padding-left:0;float: left;">FPS : Current&nbsp</label>
+                  <label class="child-label" style="padding-left:0;float: left; color: yellow; font-weight: bold;" id="textFps">00.0</label>
+                  <label class="child-label" style="padding-left:0;float: left;">&nbsp| Source&nbsp</label>
+                  <label class="child-label" style="padding-left:0;float: left;font-weight: bold;" id="textSourceFps">30</label>
                 </td>
                 <td>
-                  <label class="main-text"  style="min-width:5rem" id="textIE"></label>
+                  <label class="child-label" style="padding-left:0;float: left;">Ver :&nbsp</label>
+                  <label class="child-label" style="padding-left:0;min-width:5rem" id="textIE"></label>
                 </td>
               </tr>
             </table>
@@ -621,7 +624,8 @@
                 console.log("get_video_path : %s", json.get_video_path);
                 textVideoPath.value = json.get_video_path;
                 console.log("video_type     : %s", json.video_type);
-                set_video_state_ui(json.video_type, json.state)
+                set_video_state_ui(json.video_type, json.state);
+                textSourceFps.innerHTML = json.source_fps;
               }
               // Received current video resolution
               else if (json.get_video_resolution)

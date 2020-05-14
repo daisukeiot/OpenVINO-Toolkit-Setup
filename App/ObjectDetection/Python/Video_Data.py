@@ -364,7 +364,7 @@ class Video_Data():
         if self.verbose:
             logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
 
-        return '{{\"get_video_path\":\"{0}\", \"video_type\":{1}, \"state\":{2}, \"playback_mode\":\"{3}\"}}'.format(self.videoPath, int(self.videoType), self.state, self.playback_mode)
+        return '{{\"get_video_path\":\"{0}\", \"video_type\":{1}, \"state\":{2}, \"playback_mode\":\"{3}\", \"source_fps\":\"{4}\"}}'.format(self.videoPath, int(self.videoType), self.state, self.playback_mode, self.fps)
 
 #
 # Set Video Resolution
