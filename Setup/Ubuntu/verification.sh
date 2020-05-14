@@ -2,10 +2,10 @@
 
 source /opt/intel/openvino/bin/setupvars.sh
 cd "${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/install_prerequisites"
-./install_prerequisites.sh
+sudo -H ./install_prerequisites.sh
 
 cd /opt/intel/openvino/deployment_tools/demo
-./demo_squeezenet_download_convert_run.sh
+sudo -H ./demo_squeezenet_download_convert_run.sh
 
 cd /home/${USER}/inference_engine_samples_build/intel64/Release
 echo ''
