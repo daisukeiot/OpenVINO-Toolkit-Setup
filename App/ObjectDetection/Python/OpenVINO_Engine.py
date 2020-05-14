@@ -191,7 +191,9 @@ class OpenVINO_Engine(object):
             if 'ARM' in self.processor:
                 models_json_file = Path(Path('./').resolve() / 'models-2019_R3.1.json')
             else:
-                models_json_file = Path(Path('./').resolve() / 'modesl-2020.1.120.json')
+                models_json_file = Path(Path('./').resolve() / 'models-2020.1.120.json')
+
+            logging.info('>> Model Json : {}'.format(str(models_json_file)))
 
             if models_json_file.exists():
 
@@ -262,7 +264,7 @@ class OpenVINO_Engine(object):
 
             self.engineState |= Engine_State.Initialized
         else:
-            logging.error('OpenVINO Engine initialization failed')
+            logging.error('!!! OpenVINO Engine initialization failed')
 
 #
 # Helper functions / macros
