@@ -5,7 +5,7 @@ cd "${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/install_prerequisites
 sudo -H ./install_prerequisites.sh
 
 cd /opt/intel/openvino/deployment_tools/demo
-sudo -H ./demo_squeezenet_download_convert_run.sh
+sudo -E ./demo_squeezenet_download_convert_run.sh
 
 cd /home/${USER}/inference_engine_samples_build/intel64/Release
 echo ''
