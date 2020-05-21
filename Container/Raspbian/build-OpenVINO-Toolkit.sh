@@ -9,6 +9,14 @@ if [ $# -ne 2 ]
     exit
 fi
 
+if [ ! -f ./qemu-arm-static ]; then
+    if [ ! -f /usr/bin/qemu-arm-static ]; then
+        sudo apt-get update
+        sudo apt-get install -y binfmt-support qemu qemu-user-static 
+    fi
+    cp /usr/bin/qemu-arm-static .
+fi
+
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
 #
 # Use OpenVINO Toolkit ver 2020.1.023
@@ -73,4 +81,4 @@ echo "Container built with OpenVINO Toolkit : ${OPENVINO_VER}"
 echo ''
 #echo "Pushing Image : ${TAG}"
 #echo ''
-# docker push ${TAG}
+docker push ${TAG}
