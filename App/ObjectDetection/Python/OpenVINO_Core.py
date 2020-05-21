@@ -10,6 +10,7 @@ from pathlib import Path
 from Process_Object_Detection import Object_Detection_Processor 
 from Process_Faster_RCNN import Object_Detection_RCNN_Processor
 from Process_Yolo import Object_Detection_Yolo_Processor
+from Process_HumanPose import Human_Pose_Processor
 
 class OpenVINO_Core:
 
@@ -189,6 +190,9 @@ class OpenVINO_Core:
                     outputFormat = Output_Format.DetectionOutput
                 elif layer.type == 'RegionYolo':
                     outputFormat = Output_Format.RegionYolo
+                elif layer.type == 'Convolution':
+                    if layer.name == 'Mconv7_stage2_L1' or layer.name == 'Mconv7_stage2_L2':
+                        outputFormat = Output_Format.HumanPose
                 else:
                     return Model_Flag.Unsupported
 
@@ -287,6 +291,18 @@ class OpenVINO_Core:
                 # for key, blob in self.result_processor.reshape_data.items():
                 #     print('{} {}'.format(key, blob))
 
+
+            elif outputFormat == Output_Format.HumanPose:
+                input_key  = next(iter(self.ieNet.inputs))
+                input_blob = self.ieNet.inputs[input_key]
+                self.inputFormat = Input_Format.HumanPose
+
+                self.result_processor = Human_Pose_Processor(
+                                            model_name = self.name,
+                                            input_format = Input_Format.HumanPose,
+                                            input_shape = input_blob.shape,
+                                            input_layout = input_blob.layout
+                                            )
             return Model_Flag.Loaded
 
         except Exception as ex:
@@ -343,6 +359,26 @@ class OpenVINO_Core:
                                                                         frame_data = frame_data,
                                                                         frame = frame,
                                                                         confidence = confidence)
+
+        elif self.inputFormat == Input_Format.HumanPose:
+
+            frame_data, input_key = self.result_processor.process_for_inference(frame = frame)
+
+            if frame_data.size > 0:
+
+                if self.asyncInference:
+                    self.result_processor.prev_frame = frame
+                    self.exec_net.start_async(request_id=self.request_slot_next, inputs={input_key : frame_data})
+                    if self.exec_net.requests[self.request_slot_curr].wait(-1) == 0:
+                        return_frame = self.result_processor.process_result(self.exec_net.requests[self.request_slot_curr].outputs, self.result_processor.prev_frame, confidence)
+                        assert return_frame.size > 0, "Frame Empty"
+                else:
+                    self.request_slot_curr = 0
+                    self.exec_net.infer(inputs={input_key : frame_data})
+                    return_frame = self.result_processor.process_result(self.exec_net.requests[self.request_slot_curr].outputs, frame, confidence)
+
+        elif self.inputFormat == Input_Format.Unknown:
+            pass
 
         else:
         # elif self.inputFormat == Input_Format.Tensorflow or self.inputFormat == Input_Format.Caffe or self.inputFormat == Input_Format.IntelIR:

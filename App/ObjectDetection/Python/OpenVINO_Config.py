@@ -27,6 +27,7 @@ class Output_Format(IntEnum):
     Mconv7_stage2_L1 = 3
     Faster_RCNN = 4
     RegionYolo = 5
+    HumanPose = 6
 
 class Input_Format(IntEnum):
     Unknown = 0
@@ -35,7 +36,8 @@ class Input_Format(IntEnum):
     Faster_RCNN = 3
     IntelIR = 4
     Yolo = 5
-    Other = 6
+    HumanPose = 6
+    Other = 7
 
 class Engine_State(IntFlag):
     Unknown = auto()
