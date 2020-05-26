@@ -318,7 +318,7 @@ class OpenVINO_Core:
         return_frame = frame
 
         if self.result_processor == None:
-            return
+            return return_frame
 
         if self.inputFormat == Input_Format.Faster_RCNN:
 

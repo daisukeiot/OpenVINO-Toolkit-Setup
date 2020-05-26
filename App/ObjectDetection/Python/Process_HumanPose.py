@@ -14,8 +14,8 @@ from OpenVINO_Config import Output_Format, Input_Format, color_list, CV2_Draw_In
 
 #
 # For Human Pose models
+# 19 Key Part Locations
 #
-
 class CocoPart(Enum):
     Nose = 0
     Neck = 1
@@ -37,32 +37,31 @@ class CocoPart(Enum):
     LEar = 17
     Background = 18
 
+# pairs of key Point Locations
 CocoPairs = [
-    (1, 2),
-    (1, 5),
-    (2, 3),
-    (3, 4),
-    (5, 6),
-    (6, 7),
-    (1, 8),
-    (8, 9),
-    (9, 10),
-    (1, 11),
-    (11, 12),
-    (12, 13),
-    (1, 0),
-    (0, 14),
-    (14, 16),
-    (0, 15),
-    (15, 17),
-    (2, 16),
-    (5, 17)
+    (1, 2),   # Neck - RShoulder
+    (1, 5),   # Neck - LShoulder
+    (2, 3),   # RShoulder - RElbow
+    (3, 4),   # RElbow - RWrist
+    (5, 6),   # LShoulder - LElbow
+    (6, 7),   # LElbow - LWrist
+    (1, 8),   # Neck - RHip
+    (8, 9),   # RHip - RKnee
+    (9, 10),  # RKnee - RAnkle
+    (1, 11),  # Neck - LHip
+    (11, 12), # LHip - LKnee
+    (12, 13), # LKnee - LAnkle
+    (1, 0),   # Neck - Nose
+    (0, 14),  # Nose - REye
+    (14, 16), # REye - REar
+    (0, 15),  # Nose - LEye
+    (15, 17), # LEye - LEar
+    (2, 16),  # RShoulder - REar
+    (5, 17)   # LShoulder - LEar
 ]   # = 19
 
-CocoPairsRender = CocoPairs[:-2]
-
-
-CocoPairsBlobIndex = [
+# blob locations for each pair
+CocoPairsNetwork = [
     (12, 13),
     (20, 21),
     (14, 15),
@@ -84,7 +83,7 @@ CocoPairsBlobIndex = [
     (26, 27)
  ]  # = 19
 
-# In BGR
+# Color for each Key Point Location
 CocoColors = [[  0,   0, 255], #nose
               [102,  51, 204], #neck
               [255,   0,   0], #R Shoulder
@@ -104,24 +103,6 @@ CocoColors = [[  0,   0, 255], #nose
               [255,   0, 255], #R Ear
               [255,   0, 255]] #L Ear
 
-#
-# Flat list with index
-# x, y, score, index
-list_keypoint_with_index = []
-
-#
-# array of key points
-# [# of key points][x, y, score]
-array_keypoint = np.zeros((0,3))
-
-#
-# array organized key points by key points
-# [nose][x, y, score, index]
-array_keypoint_by_part_id = []
-
-key_point_confidence = 0.1
-confidence = 0.3
-
 class Human_Pose_Processor():
 
     def __init__(self, model_name, input_format, input_shape, input_layout):
@@ -135,7 +116,7 @@ class Human_Pose_Processor():
         self.input_layout = input_layout
 
         self.paf_key  = 'Mconv7_stage2_L1'
-        self.keyP_key = 'Mconv7_stage2_L2'
+        self.bpl_key = 'Mconv7_stage2_L2'
 
         self.key_point_confidence = 0.1
         self.draw_key_point_id = True
@@ -158,288 +139,306 @@ class Human_Pose_Processor():
     def process_result(self, results = None, frame = None, confidence = 1):
 
         # paf, height, width
-        pafMat   = results[self.paf_key][0, :, :, :]
+        pafs   = results[self.paf_key][0, :, :, :]
 
         # key part, height, width
-        keyP_HeatMap  = results[self.keyP_key][0, :, :, :]
-
-        frame = self.process_key_points(frame, keyP_HeatMap)
-
-        # humans = self.estimate_pose(heatMat, pafMat, confidence)
-
-        # frame = self.draw_humans(frame, humans)
-
-        return frame
-
-    def process_key_points(self, frame, result):
-
-        keyP_id = 0
-
+        bpls  = results[self.bpl_key][0, :, :, :]
+        
+        # Flat list with index (J)
+        # x, y, confidence score, index
+        # S = (S1, S2, ..., SJ)
+        # bpl_List = ((x,y,score,0),
+        #                  :
+        #             (x,y,score,bpl_J))
         #
-        # Flat list with index
-        # x, y, score, index
-        list_keypoint_with_index = []
+        bpl_List = []
 
         #
         # array of key points
         # [# of key points][x, y, score]
-        array_keypoint = np.zeros((0,3))
+        # bpl_Array[bpl_j](x, y, score)
+        bpl_Array = np.zeros((0,3))
 
         #
         # array organized key points by key points
+        # [SJ][x,y,score,index]
         # [nose][x, y, score, index]
-        array_keypoint_by_part_id = []
+        bpl_by_J = []
 
-        # iterate through each key point
-        for i in range(CocoPart.Background.value):
+        bpl_List, bpl_Array, bpl_by_J = self.process_bpl(results, frame)
+        
+        bpl_pairs = self.find_bpl_pairs(results, bpl_by_J, frame, confidence)
+        
+        bpl_k = self.assign_bpl_to_person(bpl_pairs)
 
-            keyP_HeatMap = result[i,:,:]
-            keyP_HeatMap = cv2.resize(keyP_HeatMap, (frame.shape[1], frame.shape[0]))
+        return self.draw_person(bpl_k, bpl_List, frame)
 
-            # Smooth key point heatmap with Gaussian Blur
-            KeyP_HeatMap_Blue = cv2.GaussianBlur(keyP_HeatMap,(5,5), 0, 0)
+    def draw_person(self, bpl_k, bpl_List, frame):
 
-            # Mask off anything below threshold
-            KeyP_HeatMap_Masked = np.uint8(KeyP_HeatMap_Blue > self.key_point_confidence)
+        for k in range(len(bpl_k)):
+            logging.debug(bpl_k[k])
 
-            keypoint_list = []
-
-            #find the blobs
-            contours, _ = cv2.findContours(KeyP_HeatMap_Masked, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
-            for contour in contours:
-
-                # placeholder
-                keyP_blob = np.zeros(KeyP_HeatMap_Masked.shape)
-
-                # Draw Contour to blob
-                keyP_blob = cv2.fillConvexPoly(keyP_blob, contour, 1)
-
-                # Give weight based on Key Point Heatmap Score
-                keyP_HeatMap_Weighted = KeyP_HeatMap_Blue * keyP_blob
-
-                # Take max point and location
-                _, maxVal, _, maxLoc = cv2.minMaxLoc(keyP_HeatMap_Weighted)
-            
-                # Add to the list with location.  Take score from the original heatmap
-                keypoint_list.append(maxLoc + (keyP_HeatMap[maxLoc[1], maxLoc[0]],))
-
-            # create a list by giving ID to each key point
-            tmpList = []
-
-            # iterate each keypoint we found so far and give ID (keyP_id)
-            for j in range(len(keypoint_list)):
-                # add to temporary list
-                tmpList.append(keypoint_list[j] + (keyP_id,))
-
-                # add this to array by id.
-                # this list is convenient to iterate all key points.
-                # this list looks like :
-                # array_keypoint[0][x,y,score]
-                array_keypoint = np.vstack([array_keypoint, keypoint_list[j]])
-                keyP_id += 1
-
-            # add list of key points by key part to the list head
-            #
-            # This list looks like :
-            # list_keypoint_with_index[key point][(x,y,score,id)]
-            # e.g.
-            # list_keypoint_with_index[0 (nose)][(x,y,score,id)]
-            #
-            list_keypoint_with_index.append(tmpList)
-
-        frame = self.draw_key_points(frame, list_keypoint_with_index)
-
-        return frame
-
-    def draw_key_points(self, frame, list_keypoint_with_index):
-
-        # to draw key points with ID use list_keypoint_with_index
-
-        for i in range(len(list_keypoint_with_index)):
-            if len(list_keypoint_with_index[i]) == 0:
+            # exclude persons without Neck
+            if bpl_k[k][1] == -1:
                 continue
 
-            for keyP in list_keypoint_with_index[i]:
-                if keyP[2] > self.key_point_confidence:
-                    x = int(keyP[0])
-                    y = int(keyP[1])
-                    if self.draw_key_point_id == True:
-                        frame = cv2.putText(frame, str(i), (x + 4,y + 4), cv2.FONT_HERSHEY_SIMPLEX, 0.3, CocoColors[i], 1, cv2.LINE_AA)
+            for i in range(len(CocoPairs) -2 ):
+                if bpl_k[k][CocoPairs[i][0]] == -1 or bpl_k[k][CocoPairs[i][1]] == -1:
+                    continue
+                bpl_0 = int(bpl_k[k][CocoPairs[i][0]])
+                bpl_1 = int(bpl_k[k][CocoPairs[i][1]])
+                loc_0 = bpl_List[bpl_0]
+                loc_1 = bpl_List[bpl_1]
 
-                    frame = cv2.circle(frame, (x, y), 3, CocoColors[i], -1, cv2.LINE_AA)
+                cv2.line(frame, (loc_0[0], loc_0[1]), (loc_1[0], loc_1[1]), CocoColors[i], 1.5, cv2.LINE_AA)
 
         return frame
+        
+    def assign_bpl_to_person(self, bpl_pairs):
 
-    # def draw_humans(self, img, human_list):
-    #     img_copied = np.copy(img)
-    #     image_h, image_w = img_copied.shape[:2]
-    #     offset_y =(image_h / 32 ) /2
-    #     offset_x =(image_w / 57 ) /2
-    #     centers = {}
-    #     for human in human_list:
-    #         part_idxs = human.keys()
+        # Identify key point pairs for each person
 
-    #         # draw point
-    #         for i in range(CocoPart.Background.value):
-    #             if i not in part_idxs:
-    #                 continue
-    #             part_coord = human[i][1]
-    #             center = (int(part_coord[0] * image_w + offset_x), int(part_coord[1] * image_h + offset_y))
-    #             centers[i] = center
-    #             cv2.circle(img_copied, center, 3, CocoColors[i], thickness=2, lineType=8, shift=0)
+        # per person bpl pairs
+        bpl_k = -1 * np.ones((0, 19))
 
-    #         # draw line
-    #         for pair_order, pair in enumerate(CocoPairsRender):
-    #             if pair[0] not in part_idxs or pair[1] not in part_idxs:
-    #                 continue
+        # We don't need Shoulder - Ear pairs
+        for i in range(len(CocoPairs) - 2):
+            if len(bpl_pairs[i]) == 0:
+                continue
 
-    #             img_copied = cv2.line(img_copied, centers[pair[0]], centers[pair[1]], CocoColors[pair_order], 2)
+            bpl_0 = bpl_pairs[i][:,0]
+            bpl_1 = bpl_pairs[i][:,1]
 
-    #     return img_copied
+            bpl_index_0, bpl_index_1 = CocoPairs[i]
 
-    # def human_conns_to_human_parts(self, human_conns, heatMat):
-    #     human_parts = defaultdict(lambda: None)
-    #     for conn in human_conns:
-    #         human_parts[conn['partIdx'][0]] = (
-    #             conn['partIdx'][0], # part index
-    #             (conn['coord_p1'][0] / heatMat.shape[2], conn['coord_p1'][1] / heatMat.shape[1]), # relative coordinates
-    #             heatMat[conn['partIdx'][0], conn['coord_p1'][1], conn['coord_p1'][0]] # score
-    #             )
-    #         human_parts[conn['partIdx'][1]] = (
-    #             conn['partIdx'][1],
-    #             (conn['coord_p2'][0] / heatMat.shape[2], conn['coord_p2'][1] / heatMat.shape[1]),
-    #             heatMat[conn['partIdx'][1], conn['coord_p2'][1], conn['coord_p2'][0]]
-    #             )
-    #     return human_parts
+            # loop through pairs for each body part
+            for j in range(len(bpl_pairs[i])):
+                found = False
+                person_index = -1
 
-    # def get_score(self, x1, y1, x2, y2, pafMatX, pafMatY):
-    #     num_inter = 10
-    #     dx, dy = x2 - x1, y2 - y1
-    #     normVec = math.sqrt(dx ** 2 + dy ** 2)
+                for k in range(len(bpl_k)):
+                    if bpl_k[k][bpl_index_0] == bpl_0[j]:
+                        person_index = k
+                        found = True
+                        break
 
-    #     if normVec < 1e-4:
-    #         return 0.0, 0
+                if found:
+                    bpl_k[person_index][bpl_index_1] = bpl_1[j]
+                else:
+                    # create a new list for person K
+                    pair_k = -1 * np.ones(19)
+                    pair_k[bpl_index_0] = bpl_0[j]
+                    pair_k[bpl_index_1] = bpl_1[j]
+                    bpl_k = np.vstack([bpl_k, pair_k])    
+    
+        return bpl_k
 
-    #     vx, vy = dx / normVec, dy / normVec
+    def find_bpl_pairs(self, results, bpl_by_J, frame, confidence):
+        #
+        # Process PAF
+        # Find         
+        bpl_pairs = []
 
-    #     xs = np.arange(x1, x2, dx / num_inter) if x1 != x2 else np.full((num_inter, ), x1)
-    #     ys = np.arange(y1, y2, dy / num_inter) if y1 != y2 else np.full((num_inter, ), y1)
-    #     xs = (xs + 0.5).astype(np.int8)
-    #     ys = (ys + 0.5).astype(np.int8)
+        # We don't need Shoulder - Ear pairs
+        for i in range(len(CocoPairsNetwork) - 2):
 
-    #     # without vectorization
-    #     pafXs = np.zeros(num_inter)
-    #     pafYs = np.zeros(num_inter)
-    #     for idx, (mx, my) in enumerate(zip(xs, ys)):
-    #         pafXs[idx] = pafMatX[my][mx]
-    #         pafYs[idx] = pafMatY[my][mx]
+            paf_0 = results[self.paf_key][0, CocoPairsNetwork[i][0], :, :]
+            paf_1 = results[self.paf_key][0, CocoPairsNetwork[i][1], :, :]
 
-    #     # vectorization slow?
-    #     # pafXs = pafMatX[ys, xs]
-    #     # pafYs = pafMatY[ys, xs]
+            paf_0 = cv2.resize(paf_0, (frame.shape[1], frame.shape[0]))
+            paf_1 = cv2.resize(paf_1, (frame.shape[1], frame.shape[0]))
 
-    #     local_scores = pafXs * vx + pafYs * vy
-    #     thidxs = local_scores > Inter_Threashold
+            keyP_0 = bpl_by_J[CocoPairs[i][0]]
+            keyP_1 = bpl_by_J[CocoPairs[i][1]]
 
-    #     return sum(local_scores * thidxs), sum(thidxs)
+            if len(keyP_0) == 0 or len(keyP_1) == 0:
+                bpl_pairs.append([])
+                continue
 
-    # def non_max_suppression(self, heatmap, window_size=3, threshold=NMS_Threshold):
-    #     heatmap[heatmap < threshold] = 0 # set low values to 0
-    #     part_candidates = heatmap*(heatmap == maximum_filter(heatmap, footprint=np.ones((window_size, window_size))))
-    #     return part_candidates
+            bpl_pair = np.zeros((0,3))
 
-    # def estimate_pose(self, heatMat, pafMat, Confidence):
+            for j in range(len(keyP_0)):
 
-    #     NMS_Threshold = Confidence
-    #     # reliability issue.
-    #     # heatMat = heatMat - heatMat.min(axis=1).min(axis=1).reshape(19, 1, 1)
-    #     # heatMat = heatMat - heatMat.min(axis=2).reshape(19, heatMat.shape[1], 1)
+                maxScore = -1
+                max_k = -1
+                found = False
 
-    #     _NMS_Threshold = max(np.average(heatMat) * 4.0, NMS_Threshold)
-    #     _NMS_Threshold = min(_NMS_Threshold, 0.6)
+                for k in range(len(keyP_1)):
+                    # dj2 - dj1
+                    distance = np.subtract(keyP_1[k][:2], keyP_0[j][:2])
 
-    #     coords = [] # for each part index, it stores coordinates of candidates
-    #     for heatmap in heatMat[:-1]: # remove background
-    #         part_candidates = self.non_max_suppression(heatmap, 5, NMS_Threshold)
-    #         # coords.append(np.where(part_candidates >= _NMS_Threshold))
-    #         coords.append(np.where(part_candidates >= Confidence))
+                    # || dj2 - dj1 ||2
+                    norm = np.linalg.norm(distance)
 
-    #     connection_all = [] # all connections detected. no information about what humans they belong to
-    #     for (idx1, idx2), (paf_x_idx, paf_y_idx) in zip(CocoPairs, CocoPairsNetwork):
-    #         connection = self.estimate_pose_pair(coords, idx1, idx2, pafMat[paf_x_idx], pafMat[paf_y_idx])
-    #         connection_all.extend(connection)
+                    if norm:
+                        # (dj2 - dj1)/(|| dj2 - dj1 ||2)
+                        vector = distance / norm
+                    else:
+                        continue
 
-    #     conns_by_human = dict()
-    #     for idx, c in enumerate(connection_all):
-    #         conns_by_human['human_%d' % idx] = [c] # at first, all connections belong to different humans
+                    # p(u)
+                    interp_coord = list(zip(np.linspace(keyP_0[j][0], keyP_1[k][0], num=10),
+                                            np.linspace(keyP_0[j][1], keyP_1[k][1], num=10)))
 
-    #     no_merge_cache = defaultdict(list)
-    #     empty_set = set()
-    #     while True:
-    #         is_merged = False
-    #         for h1, h2 in itertools.combinations(conns_by_human.keys(), 2):
-    #             if h1 == h2:
-    #                 continue
-    #             if h2 in no_merge_cache[h1]:
-    #                 continue
-    #             for c1, c2 in itertools.product(conns_by_human[h1], conns_by_human[h2]):
-    #                 # if two humans share a part (same part idx and coordinates), merge those humans
-    #                 if set(c1['uPartIdx']) & set(c2['uPartIdx']) != empty_set:
-    #                     is_merged = True
-    #                     # extend human1 connectios with human2 connections
-    #                     conns_by_human[h1].extend(conns_by_human[h2])
-    #                     conns_by_human.pop(h2) # delete human2
-    #                     break
-    #             if is_merged:
-    #                 no_merge_cache.pop(h1, None)
-    #                 break
-    #             else:
-    #                 no_merge_cache[h1].append(h2)
+                    paf_interp = []
+                    for l in range(len(interp_coord)):
+                        paf_interp.append([paf_0[int(round(interp_coord[l][1])), int(round(interp_coord[l][0]))],
+                                           paf_1[int(round(interp_coord[l][1])), int(round(interp_coord[l][0]))] ])
 
-    #         if not is_merged: # if no more mergings are possible, then break
-    #             break
+                    # L(p(u)) dot vector
+                    paf_scores = np.dot(paf_interp, vector)
+                    # E
+                    avg_paf_score = sum(paf_scores)/len(paf_scores)
 
-    #     # reject by subset count
-    #     conns_by_human = {h: conns for (h, conns) in conns_by_human.items() if len(conns) >= Min_Subset_Cnt}
-    #     # reject by subset max score
-    #     conns_by_human = {h: conns for (h, conns) in conns_by_human.items() if max([conn['score'] for conn in conns]) >= Min_Subset_Score}
+                    if avg_paf_score > confidence and ( len(np.where(paf_scores > 0.1)[0]) / 10 ) > 0.5 :
+                        if avg_paf_score > maxScore:
+                            max_k = k
+                            maxScore = avg_paf_score
+                            found = True
 
-    #     # list of humans
-    #     humans = [self.human_conns_to_human_parts(human_conns, heatMat) for human_conns in conns_by_human.values()]
-    #     return humans
+                if found:
+                    bpl_pair = np.append(bpl_pair, [[int(keyP_0[j][3]), int(keyP_1[max_k][3]), maxScore]], axis=0)
 
+            bpl_pairs.append(bpl_pair)
+        
+        return bpl_pairs
+        
+    def process_bpl(self, results, frame):
+        #
+        # Process Body Part Locations
+        #
+        # 3.3 Confidence Maps for Part Detection
+        # Each confidence map is a 2D representation of the belief that a particular body part can be 
+        # located in any given pixel. 
+        # Ideally, if a single person appears in the image, a single peak should exist in each confidence map
+        # if the corresponding part is visible; if multiple people are in the image, there should be a peak
+        # corresponding to each visible part j for each person k.
+        #
 
-    # def estimate_pose_pair(self, coords, partIdx1, partIdx2, pafMatX, pafMatY):
-    #     connection_temp = [] # all possible connections
-    #     peak_coord1, peak_coord2 = coords[partIdx1], coords[partIdx2]
+        # Index for each Body Part Location in j
+        bpl_index = 0
 
-    #     for idx1, (y1, x1) in enumerate(zip(peak_coord1[0], peak_coord1[1])):
-    #         for idx2, (y2, x2) in enumerate(zip(peak_coord2[0], peak_coord2[1])):
-    #             score, count = self.get_score(x1, y1, x2, y2, pafMatX, pafMatY)
-    #             if (partIdx1, partIdx2) in [(2, 3), (3, 4), (5, 6), (6, 7)]: # arms
-    #                 if count < InterMinAbove_Threshold // 2 or score <= 0.0:
-    #                     continue
-    #             elif count < InterMinAbove_Threshold or score <= 0.0:
-    #                 continue
-    #             connection_temp.append({
-    #                 'score': score,
-    #                 'coord_p1': (x1, y1),
-    #                 'coord_p2': (x2, y2),
-    #                 'idx': (idx1, idx2), # connection candidate identifier
-    #                 'partIdx': (partIdx1, partIdx2),
-    #                 'uPartIdx': ('{}-{}-{}'.format(x1, y1, partIdx1), '{}-{}-{}'.format(x2, y2, partIdx2))
-    #             })
+        # Flat list with index (J)
+        # x, y, confidence score, index
+        # S = (S1, S2, ..., SJ)
+        # bpl_List = ((x,y,score,0),
+        #                  :
+        #             (x,y,score,bpl_J))
+        #
+        bpl_List = []
 
-    #     connection = []
-    #     used_idx1, used_idx2 = [], []
-    #     # sort possible connections by score, from maximum to minimum
-    #     for conn_candidate in sorted(connection_temp, key=lambda x: x['score'], reverse=True):
-    #         # check not connected
-    #         if conn_candidate['idx'][0] in used_idx1 or conn_candidate['idx'][1] in used_idx2:
-    #             continue
-    #         connection.append(conn_candidate)
-    #         used_idx1.append(conn_candidate['idx'][0])
-    #         used_idx2.append(conn_candidate['idx'][1])
+        #
+        # array of key points
+        # [# of key points][x, y, score]
+        # bpl_Array[bpl_j](x, y, score)
+        bpl_Array = np.zeros((0,3))
 
-    #     return connection
+        #
+        # array organized key points by key points
+        # [SJ][x,y,score,index]
+        # [nose][x, y, score, index]
+        bpl_by_J = []
+
+        keypoint_list_by_part_id = []
+
+        # Loop each Body Part Location, except Background
+        for J in range(CocoPart.Background.value):
+
+            logging.debug('>> Process {}'.format(CocoPart(J).name))
+
+            #
+            # Confidence Map or "S"
+            # 3.3 Confidence Maps for Part Detection
+            #
+            bpl_ConfMap_j = results[self.bpl_key][0, J, :, :]
+            
+            # Use Non-NMS method (Faster)
+            # bodyPartList = find_key_points_nms(bpl_ConfMap_j, frame)
+            bodyPartList = find_key_points(bpl_ConfMap_j, frame)
+
+            tmpList = []
+
+            for bodyPart in bodyPartList:
+                # Create a list of keypoints with index for display
+                logging.debug('   - Index {} : ({},{}) {:.2f}%'.format(bpl_index, 
+                                                           bodyPart[0],
+                                                           bodyPart[1],
+                                                           bodyPart[2]))
+                #
+                # tempList = (x, y), score, index
+                #
+
+                # add to flat list
+                bpl_List.append(bodyPart + (bpl_index,))
+
+                # add to temp list (list by J)
+                tmpList.append(bodyPart + (bpl_index,))
+                bpl_index += 1
+
+                # add to array
+                bpl_Array = np.vstack([bpl_Array, bodyPart])
+
+            bpl_by_J.append(tmpList)
+
+        #
+        # for debugging
+        # display_bpl_heatmap(results, self.bpl_key, bpl_by_J, frame)f
+        return bpl_List, bpl_Array, bpl_by_J
+
+def find_key_points(confidence_map, frame):
+    #
+    # find Body Part Locations using Contours and MaxLoc
+    # Returns list of Body Part Locations with Confidence Score
+    #
+
+    # Resize and smooth the Body Part Location Confidence Map (J)
+    bpl_ConfMap_j = cv2.resize(confidence_map, (frame.shape[1], frame.shape[0]))
+    bpl_ConfMap_Blur = cv2.GaussianBlur(bpl_ConfMap_j, (3,3), 0, 0)
+
+    # filter low probability ones (< 0.1)
+    bpl_ConfMap_Filter = np.uint8(bpl_ConfMap_Blur > 0.1)
+
+    bodyPartList = []
+
+    # find contours (or rectangles)
+    contours, _ = cv2.findContours(bpl_ConfMap_Filter, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+    if len(contours) != 0:
+
+        for contour in contours:
+            tmp = np.zeros(bpl_ConfMap_Filter.shape)
+            tmp = cv2.fillConvexPoly(tmp, contour, 1)
+
+            weighted_bpl_ConfMap = bpl_ConfMap_Blur * tmp
+
+            # We take the maximum of the confidence maps instead of
+            # the average so that the precision of nearby peaks remains distinct
+            _, maxVal, _, maxLoc = cv2.minMaxLoc(weighted_bpl_ConfMap)
+
+            tmp = maxLoc + (bpl_ConfMap_j[maxLoc[1], maxLoc[0]],)
+            bodyPartList.append(maxLoc + (bpl_ConfMap_j[maxLoc[1], maxLoc[0]],))
+
+    return bodyPartList
+
+from scipy.ndimage.filters import maximum_filter
+
+def find_key_points_nms(confidence_map, frame):
+    #
+    # find Body Part Locations using Non Maximum Suppression
+    # Returns list of Body Part Locations with Confidence Score
+    # This is slower
+
+    bodyPartList = []
+
+    bpl_ConfMap_j = cv2.resize(confidence_map, (frame.shape[1], frame.shape[0]))
+    bpl_ConfMap_Blur = cv2.GaussianBlur(bpl_ConfMap_j, (3,3), 0, 0)
+
+    bpl_ConfMap_Blur[bpl_ConfMap_Blur < 0] = 0
+
+    part_candidates = bpl_ConfMap_Blur*(bpl_ConfMap_Blur == maximum_filter(bpl_ConfMap_Blur, footprint=np.ones((3, 3))))
+    tmp = np.where(part_candidates >= 0.1)
+
+    for i in range(len(tmp[0])):
+        bodyPartList.append((tmp[1][i], tmp[0][i]) + (bpl_ConfMap_j[tmp[0][i], tmp[1][i]],))
+
+    return bodyPartList
