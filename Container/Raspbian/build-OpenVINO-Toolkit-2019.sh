@@ -81,6 +81,6 @@ echo
 echo "Container built with Raspbian version : ${OS_VERSION}"
 echo "Container built with OpenVINO Toolkit : ${OPENVINO_VER}"
 echo ''
-#echo "Pushing Image : ${TAG}"
-#echo ''
+echo "Pushing Image : ${TAG}"
+echo ''
 docker push ${TAG}
