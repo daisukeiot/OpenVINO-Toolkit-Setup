@@ -103,6 +103,29 @@ CocoColors = [[  0,   0, 255], #nose
               [255,   0, 255], #R Ear
               [255,   0, 255]] #L Ear
 
+# Color for lines
+CocoLineColors = [
+    [  0, 255,   0], # Neck - RShoulder
+    [255,   0,   0], # Neck - LShoulder
+    [166, 255,   0], # RShoulder - RElbow
+    [ 83, 255,   0], # RElbow - RWrist
+    [255, 166,   0], # LShoulder - LElbow
+    [255,  83,   0], # LElbow - LWrist
+    [  0, 255, 255], # Neck - RHip
+    [  0, 255, 166], # RHip - RKnee
+    [  0, 255,  83], # RKnee - RAnkle
+    [255,   0, 255], # Neck - LHip
+    [255,   0, 166], # LHip - LKnee
+    [255,   0, 83], # LKnee - LAnkle
+    [  0,   0, 255], # Neck - Nose
+    [166, 255, 255], # Nose - REye
+    [ 83, 255,  83], # REye - REar
+    [255, 166, 255], # Nose - LEye
+    [255,  83,  83], # LEye - LEar
+    [  0,   0, 255], # RShoulder - REar
+    [  0,   0, 255] # LShoulder - LEar
+    ]
+
 class Human_Pose_Processor():
 
     def __init__(self, model_name, input_format, input_shape, input_layout):
@@ -189,8 +212,9 @@ class Human_Pose_Processor():
                 bpl_1 = int(bpl_k[k][CocoPairs[i][1]])
                 loc_0 = bpl_List[bpl_0]
                 loc_1 = bpl_List[bpl_1]
-
-                cv2.line(frame, (loc_0[0], loc_0[1]), (loc_1[0], loc_1[1]), CocoColors[i], 1.5, cv2.LINE_AA)
+                cv2.line(frame, (loc_0[0], loc_0[1]), (loc_1[0], loc_1[1]), CocoLineColors[i], 2, cv2.LINE_AA)
+                frame = cv2.circle(frame, (loc_0[0], loc_0[1]), 3, CocoColors[CocoPairs[i][0]], -1)
+                frame = cv2.circle(frame, (loc_1[0], loc_1[1]), 3, CocoColors[CocoPairs[i][1]], -1)
 
         return frame
         
