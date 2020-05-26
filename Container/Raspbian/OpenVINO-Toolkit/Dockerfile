@@ -105,7 +105,7 @@ WORKDIR /home/openvino
 #
 # Add script for verification
 #
-ADD ./verify.sh .
+ADD ./verification.sh .
  
 #
 # Clean Up
