@@ -1,0 +1,1 @@
+docker image build -t openvino_armhf OpenVINO-crosscompile/Dockerfile
