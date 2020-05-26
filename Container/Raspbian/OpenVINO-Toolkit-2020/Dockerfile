@@ -15,7 +15,9 @@ ARG OS_VERSION=buster
 # Use Base image built in the previous step
 #
 FROM balenalib/rpi-raspbian:${OS_VERSION}
- 
+
+FROM openvino_armhf/lates as openvino_bin
+
 ARG OPENVINO_VER=2020.1.023
 ARG OPENVINO=l_openvino_toolkit_runtime_raspbian_p_${OPENVINO_VER}
 ENV INTEL_OPENVINO_DIR=/opt/intel/openvino
@@ -47,6 +49,7 @@ RUN apt-get update && \
         libtool \
         lsb-release \
         make \
+        nano \
         python3-pip \
         python3-numpy \
         python3-scipy \
@@ -83,26 +86,29 @@ RUN wget -c ${OPENVINO_DOWNLOAD} && \
 # Add USB Rule.  With this, you must run with --privilege and --network=host
 # Enable if you prefer –privilege mode
 #
-RUN /bin/bash -c "source $INTEL_OPENVINO_DIR/bin/setupvars.sh && \
-    sh $INTEL_OPENVINO_DIR/install_dependencies/install_NCS_udev_rules.sh"
+# RUN /bin/bash -c "source $INTEL_OPENVINO_DIR/bin/setupvars.sh && \
+#     sh $INTEL_OPENVINO_DIR/install_dependencies/install_NCS_udev_rules.sh"
  
 #
 # Install libusb to find Movidius device to run in non-privileged
 #
-# RUN wget https://github.com/libusb/libusb/archive/v1.0.23.tar.gz && \
-#     tar xzvf v1.0.23.tar.gz && \
-#     cd libusb-1.0.23 && \
-#     ./bootstrap.sh && \
-#     ./configure --disable-udev --enable-shared  && \
-#     make && \
-#     make install && \
-#     ldconfig /usr/local/lib
+RUN wget https://github.com/libusb/libusb/archive/v1.0.23.tar.gz && \
+    tar xzvf v1.0.23.tar.gz && \
+    cd libusb-1.0.23 && \
+    ./bootstrap.sh && \
+    ./configure --disable-udev --enable-shared  && \
+    make && \
+    make install && \
+    ldconfig /usr/local/lib
  
 #
 # Switch to home folder
 #
 WORKDIR /home/openvino
- 
+
+
+COPY --from=openvino_bin /openvino/bin/armv7l/Release .
+
 #
 # Add script for verification
 #

@@ -1,6 +1,10 @@
-SAMPLE_DIR=/home/$(whoami)/build
+if [ ${USER} == 'root' ]; then
+  SAMPLE_DIR=/home/openvino/build
+else
+  SAMPLE_DIR=/home/$(USER)/build
+fi
+
 echo ${SAMPLE_DIR}
-cd ~/
 
 if [ ! -d "${SAMPLE_DIR}" ]; then
   mkdir ${SAMPLE_DIR}

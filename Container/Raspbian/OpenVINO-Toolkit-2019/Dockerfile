@@ -24,7 +24,6 @@ ARG OPENVINO_DOWNLOAD=https://download.01.org/opencv/2019/openvinotoolkit/R3/l_o
 #
 USER root
  
- 
 #
 # balenalib image already has QEMU installed.  Enable for non-Balena base image
 #
@@ -45,6 +44,7 @@ RUN apt-get update && \
         libtool \
         lsb-release \
         make \
+        nano \
         python3-pip \
         python3-numpy \
         python3-scipy \
@@ -66,7 +66,7 @@ RUN useradd -ms /bin/bash openvino && \
 # Use /tmp folder
 #
 WORKDIR /tmp
- 
+
 #
 # Install openvino package
 # Run setupvars.sh for python 3.7
