@@ -59,7 +59,8 @@ RUN apt-get update && \
 # Create user `openvino`
 #
 RUN useradd -ms /bin/bash openvino && \
-    chown openvino -R /home/openvino
+    chown openvino -R /home/openvino && \
+    echo "openvino ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
  
 #
 # Use /tmp folder
@@ -108,7 +109,8 @@ ADD ./verification.sh .
 #
 # Clean Up
 #
-RUN rm -f -r /tmp/*
+RUN rm -f -r /tmp/* && \
+    chmod 777 ./verification.sh
  
 # RUN [ "cross-build-end" ]
  
