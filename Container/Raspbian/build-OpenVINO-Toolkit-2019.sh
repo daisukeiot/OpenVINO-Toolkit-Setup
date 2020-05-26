@@ -23,7 +23,7 @@ cp ${SCRIPT_DIR}/../../Setup/Raspbian/verification.sh ${SCRIPT_DIR}
 #
 # Use OpenVINO Toolkit ver 2020.1.023
 #
-OPENVINO_VER=2020.1.023
+OPENVINO_VER=2019.3.334
 # https://hub.docker.com/r/balenalib/rpi-raspbian/tags
 
 OS_VERSION=$1
@@ -49,7 +49,7 @@ echo ''
 # Install OpenVINO Toolkit to Raspbian Base Image
 #
 docker build --squash --rm -f \
-  ${SCRIPT_DIR}/OpenVINO-Toolkit/Dockerfile \
+  ${SCRIPT_DIR}/OpenVINO-Toolkit-2019/Dockerfile \
   -t ${TAG} \
   --build-arg OS_VERSION=${OS_VERSION} \
   --build-arg OPENVINO_VER=${OPENVINO_VER} \

@@ -16,10 +16,8 @@ ARG OS_VERSION=buster
 #
 FROM balenalib/rpi-raspbian:${OS_VERSION}
  
-ARG OPENVINO_VER=2020.1.023
-ARG OPENVINO=l_openvino_toolkit_runtime_raspbian_p_${OPENVINO_VER}
 ENV INTEL_OPENVINO_DIR=/opt/intel/openvino
-ARG OPENVINO_DOWNLOAD=https://download.01.org/opencv/2020/openvinotoolkit/2020.1/${OPENVINO}.tgz
+ARG OPENVINO_DOWNLOAD=https://download.01.org/opencv/2019/openvinotoolkit/R3/l_openvino_toolkit_runtime_raspbian_p_2019.3.334.tgz
  
 #
 # Run as root to install OpenVINO Toolkit Runtime
