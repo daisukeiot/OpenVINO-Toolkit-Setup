@@ -16,7 +16,7 @@ ARG OS_VERSION=buster
 #
 FROM balenalib/rpi-raspbian:${OS_VERSION}
 
-FROM openvino_armhf/lates as openvino_bin
+FROM openvino_armhf:lates as openvino_bin
 
 ARG OPENVINO_VER=2020.1.023
 ARG OPENVINO=l_openvino_toolkit_runtime_raspbian_p_${OPENVINO_VER}
