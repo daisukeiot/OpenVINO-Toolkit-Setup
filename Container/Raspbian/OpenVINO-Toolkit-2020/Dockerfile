@@ -98,9 +98,9 @@ RUN wget https://github.com/libusb/libusb/archive/v1.0.23.tar.gz && \
     cd libusb-1.0.23 && \
     ./bootstrap.sh && \
     ./configure --disable-udev --enable-shared  && \
-    make && \
+    make -j4 && \
     make install && \
-    ldconfig /usr/local/lib
+    ldconfig
  
 COPY --from=OpenVINO_Build /openvino/bin/armv7l/Release .
 

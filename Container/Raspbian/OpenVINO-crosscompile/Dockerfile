@@ -35,7 +35,7 @@ RUN mkdir build && \
     cmake -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_TOOLCHAIN_FILE="../cmake/arm.toolchain.cmake" \
         -DTHREADS_PTHREAD_ARG="-pthread" \
-        -DNO_BOOT=ON \
+        -DENABLE_MYRIAD_NO_BOOT=ON \
         -DENABLE_SSE42=OFF \
         -DENABLE_PYTHON=ON \
         -DPYTHON_EXECUTABLE=/usr/bin/python3.7 \
