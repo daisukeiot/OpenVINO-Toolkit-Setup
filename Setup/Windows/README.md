@@ -35,7 +35,7 @@ cd C:\Openvino-Toolkit-Setup\Setup\Windows
 Powershell -NoProfile -ExecutionPolicy Bypass -File .\Setup-DevEnv.ps1
 ```
 
-### OpenVINO Toolkit installation by Intel
+### Reference : OpenVINO Toolkit installation by Intel
 
 Detailed instruction for OpenVINO Toolkit Setup
 

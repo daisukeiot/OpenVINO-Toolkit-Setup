@@ -11,6 +11,8 @@ Verified with :
 
 Install Ubuntu 18.04 LTS then install Kernel and other tools for UP2
 
+1. Install Ubuntu 18.04 LTS to UP2
+
 1. Clone this repo
 
     This will replace kernel for UP2 then reboot the host machine.
