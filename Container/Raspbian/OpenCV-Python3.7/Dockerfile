@@ -1,3 +1,6 @@
+#
+# Build OpenCV with OpenVINO and Python 3.7
+#
 FROM debian:buster
 
 USER root

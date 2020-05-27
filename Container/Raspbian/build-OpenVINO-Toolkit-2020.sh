@@ -1,15 +1,26 @@
-if [ $# -ne 2 ]
+if [ $# -ne 3 ]
   then
     echo "======================================="
     echo "Please specify Ubuntu Version and reistry"
     echo "  Raspbian Version : stretch, buster, etc"
     echo "  Registry         : Your registry"
-    echo "  Example ./build-OpenVINO-Toolkit.sh buster myregistry"
+    echo "  OpenVINO Ver     : OpenVINO Container Tag"
+    echo "  Example ./build-OpenVINO-Toolkit.sh buster myregistry 2020.1"
     echo "======================================="
     exit
 fi
 
+# if [ ! -f ./qemu-arm-static ]; then
+#     if [ ! -f /usr/bin/qemu-arm-static ]; then
+#         sudo apt-get update
+#         sudo apt-get install -y binfmt-support qemu qemu-user-static 
+#     fi
+#     cp /usr/bin/qemu-arm-static .
+# fi
+
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
+
+cp ${SCRIPT_DIR}/../../Setup/Raspbian/verification.sh ${SCRIPT_DIR}
 #
 # Use OpenVINO Toolkit ver 2020.1.023
 #
@@ -18,7 +29,10 @@ OPENVINO_VER=2020.1.023
 
 OS_VERSION=$1
 MY_REGISTRY=$2
+IMAGE_TAG=$3
 TAG=${MY_REGISTRY}/openvino-container:raspbian-${OS_VERSION}_${OPENVINO_VER}
+
+OpenVINO_TAG=${MY_REGISTRY}/openvino-container:openvino_${IMAGE_TAG}
 
 if docker inspect --type=image $TAG > /dev/null 2>&1; then
     echo "Deleting image"
@@ -34,15 +48,17 @@ echo '/_____/\__,_/_/_/\__,_/   /____/\__/\__,_/_/   \__/  '
 echo ''
 echo ''
 echo "Image Tag : ${TAG}"
+echo "Image Tag : ${OpenVINO_TAG}"
 echo ''
 #
 # Install OpenVINO Toolkit to Raspbian Base Image
 #
 docker build --squash --rm -f \
-  ${SCRIPT_DIR}/OpenVINO-Toolkit/Dockerfile \
+  ${SCRIPT_DIR}/OpenVINO-Toolkit-2020/Dockerfile \
   -t ${TAG} \
   --build-arg OS_VERSION=${OS_VERSION} \
   --build-arg OPENVINO_VER=${OPENVINO_VER} \
+  --build-arg OpenVINO_TAG=${OpenVINO_TAG} \
   ${SCRIPT_DIR}
 
 #
@@ -71,6 +87,6 @@ echo
 echo "Container built with Raspbian version : ${OS_VERSION}"
 echo "Container built with OpenVINO Toolkit : ${OPENVINO_VER}"
 echo ''
-#echo "Pushing Image : ${TAG}"
-#echo ''
-# docker push ${TAG}
+echo "Pushing Image : ${TAG}"
+echo ''
+docker push ${TAG}

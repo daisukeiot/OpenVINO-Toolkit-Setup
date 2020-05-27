@@ -28,7 +28,7 @@ cd ~/OpenVINO-Toolkit-Setup/Setup/Raspbian && \
 > [!NOTE]  
 > The script will change hostname to RP-OpenVINO
 
-### OpenVINO Toolkit installation by Intel
+### Reference : OpenVINO Toolkit installation by Intel
 
 Detailed instruction for OpenVINO Toolkit Setup
 
@@ -49,6 +49,14 @@ More info : [Build and Run Object Detection Sample](https://docs.openvinotoolkit
 
 If you are planning to run containerized OpenVINO application, install Docker or Moby :
 
+### Raspbian Buster
+
+```bash
+curl -sSL get.docker.com | sh && \
+sudo usermod pi -aG docker && \
+sudo reboot now
+```
+
 ### Raspberry Pi3 + Raspbian Stretch
 
 Install Moby runtime with :
@@ -64,14 +72,6 @@ sudo apt-get install -y moby-engine && \
 sudo apt-get install -y moby-cli && \
 sudo usermod -aG docker $USER && \
 rm ./microsoft* && \
-sudo reboot now
-```
-
-### Raspbian Buster
-
-```bash
-curl -sSL get.docker.com | sh && \
-sudo usermod pi -aG docker && \
 sudo reboot now
 ```
 
@@ -94,3 +94,4 @@ rm ./microsoft*
 
 ## Next Step
 
+[Run Object Detection Python App](../../README.md#running-object-detection-python-app)

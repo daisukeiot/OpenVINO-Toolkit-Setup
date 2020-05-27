@@ -10,6 +10,14 @@ fi
 
 # https://github.com/opencv/opencv/wiki/Intel's-Deep-Learning-Inference-Engine-backend
 
+if [ ! -f ./qemu-arm-static ]; then
+    if [ ! -f /usr/bin/qemu-arm-static ]; then
+        sudo apt-get update
+        sudo apt-get install -y binfmt-support qemu qemu-user-static 
+    fi
+    cp /usr/bin/qemu-arm-static .
+fi
+
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
 MY_REGISTRY=$1
 

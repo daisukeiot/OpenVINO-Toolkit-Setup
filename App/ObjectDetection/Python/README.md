@@ -8,7 +8,14 @@
 
 ## Ubuntu Setup
 
+OpenVINO toolkit must be installed on the device.  
+
 Follow [this](../../../Setup/Ubuntu/README.md) instruction to setup Ubuntu System
+
+Follow [this](../../../Setup/Raspbian/README.md) instruction to setup Raspberry Pi
+
+> [!IMPORTANT]  
+> Raspberry Pi requires Movidius to run inference
 
 ## App Setup
 
@@ -115,3 +122,6 @@ Please see [this](../README.md)
 - Added tooltips to UI components
 - Bug fixes
 
+### Version 1.4 (May 27, 2020)
+
+- Add Open Pose model
