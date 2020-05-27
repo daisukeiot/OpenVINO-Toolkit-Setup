@@ -48,6 +48,7 @@ echo '/_____/\__,_/_/_/\__,_/   /____/\__/\__,_/_/   \__/  '
 echo ''
 echo ''
 echo "Image Tag : ${TAG}"
+echo "Image Tag : ${OpenVINO_TAG}"
 echo ''
 #
 # Install OpenVINO Toolkit to Raspbian Base Image
