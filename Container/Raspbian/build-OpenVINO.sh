@@ -11,6 +11,6 @@ fi
 
 IMAGE_TAG=$1
 MY_REGISTRY=$2
-TAG=${MY_REGISTRY}/openvino-container:${IMAGE_TAG}
+TAG=${MY_REGISTRY}/openvino-container:openvino_${IMAGE_TAG}
 
 docker image build -t ${TAG} OpenVINO-crosscompile
