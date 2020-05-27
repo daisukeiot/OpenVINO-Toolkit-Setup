@@ -1,10 +1,11 @@
-if [ $# -ne 2 ]
+if [ $# -ne 3 ]
   then
     echo "======================================="
     echo "Please specify Ubuntu Version and reistry"
     echo "  Raspbian Version : stretch, buster, etc"
     echo "  Registry         : Your registry"
-    echo "  Example ./build-OpenVINO-Toolkit.sh buster myregistry"
+    echo "  OpenVINO Ver     : OpenVINO Container Tag"
+    echo "  Example ./build-OpenVINO-Toolkit.sh buster myregistry 2020.1"
     echo "======================================="
     exit
 fi
@@ -28,7 +29,10 @@ OPENVINO_VER=2020.1.023
 
 OS_VERSION=$1
 MY_REGISTRY=$2
+IMAGE_TAG=$3
 TAG=${MY_REGISTRY}/openvino-container:raspbian-${OS_VERSION}_${OPENVINO_VER}
+
+OpenVINO_TAG=${MY_REGISTRY}/openvino-container:openvino_${IMAGE_TAG}
 
 if docker inspect --type=image $TAG > /dev/null 2>&1; then
     echo "Deleting image"
@@ -53,6 +57,7 @@ docker build --squash --rm -f \
   -t ${TAG} \
   --build-arg OS_VERSION=${OS_VERSION} \
   --build-arg OPENVINO_VER=${OPENVINO_VER} \
+  --build-arg OpenVINO_TAG=${OpenVINO_TAG} \
   ${SCRIPT_DIR}
 
 #

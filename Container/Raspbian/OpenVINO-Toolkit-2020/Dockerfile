@@ -10,13 +10,13 @@
 # Python 3.5
 #
 ARG OS_VERSION=buster
- 
+ARG OpenVINO_TAG 
 #
 # Use Base image built in the previous step
 #
 FROM balenalib/rpi-raspbian:${OS_VERSION}
 
-FROM openvino_armhf:latest as openvino_bin
+FROM ${OpenVINO_TAG} as openvino_bin
 
 ARG OPENVINO_VER=2020.1.023
 ARG OPENVINO=l_openvino_toolkit_runtime_raspbian_p_${OPENVINO_VER}
