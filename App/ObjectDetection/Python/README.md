@@ -122,6 +122,10 @@ Please see [this](../README.md)
 - Added tooltips to UI components
 - Bug fixes
 
+### Version 1.3 (May 7, 2020)
+
+- Added Async Inference
+
 ### Version 1.4 (May 27, 2020)
 
-- Add Open Pose model
+- Added Open Pose model
