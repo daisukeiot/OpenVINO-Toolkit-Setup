@@ -243,6 +243,10 @@ class OpenVINO_Engine(object):
                             elif output_blob['output_type'] == 'RegionYolo':
                                 isSupported = True
 
+                            elif output_blob['output_name'] == 'Mconv7_stage2_L1' or output_blob['output_name'] == 'Mconv7_stage2_L2':
+                                # human-pose-estimation-0001
+                                isSupported = True
+
                         if isSupported == True:
                             model_data = OpenVINO_Model_Data(modelName = model['name'], 
                                                             folderName = model['path'],
