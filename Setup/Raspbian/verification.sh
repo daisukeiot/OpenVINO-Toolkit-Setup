@@ -1,7 +1,7 @@
-if [ ${USER} == 'root' ]; then
-  SAMPLE_DIR=/home/openvino/build
-else
+if [ "$(id -u)" != "0" ]; then
   SAMPLE_DIR=/home/$(USER)/build
+else
+  SAMPLE_DIR=/home/openvino/build
 fi
 
 echo ${SAMPLE_DIR}
@@ -12,7 +12,7 @@ fi
 
 cd ${SAMPLE_DIR}
 
-if [ -d /opt/intel/openvino/deployment_tools/inference_engine/samples/cpp]; then
+if [ -d /opt/intel/openvino/deployment_tools/inference_engine/samples/cpp ]; then
   SAMPLE_SRC=/opt/intel/openvino/deployment_tools/inference_engine/samples/cpp
 else
   SAMPLE_SRC=/opt/intel/openvino/deployment_tools/inference_engine/samples
