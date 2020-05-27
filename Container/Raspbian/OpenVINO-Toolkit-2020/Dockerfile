@@ -11,12 +11,14 @@
 #
 ARG OS_VERSION=buster
 ARG OpenVINO_TAG 
+
+FROM ${OpenVINO_TAG} as OpenVINO_Build
+
 #
 # Use Base image built in the previous step
 #
 FROM balenalib/rpi-raspbian:${OS_VERSION}
 
-FROM ${OpenVINO_TAG} as openvino_bin
 
 ARG OPENVINO_VER=2020.1.023
 ARG OPENVINO=l_openvino_toolkit_runtime_raspbian_p_${OPENVINO_VER}
@@ -27,8 +29,7 @@ ARG OPENVINO_DOWNLOAD=https://download.01.org/opencv/2020/openvinotoolkit/2020.1
 # Run as root to install OpenVINO Toolkit Runtime
 #
 USER root
- 
- 
+
 #
 # balenalib image already has QEMU installed.  Enable for non-Balena base image
 #
@@ -66,7 +67,7 @@ RUN apt-get update && \
 RUN useradd -ms /bin/bash openvino && \
     chown openvino -R /home/openvino && \
     echo "openvino ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
- 
+
 #
 # Use /tmp folder
 #
@@ -101,13 +102,12 @@ RUN wget https://github.com/libusb/libusb/archive/v1.0.23.tar.gz && \
     make install && \
     ldconfig /usr/local/lib
  
+COPY --from=OpenVINO_Build /openvino/bin/armv7l/Release .
+
 #
 # Switch to home folder
 #
 WORKDIR /home/openvino
-
-
-COPY --from=openvino_bin /openvino/bin/armv7l/Release .
 
 #
 # Add script for verification
