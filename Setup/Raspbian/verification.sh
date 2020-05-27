@@ -1,5 +1,5 @@
 if [ "$(id -u)" != "0" ]; then
-  SAMPLE_DIR=/home/$(USER)/build
+  SAMPLE_DIR=/home/$(whoami)/build
 else
   SAMPLE_DIR=/home/openvino/build
 fi
@@ -41,7 +41,7 @@ wget --no-check-certificate https://download.01.org/opencv/2019/open_model_zoo/R
 wget --no-check-certificate https://download.01.org/opencv/2019/open_model_zoo/R4/20191121_190000_models_bin/face-detection-retail-0004/FP16/face-detection-retail-0004.xml
 wget --no-check-certificate https://github.com/intel-iot-devkit/inference-tutorials-generic/raw/openvino_toolkit_2019_r1_0/face_detection_tutorial/data/face.jpg
 
-./armv7l/Release/object_detection_sample_ssd -m ${SAMPLE_DIR}/face-detection-retail-0004.xml -d MYRIAD -i ${SAMPLE_DIR}/face.jpg
+sudo -E ./armv7l/Release/object_detection_sample_ssd -m ${SAMPLE_DIR}/face-detection-retail-0004.xml -d MYRIAD -i ${SAMPLE_DIR}/face.jpg
 
 if [ -d ${INTEL_OPENVINO_DIR}/deployment_tools/inference_engine/samples/python_samples ]; then
   PYTHON_SRC=${INTEL_OPENVINO_DIR}/deployment_tools/inference_engine/samples/python_samples
