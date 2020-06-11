@@ -317,7 +317,7 @@
               <span class="tooltiptext">Enter Video Source Path.  /dev/videoX for Webcam, or Youtube Video URL</span>
             </div>
           </dt>
-          <td>
+          <td style="min-width: 20rem;">
             <button class="icon-button" id="btnVideoWait">
               <i class="fas fa-spinner fa-spin"></i>
             </button>
@@ -462,6 +462,7 @@
         </td>
         <td>
         </td>
+      </tr>
       <tr>
         <td>
           <label class="main-label" style="float: left">Status</label>
@@ -715,6 +716,7 @@
                 if (isError) {
                   StatusLine.innerHTML = json.set_target_device;
                   StatusLine.style.color = 'red'
+                  liveViewVideo.src = './WP-ErrorVideoSource.png';
                 } else {
                   StatusLine.style.color = 'white'
                 }
@@ -848,6 +850,7 @@
           // unknown or error
           textVideoPath.style.color = "red"
           textVideoPath.style.fontWeight = "bold"
+          liveViewVideo.src = './WP-ErrorVideoSource.png';
         }
         else
         {
@@ -895,6 +898,12 @@
           }
 
           videoResItem.disabled = true
+        } else if (video_type == 4) {
+          btnVideoConfig.style.display = "inherit"
+            btnVideoWait.style.display = "none"
+            btnVideoPause.style.display = "none"
+            btnVideoPerf.style.display = "none"
+            btnVideoPerf.disabled = false
         }
       }
 
@@ -904,7 +913,6 @@
         console.log("inference_state_ui")
         if (state == '1')
         {
-          console.log('111')
           cbInference.checked = true;
           labelCbInference.innerHTML = "Inference On";
         }

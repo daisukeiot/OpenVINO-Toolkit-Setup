@@ -156,12 +156,16 @@ class VideoProcessor(object):
     def get_display_frame(self):
 
         if self.displayFrame.size == 0:
-            if self.videoData.videoH == 0 or self.videoData.videoW == 0:
-                wallpaper = np.zeros((720, 1280, 3), np.uint8)
-            else:
-                wallpaper = np.zeros((self.videoData.videoH, self.videoData.videoW, 3), np.uint8)
+            if self.videoData.get_video_data_state() == Video_Data_State.PhotoReady:
+                if self.videoData.videoH == 0 or self.videoData.videoW == 0:
+                    wallpaper = np.zeros((720, 1280, 3), np.uint8)
+                else:
+                    wallpaper = np.zeros((self.videoData.videoH, self.videoData.videoW, 3), np.uint8)
 
-            ret, buffer = cv2.imencode( '.jpg', wallpaper )
+                ret, buffer = cv2.imencode( '.jpg', wallpaper )
+            else:
+                return None, 0
+
         else:
             ret, buffer = cv2.imencode( '.jpg', self.displayFrame )
 
@@ -298,7 +302,7 @@ class VideoProcessor(object):
 
         video_data_state = self.videoData.set_video_path(videoPath, loop)
 
-        if video_data_state == Video_Data_State.Running:
+        if video_data_state == Video_Data_State.Running or video_data_state == Video_Data_State.PhotoReady:
             self.fps.reset(self.videoData.get_video_fps())
             self.set_video_start()
         else:
@@ -628,7 +632,8 @@ class VideoProcessor(object):
     # Saves frame data to a file
     #
     def save_image(self):
-        cv2.imwrite("./frame.png", self.frame_org)
+        cv2.imwrite("./frame.png", self.displayFrame)
+        #cv2.imwrite("./frame.png", self.frame_org)
 
     #
     # Process Video Frame
@@ -654,7 +659,7 @@ class VideoProcessor(object):
                 if self._state == VideoProcessorState.Pause:
                     if self._debug:
                         logging.info('>> {0}:{1}() : Pause Video Processor'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
-                    time.sleep(0.5)
+                    time.sleep(1)
                     continue
 
                 if self.videoData is None:
@@ -692,4 +697,3 @@ class VideoProcessor(object):
 
         if self.verbose:
             logging.info('<< {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
-

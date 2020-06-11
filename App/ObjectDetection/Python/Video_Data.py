@@ -18,6 +18,7 @@ class Video_Device_Type(IntEnum):
     Camera = 1
     Video = 2
     Youtube = 3
+    Photo = 4
 
 class Video_Data_State(IntEnum):
     Unknown = 0
@@ -25,6 +26,7 @@ class Video_Data_State(IntEnum):
     Init = 2
     Downloading = 3
     Running = 4
+    PhotoReady = 5
 
 class Video_Stream_State(IntEnum):
     Unknown = 0
@@ -57,6 +59,7 @@ class Video_Data():
         self.playback_mode = Video_Playback_Mode.Sync
         self.frame_queue = Queue(maxsize=3)
         self.cv2_cap = None
+        self.photo_frame = np.array([])
         self._set_video_stream_state(Video_Stream_State.Unknown)
         self.set_video_path(videoPath)
 
@@ -107,31 +110,38 @@ class Video_Data():
 
         if len(videoPath) > 0:
             logging.info('>> Video : {}'.format(videoPath))
-            self.cv2_cap  = cv2.VideoCapture(videoPath)
-            if self.cv2_cap.isOpened():
-                self.videoW = int(self._get_cv2_prop(cv2.CAP_PROP_FRAME_WIDTH))
-                self.videoH = int(self._get_cv2_prop(cv2.CAP_PROP_FRAME_HEIGHT))
 
-                self._set_video_type()
-
-                self.fps = int(self._get_cv2_prop(cv2.CAP_PROP_FPS))
-
-                if self._get_video_type() == Video_Device_Type.Youtube:
-                    self.frame_count = int(self._get_cv2_prop(cv2.CAP_PROP_FRAME_COUNT))
-                else:
-                    self._set_cv2_prop(cv2.CAP_PROP_FPS, self.fps)
-                    self.frame_count = 0
-
-                logging.info('Video Device : {}'.format(self.videoPath))
-                logging.info('  Resolution : {}x{}'.format(self.videoW, self.videoH))
-                logging.info('         FPS : {}'.format(self.fps))
-                logging.info(' Frame count : {}'.format(self.frame_count))
-
-                self._set_video_data_state(Video_Data_State.Running)
+            if self._get_video_type() == Video_Device_Type.Photo: 
+                logging.info('>> Photo : {}'.format(self.videoPath))
+                self.photo_frame = cv2.imread(self.videoPath)
+                self.cv2_cap = None
+                self._set_video_data_state(Video_Data_State.PhotoReady)
             else:
-                self._set_video_data_state(Video_Data_State.Error)
-                logging.error('>> Video Open Failed')
-                self.videoProcessor.send_message(self.get_video_path())
+                self.cv2_cap  = cv2.VideoCapture(videoPath)
+                if self.cv2_cap.isOpened():
+                    self.videoW = int(self._get_cv2_prop(cv2.CAP_PROP_FRAME_WIDTH))
+                    self.videoH = int(self._get_cv2_prop(cv2.CAP_PROP_FRAME_HEIGHT))
+
+                    self._set_video_type()
+
+                    self.fps = int(self._get_cv2_prop(cv2.CAP_PROP_FPS))
+
+                    if self._get_video_type() == Video_Device_Type.Youtube:
+                        self.frame_count = int(self._get_cv2_prop(cv2.CAP_PROP_FRAME_COUNT))
+                    else:
+                        self._set_cv2_prop(cv2.CAP_PROP_FPS, self.fps)
+                        self.frame_count = 0
+
+                    logging.info('Video Device : {}'.format(self.videoPath))
+                    logging.info('  Resolution : {}x{}'.format(self.videoW, self.videoH))
+                    logging.info('         FPS : {}'.format(self.fps))
+                    logging.info(' Frame count : {}'.format(self.frame_count))
+
+                    self._set_video_data_state(Video_Data_State.Running)
+                else:
+                    self._set_video_data_state(Video_Data_State.Error)
+                    logging.error('>> Video Open Failed')
+                    self.videoProcessor.send_message(self.get_video_path())
         else:
             self._set_video_data_state(Video_Data_State.Error)
             logging.info('>> Video Empty!!!!')
@@ -153,12 +163,33 @@ class Video_Data():
 #
     def __IsCamera(self):
         try:
-            if self.videoPath.startWith('/dev'):
+            if self.videoPath.startswith('/dev'):
                 return True
             else:
                 return False
         except ValueError:
             return False
+
+#
+# Check if the path is for Webcam or Camera
+#
+    def __IsPhoto(self):
+        extension_list = ['.jpg', '.png', '.jpeg']
+        try:
+            p_photo = Path(self.videoPath)
+            suffix = p_photo.suffix
+
+            if suffix.lower() in extension_list:
+
+                # make sure the file exists
+                if p_photo.exists():
+                    return True
+                else:
+                    logging.error('!! Photo file does not exist {}'.format(str(p_photo)))
+        except ValueError:
+            return False
+
+        return False
 
 #
 # Set CV2 property
@@ -208,8 +239,11 @@ class Video_Data():
 
         if self.__IsYoutube():
             self.videoType = Video_Device_Type.Youtube
-        elif self.__IsCamera:
+        elif self.__IsCamera():
             self.videoType = Video_Device_Type.Camera
+        elif self.__IsPhoto():
+            self.videoPath = str(Path(self.videoPath).resolve())
+            self.videoType = Video_Device_Type.Photo
         else:
             self.videoType = Video_Device_Type.Unknown
 
@@ -432,8 +466,22 @@ class Video_Data():
         if self.verbose:
             logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
 
-        w = self.videoW
-        h = self.videoH
+        if self._get_video_type() == Video_Device_Type.Photo:
+
+            if self.photo_frame.size != 0:
+                h, w = self.photo_frame.shape[:-1]
+                print('{}x{}'.format(w, h))
+                if h > 1080:
+                    w = int(w * (1080 / h))
+                    h = 1080
+                    print('{}x{}'.format(w, h))
+                    self.photo_frame = cv2.resize(self.photo_frame, (w, h))
+            else:
+                w = 640
+                h = 480
+        else:
+            w = self.videoW
+            h = self.videoH
 
         if w == 640 and h == 480:
             res = "vga"
@@ -504,18 +552,22 @@ class Video_Data():
                     time.sleep(0.3)
                     continue
 
+                elif self.cv2_cap == None:
+                    break
+
                 elif self.get_video_stream_state() == Video_Stream_State.Error:
                     time.sleep(1.0)
                     continue
 
-                ret, frame = self.cv2_cap.read()
-
                 video_type = self._get_video_type()
+
+                ret, frame = self.cv2_cap.read()
 
                 if ret:
                     # can be a blocking call
                     if video_type == Video_Device_Type.Video or video_type == Video_Device_Type.Youtube:
                         self.frame_queue.put(item = frame)
+
                     else:
                         try:
                             self.frame_queue.put(item = frame, timeout=0.03)
@@ -553,7 +605,13 @@ class Video_Data():
 # returns Bool, frame (or empty array if the queue is empty)
 #
     def read_frame_queue(self):
-        return True, self.frame_queue.get()
+        if self._get_video_type() == Video_Device_Type.Photo:
+            if self.photo_frame.size > 0:
+                return True, self.photo_frame.copy()
+            else:
+                return False, np.array([])
+        else:
+            return True, self.frame_queue.get()
 
         # if self.frame_queue.empty():
         #     return False, np.array([])
