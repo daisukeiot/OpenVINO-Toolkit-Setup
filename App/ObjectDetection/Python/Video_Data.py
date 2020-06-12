@@ -11,7 +11,7 @@ from pathlib import Path
 from concurrent.futures import CancelledError
 import json
 import youtube_dl
-
+import urllib
 
 class Video_Device_Type(IntEnum):
     Unknown = 0
@@ -113,7 +113,13 @@ class Video_Data():
 
             if self._get_video_type() == Video_Device_Type.Photo: 
                 logging.info('>> Photo : {}'.format(self.videoPath))
-                self.photo_frame = cv2.imread(self.videoPath)
+                if self.videoPath.lower().startswith('http'):
+                    resp = urllib.request.urlopen(self.videoPath)
+                    image = np.asarray(bytearray(resp.read()), dtype="uint8")
+                    self.photo_frame = cv2.imdecode(image, cv2.IMREAD_COLOR)
+                else:
+                    self.photo_frame = cv2.imread(self.videoPath)
+
                 self.cv2_cap = None
                 self._set_video_data_state(Video_Data_State.PhotoReady)
             else:
@@ -182,7 +188,7 @@ class Video_Data():
             if suffix.lower() in extension_list:
 
                 # make sure the file exists
-                if p_photo.exists():
+                if p_photo.exists() or self.videoPath.lower().startswith('http'):
                     return True
                 else:
                     logging.error('!! Photo file does not exist {}'.format(str(p_photo)))
@@ -242,7 +248,7 @@ class Video_Data():
         elif self.__IsCamera():
             self.videoType = Video_Device_Type.Camera
         elif self.__IsPhoto():
-            self.videoPath = str(Path(self.videoPath).resolve())
+            self.videoPath = self.videoPath #str(Path(self.videoPath).resolve())
             self.videoType = Video_Device_Type.Photo
         else:
             self.videoType = Video_Device_Type.Unknown
