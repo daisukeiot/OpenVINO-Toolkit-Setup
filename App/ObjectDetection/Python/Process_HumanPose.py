@@ -5,7 +5,6 @@ from enum import Enum
 import math
 import numpy as np
 import cv2
-import matplotlib.pyplot as plt
 from scipy.ndimage.filters import maximum_filter
 from collections import defaultdict
 import itertools
@@ -443,8 +442,6 @@ def find_key_points(confidence_map, frame):
             bodyPartList.append(maxLoc + (bpl_ConfMap_j[maxLoc[1], maxLoc[0]],))
 
     return bodyPartList
-
-from scipy.ndimage.filters import maximum_filter
 
 def find_key_points_nms(confidence_map, frame):
     #

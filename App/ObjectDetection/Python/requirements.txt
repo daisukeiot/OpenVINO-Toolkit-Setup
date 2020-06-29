@@ -4,3 +4,4 @@ pyyaml
 requests
 youtube-dl
 py-cpuinfo
+scipy
