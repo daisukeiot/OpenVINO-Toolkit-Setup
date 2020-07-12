@@ -8,10 +8,10 @@ FROM ${TAG_BASE}
 #
 # Variables that can be specified with --build-arg option
 #
-ARG OPENVINO_VER=2020.2.120
+ARG OPENVINO_VER=2020.3.194
 ARG OPENVINO=l_openvino_toolkit_p_${OPENVINO_VER}
 ARG INTEL_OPENVINO_DIR=/opt/intel/openvino
-ARG OPENVINO_DOWNLOAD=http://registrationcenter-download.intel.com/akdlm/irc_nas/16612/l_openvino_toolkit_p_2020.2.120.tgz
+ARG OPENVINO_DOWNLOAD=http://registrationcenter-download.intel.com/akdlm/irc_nas/16670/l_openvino_toolkit_p_2020.3.194.tgz
 
 #
 # Run as root to install OpenVINO Toolkit

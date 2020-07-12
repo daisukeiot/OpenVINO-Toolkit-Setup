@@ -4,7 +4,7 @@ Verified with :
 
 - UP2 Kernel
 - Ubuntu 18.04 LTS
-- OpenVINO 2020.2.120
+- OpenVINO 2020.3.194
 - Python 3.7.5
 
 ## Setting up Ubuntu 18.04 LTS
