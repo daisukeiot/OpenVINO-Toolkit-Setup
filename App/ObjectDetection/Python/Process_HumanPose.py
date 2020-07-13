@@ -3,9 +3,7 @@ import logging
 import numpy as np
 from OpenVINO_Config import BLOB_DATA
 import cv2
-from scipy.ndimage.filters import maximum_filter
-from collections import defaultdict
-import itertools
+from Process_Core import INFERENCE_PROCESS_CORE, INFERENCE_DATA
 
 from enum import Enum
 import math
@@ -461,11 +459,22 @@ class HUMANPOSE_DETECTION(INFERENCE_PROCESS_CORE):
                 found = False
                 person_index = -1
 
-def find_key_points_nms(confidence_map, frame):
-    #
-    # find Body Part Locations using Non Maximum Suppression
-    # Returns list of Body Part Locations with Confidence Score
-    # This is slower
+                for k in range(len(bpl_k)):
+                    if bpl_k[k][bpl_index_0] == bpl_0[j]:
+                        person_index = k
+                        found = True
+                        break
+
+                if found:
+                    bpl_k[person_index][bpl_index_1] = bpl_1[j]
+                else:
+                    # create a new list for person K
+                    pair_k = -1 * np.ones(19)
+                    pair_k[bpl_index_0] = bpl_0[j]
+                    pair_k[bpl_index_1] = bpl_1[j]
+                    bpl_k = np.vstack([bpl_k, pair_k])    
+    
+        return bpl_k
 
     def annotate_frame(self, detection_List, frame):
 
@@ -491,4 +500,4 @@ def find_key_points_nms(confidence_map, frame):
                 frame = cv2.circle(frame, (loc_0[0], loc_0[1]), 3, CocoColors[CocoPairs[i][0]], -1)
                 frame = cv2.circle(frame, (loc_1[0], loc_1[1]), 3, CocoColors[CocoPairs[i][1]], -1)
 
-    return bodyPartList
+        return frame
