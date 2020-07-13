@@ -116,7 +116,7 @@ class OpenVINO_Core:
 
             self.ver_major = int(version_data[device].major)
             self.ver_minor = int(version_data[device].minor)
-            self.ver_build = int(version_data[device].build_number)
+            self.ver_build = version_data[device].build_number
 
             # self.plugin = IEPlugin(device=device)
 
@@ -129,7 +129,7 @@ class OpenVINO_Core:
             
             self.ie = IECore()
 
-            if self.ver_major >= 2 and self.ver_minor >= 1 and self.ver_build >= 42025:
+            if self.ver_major >= 2 and self.ver_minor >= 1:
                 self.ieNet = self.ie.read_network(model = xml_file, weights = bin_file)
             else:
                 self.ieNet = IENetwork(model = xml_file, weights = bin_file)
