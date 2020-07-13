@@ -3,7 +3,7 @@ if [ $# -ne 1 ]
     echo "======================================="
     echo "Please specify Ubuntu Version and reistry"
     echo "  Base Tag       : Tag of image to run OpenVINO Demo"
-    echo "  Example ./build-Demo.sh myregistry daisukeiot/openvino-container:ubuntu18.04_ov2020.3.194_cp3.7"
+    echo "  Example ./build-Demo.sh myregistry daisukeiot/openvino-container:ubuntu18.04_ov2020.2.120_cp3.7"
     echo "======================================="
     exit
 fi

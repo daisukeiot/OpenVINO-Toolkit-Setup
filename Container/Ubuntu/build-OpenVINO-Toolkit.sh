@@ -17,9 +17,9 @@ MY_REGISTRY=$1
 BASE_TAG=$2
 
 #
-# OpenVINO Toolkit ver 2020.3.194
+# OpenVINO Toolkit ver 2020.2.120
 #
-OPENVINO_VER=2020.3.194
+OPENVINO_VER=2020.2.120
 
 TAG_BASE=${MY_REGISTRY}/openvino-container:${BASE_TAG}
 TAG=${MY_REGISTRY}/openvino-container:${BASE_TAG}_ov${OPENVINO_VER}

@@ -10,7 +10,7 @@ Build container with base image with :
 
 Example :
 
-./build-app-container.sh openvino-container:ubuntu18.04_openvino2020.3.194_cp3.7 myregistry
+./build-app-container.sh openvino-container:ubuntu18.04_openvino2020.2.120_cp3.7 myregistry
 
 ## Run the container
 
@@ -24,13 +24,13 @@ You need to run the container with several flags for GPU and Myriad Access
 Example :
 
 ```bash
-docker run -it --device-cgroup-rule='c 189:* rmw' -v /dev/bus/usb:/dev/bus/usb --device /dev/dri -v ${HOME}/data:/home/openvino/data -p 8080:8080 daisukeiot/openvino-container:ubuntu18.04_openvino2020.3.194_cp3.7_app
+docker run -it --device-cgroup-rule='c 189:* rmw' -v /dev/bus/usb:/dev/bus/usb --device /dev/dri -v ${HOME}/data:/home/openvino/data -p 8080:8080 daisukeiot/openvino-container:ubuntu18.04_openvino2020.2.120_cp3.7_app
 ```
 
 For UP2 (ATOM) :
 
 ```bash
-docker run -it --device-cgroup-rule='c 189:* rmw' -v /dev/bus/usb:/dev/bus/usb --device /dev/dri -v ${HOME}/data:/home/openvino/data -p 8080:8080 daisukeiot/openvino-container:ubuntu18.04_openvino2020.3.194_r1.15_cp3.7_app
+docker run -it --device-cgroup-rule='c 189:* rmw' -v /dev/bus/usb:/dev/bus/usb --device /dev/dri -v ${HOME}/data:/home/openvino/data -p 8080:8080 daisukeiot/openvino-container:ubuntu18.04_openvino2020.2.120_r1.15_cp3.7_app
 ```
 
 ## Custom Tensorflow Build

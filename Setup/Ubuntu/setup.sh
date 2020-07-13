@@ -20,11 +20,11 @@ fi
 #
 # Install OpenVINO
 #
-OPENVINO_VER="2020.3.194" 
+OPENVINO_VER="2020.2.120" 
 OPENVINO_PKG=l_openvino_toolkit_p_${OPENVINO_VER} 
 OPENVINO_INSTALL=/opt/intel/openvino_${OPENVINO_VER} 
 INTEL_OPENVINO_DIR=/opt/intel/openvino 
-OPENVINO_DOWNLOAD=http://registrationcenter-download.intel.com/akdlm/irc_nas/16612/l_openvino_toolkit_p_2020.3.194.tgz 
+OPENVINO_DOWNLOAD=http://registrationcenter-download.intel.com/akdlm/irc_nas/16612/l_openvino_toolkit_p_2020.2.120.tgz 
 #
 # Temporary make Python3.7 to be default so OpenVINO scripts will install libraries for Python3.7
 #
