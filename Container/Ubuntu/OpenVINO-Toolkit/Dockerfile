@@ -22,6 +22,7 @@ WORKDIR /tmp
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         sudo \
+        wget \
         python3-yaml \
         python3-requests && \
     rm -rf /var/lib/apt/lists/* && \
