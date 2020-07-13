@@ -36,8 +36,8 @@ class VideoProcessor(object):
                  fontScale = 1.0,
                  verbose = True):
 
-        self.verbose = verbose
-        self._debug = False
+        self.verbose = True
+        self._debug = True
 
         if self.verbose:
             logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
@@ -282,6 +282,9 @@ class VideoProcessor(object):
         self.fps.reset(self.videoData.get_video_fps())
         self.videoData.set_video_playback(isPause = False)
         self.set_video_processor_state(VideoProcessorState.Running)
+
+        while self.displayFrame.size == 0:
+            time.sleep(1/30)
         self.send_message('{\"frame_ready\":1}')
 
 #
@@ -289,6 +292,7 @@ class VideoProcessor(object):
 #
     def set_video_path(self, msg, loop = None):
         if self.verbose:
+            logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
             logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
 
         jsonData = json.loads(msg)
@@ -670,7 +674,8 @@ class VideoProcessor(object):
                 grabbed, frame = self.videoData.read_frame_queue()
 
                 if self._debug:
-                    logging.info("Grabbed {} frame size {}".format(grabbed, frame.size))
+                    pass
+                    #logging.info("Grabbed {} frame size {}".format(grabbed, frame.size))
 
                 # if (grabbed == False or frame.size == 0):
                 if (grabbed == False):

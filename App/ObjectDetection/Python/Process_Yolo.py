@@ -1,13 +1,17 @@
 import sys
 import logging
-import traceback
 import numpy as np
+from OpenVINO_Config import BLOB_DATA
 import cv2
+from Process_Core import INFERENCE_PROCESS_CORE, INFERENCE_DATA
 from math import exp as exp
-from label_map import coco_80_category_map, coco_90_category_map, voc_category_map
-from OpenVINO_Config import Output_Format, Input_Format, color_list, CV2_Draw_Info
 
-class YoloParams:
+class YOLO_DETECTION_INFERENCE_DATA(INFERENCE_DATA):
+
+    def __init__(self, frame, confidence):
+        super().__init__(frame, confidence)
+
+class YOLO_PARAMS:
     def __init__(self, param, side):
         self.num = 3 if 'num' not in param else int(param['num'])
         self.coords = 4 if 'coords' not in param else int(param['coords'])
@@ -34,121 +38,101 @@ class YoloParams:
         params_to_print = {'classes': self.classes, 'num': self.num, 'coords': self.coords, 'anchors': self.anchors}
         [logging.info("         {:8}: {}".format(param_name, param)) for param_name, param in params_to_print.items()]
 
-#
-# For Faster RCNN models
-#
-class Object_Detection_Yolo_Processor():
+class YOLO_DETECTION(INFERENCE_PROCESS_CORE):
 
-    def __init__(self,
-                 model_name,
-                 input_format,
-                 input_key,
-                 input_shape,
-                 input_layout,
-                 output_format):
-
-        logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
-
-        self.model_name = model_name
-        self.input_key = input_key
-        self.input_shape = input_shape
-        self.input_layout = input_layout
-        self.input_format = input_format
-
-        self.output_format = output_format
-
-        self.prev_frame = None
-        self.prev_frame_data = None
-
+    def __init__(self, model_name, xml_file, bin_file):
+        super().__init__(model_name, xml_file, bin_file)
         self.reshape_data = dict()
+        
+    def load_model(self, target='CPU'):
+        self._load_model(target)
 
-        self.colors = color_list()
-        self.draw_info = CV2_Draw_Info()
-        self.num_class = 0
-        self.classLabels = None
+        if self.ieNet == None or self.execNet == None:
+            logging.error('!! {0}:{1}() : Error loading model'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
+            return False
 
-        logging.info('==================================================================')
-        logging.info('Input Format  : {}'.format(self.input_format.name))
-        logging.info('         Key  : {}'.format(self.input_key))
-        logging.info('       Shape  : {}'.format(self.input_shape))
-        logging.info('      Layout  : {}'.format(self.input_layout))
-        logging.info('Output Format : {}'.format(self.output_format.name))
+        """
+        Check expected # of inputs/outputs
+        """
+        output_key = next(iter(self.ieNet.outputs))
+        self.load_label(output_key, 'classes')
 
-    def set_class_label(self, output_params):
+        for key, blob in self.ieNet.outputs.items():
+            self.reshape_data[key] = self.ieNet.layers[self.ieNet.layers[key].parents[0]].shape
 
-        if 'classes' in output_params:
-            self.num_class = max(int(output_params['classes']),self.num_class)
+        return True
 
-        if self.num_class == 91:
-            logging.info("Loading Coco 90 Label")
-            self.classLabels = coco_90_category_map
-        elif self.num_class == 80 or self.num_class == 81:
-            logging.info("Loading Coco 80 Label")
-            self.classLabels = coco_80_category_map
-        elif 'coco' in self.model_name:
-            logging.info("Loading Coco 90 Label")
-            self.classLabels = coco_90_category_map
-        elif self.num_class == 21 or self.num_class == 20:
-            logging.info("Loading VOC Label")
-            self.classLabels = voc_category_map
+    def preprocess_internal(self, frame, confidence):
+        """
+        Convert image format for Yolo inference
+        Typically :
 
-    def process_for_inference(self, frame):
+        Format : NCHW
+        Shape  : 1 x 3 x Height x Width
+        """
+        inference_data = YOLO_DETECTION_INFERENCE_DATA(frame, confidence)
 
         frame_data = np.array([])
-
-        if self.input_layout == 'NCHW':
-            n, c, h, w = self.input_shape
+        input_blob = next(iter(self.input_blobs))
+        
+        if input_blob.layout == 'NCHW':
+            n, c, h, w = input_blob.shape
             # resize based on shape
             frame_data = cv2.resize(frame, (w, h))
             # convert from H,W,C to C,H,W
             frame_data = frame_data.transpose((2,0,1))
             # convert to C,H,W to N,C,H,W
-            frame_data = frame_data.reshape(self.input_shape)
+            inference_data.input_frame = frame_data.reshape(input_blob.shape)
+            # set input key name
+            inference_data.input_key = input_blob.name
 
-        return frame_data, self.input_key
 
-    def process_result(self, layers, results = None, frame_data = None, frame = None, confidence = 1):
+        else:
+            logging.error('!! {0}:{1}() : Unexpected input Layout {2}.  NCHW expected.'.format(self.__class__.__name__, sys._getframe().f_code.co_name, input_blob.layout))
 
-        objects = list()
+        return inference_data
+
+    def run_inference_internal(self, inference_data):
+        """
+        Execute inference
+        """
+        return self.execNet.infer(inputs={inference_data.input_key : inference_data.input_frame})
+
+    def process_result(self, results, inference_data):
+        """
+        A wrapper function to call internal result processing function
+        """
+        detection_List = self.process_yolo_result(results, inference_data)
+        
+        return detection_List
+
+    def process_yolo_result(self, results, inference_data):
+        """
+        """
+        detection_List = list()
 
         for layer_name, out_blob in results.items():
             shape = self.reshape_data[layer_name]
             out_blob = out_blob.reshape(shape)
-            layer_params = YoloParams(layers[layer_name].params, out_blob.shape[2])
+            layer_params = YOLO_PARAMS(self.ieNet.layers[layer_name].params, out_blob.shape[2])
             #layer_params.log_params()
-            objects += self.parse_yolo_region(out_blob, frame_data.shape[2:],
-                                            frame.shape[:-1], layer_params,
-                                            confidence)
+            detection_List += self.parse_yolo_region(out_blob, inference_data.input_frame.shape[2:],
+                                            inference_data.frame_org.shape[:-1], layer_params,
+                                            inference_data.confidence)
 
-        objects = sorted(objects, key=lambda obj : obj['confidence'], reverse=True)
+        detection_List = sorted(detection_List, key=lambda obj : obj['confidence'], reverse=True)
 
-        for i in range(len(objects)):
-            if objects[i]['confidence'] == 0:
+        for i in range(len(detection_List)):
+            if detection_List[i]['confidence'] == 0:
                 continue
-            for j in range(i + 1, len(objects)):
-                if self.intersection_over_union(objects[i], objects[j]) > 0.4:
-                    objects[j]['confidence'] = 0
+            for j in range(i + 1, len(detection_List)):
+                if self.intersection_over_union(detection_List[i], detection_List[j]) > 0.4:
+                    detection_List[j]['confidence'] = 0
 
-        # Drawing objects with respect to the --prob_threshold CLI parameter
-        objects = [obj for obj in objects if obj['confidence'] >= confidence]
+        # Drawing detection_List with respect to the --prob_threshold CLI parameter
+        detection_List = [obj for obj in detection_List if obj['confidence'] >= inference_data.confidence]
 
-        origin_im_size = frame.shape[:-1]
-        for obj in objects:
-
-            if obj['xmax'] > origin_im_size[1] or obj['ymax'] > origin_im_size[0] or obj['xmin'] < 0 or obj['ymin'] < 0:
-                continue
-
-            # add 3 px padding
-            left   = obj['xmin']
-            top    = obj['ymin']
-            right  = obj['xmax']
-            bottom = obj['ymax']
-
-            rect = [left, top, right, bottom]
-
-            self.annotate(frame, rect, obj['confidence'], obj['class_id'] + 1)
-
-        return frame
+        return detection_List
 
     def parse_yolo_region(self, blob, resized_image_shape, original_im_shape, params, threshold):
         # ------------------------------------------ Validating output parameters ------------------------------------------
@@ -226,47 +210,43 @@ class Object_Detection_Yolo_Processor():
             return 0
         return area_of_overlap / area_of_union
 
-    def annotate(self, frame, rect, confidence, label_id):
+    def annotate_frame(self, detection_List, frame):
+        """
+        A wrapper function to call annotation function.
+        Calls generic annotation function.
+        """
+        frame_size = frame.shape[:-1]
 
         try:
-            if self.num_class <= 2:
-                # only Yes/No (or detected / not detected)
-                color = self.colors[0]
-                annotation_text = '{0:.1f}%'.format(float(confidence*100))
-            elif self.num_class < 20:
-                
-                if len(self.colors) >= self.num_class:
-                    # different color for each object (up to 4)
-                    color = self.colors[label_id]
-                else:
-                    color = self.colors[0]
-                annotation_text = '{0:.1f}%'.format(float(confidence*100))
+            for item in detection_List:
 
-            elif len(self.classLabels) >= self.num_class:
-                    color = self.colors[0]
-                    annotation_text = '{0} {1:.1f}%'.format(self.classLabels[label_id], float(confidence*100))
-            else:
-                color = self.colors[0]
-                annotation_text = '{0:.1f}%'.format(float(confidence*100))
+                if item['xmax'] > frame_size[1] or item['ymax'] > frame_size[0] or item['xmin'] < 0 or item['ymin'] < 0:
+                    continue
+
+                # add 3 px padding
+                X1 = item['xmin']
+                Y1 = item['ymin']
+                X2 = item['xmax']
+                Y2 = item['ymax']
+
+                confidence = item['confidence']
+                class_id = item['class_id'] + 1
+                rect = [X1, Y1, X2, Y2]
+                npdata = np.array(rect)
+
+                if self.num_class < 20:
+                    # Labels are only available for VOC (20), COCO (80, 90)
+                    # Just add confidence level
+                    color = self.colors[class_id]
+                    annotation_text = '{0:.1f}%'.format(float(confidence*100))
+
+                else:
+                    color = self.colors[class_id]
+                    annotation_text = '{0} {1:.1f}%'.format(self.classLabel[class_id], float(confidence*100))   
+
+                frame = self.draw_rect(frame, npdata, annotation_text, color)
 
         except IndexError as error:
-            logging.error('Index Error {} : {}'.format(label_id, error))
+            logging.error('Index Error {} : {}'.format(class_id, error))
 
-        except Exception as ex:
-            logging.error('Exception finding label {} : {}'.format(label_id, ex))
-
-        x1 = max(rect[0], 0)
-        y1 = max(rect[1], 0)
-        x2 = min(rect[2], frame.shape[1])
-        y2 = min(rect[3], frame.shape[0])
-
-        cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
-
-        cv2.putText(img = frame, 
-                    text = annotation_text, 
-                    org = (x1 + 5, y1 + int(self.draw_info.textSize[1] * 1.5)),
-                    fontFace = self.draw_info.fontName,
-                    fontScale = self.draw_info.fontScale,
-                    color     = color,
-                    thickness = self.draw_info.thickness,
-                    lineType = self.draw_info.lineType)
+        return frame

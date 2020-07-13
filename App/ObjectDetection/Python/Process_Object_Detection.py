@@ -1,144 +1,122 @@
 import sys
 import logging
-import traceback
 import numpy as np
+from OpenVINO_Config import BLOB_DATA
 import cv2
+from Process_Core import INFERENCE_PROCESS_CORE, INFERENCE_DATA
 
-from label_map import coco_80_category_map, coco_90_category_map, voc_category_map
-from OpenVINO_Config import Output_Format, Input_Format, color_list, CV2_Draw_Info
+class OBJECT_DETECTION_INFERENCE_DATA(INFERENCE_DATA):
 
-#
-# For 1 input and 1 output models
-#
-class Object_Detection_Processor():
+    def __init__(self, frame, confidence):
+        super().__init__(frame, confidence)
 
-    def __init__(self, model_name, input_format, input_key, input_shape, input_layout, output_format, output_key, output_params):
-        logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
+class OBJECT_DETECTION(INFERENCE_PROCESS_CORE):
 
-        self.model_name = model_name
-        self.input_key = input_key
-        self.input_shape = input_shape
-        self.input_layout = input_layout
-        self.input_format = input_format
+    def __init__(self, model_name, xml_file, bin_file):
+        super().__init__(model_name, xml_file, bin_file)
+        
+    def load_model(self, target='CPU'):
+        self._load_model(target)
 
-        self.output_key = output_key
-        self.output_format = output_format
+        if self.ieNet == None or self.execNet == None:
+            logging.error('!! {0}:{1}() : Error loading model'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
+            return False
 
-        self.prev_frame = None
-
-        self.colors = color_list()
-        self.draw_info = CV2_Draw_Info()
-
-        if 'num_classes' in output_params:
-            self.num_class = int(output_params['num_classes'])
+        if len(self.output_blobs) == 1:
+            output_key = next(iter(self.ieNet.outputs))
+            self.load_label(output_key, 'num_classes')
         else:
-            self.num_class = 0
+            logging.error('!! {0}:{1}() : Object Detection Model with {2} outputs. 1 output expected.'.format(self.__class__.__name__, sys._getframe().f_code.co_name, ))
+            return False            
 
-        if self.num_class == 91:
-            logging.info("Loading Coco 90 Label")
-            self.classLabels = coco_90_category_map
-        elif self.num_class == 80 or self.num_class == 81:
-            logging.info("Loading Coco 80 Label")
-            self.classLabels = coco_80_category_map
-        elif 'coco' in self.model_name:
-            logging.info("Loading Coco 90 Label")
-            self.classLabels = coco_90_category_map
-        elif self.num_class == 21 or self.num_class == 20:
-            logging.info("Loading VOC Label")
-            self.classLabels = voc_category_map
+        return True
 
-        logging.info('==================================================================')
-        logging.info('Input Format  : {}'.format(self.input_format.name))
-        logging.info('         Key  : {}'.format(self.input_key))
-        logging.info('       Shape  : {}'.format(self.input_shape))
-        logging.info('      Layout  : {}'.format(self.input_layout))
-        logging.info('Output Format : {}'.format(self.output_format.name))
-        logging.info('         Key  : {}'.format(self.output_key))
-        logging.info('  num_class   : {}'.format(self.num_class))
+    def preprocess_internal(self, frame, confidence):
+        """
+        Convert image format for object detection inference
+        Typically :
 
-
-    def process_for_inference(self, frame):
+        Format : NCHW
+        Shape  : 1 x 3 x Height x Width
+        """
+        inference_data = OBJECT_DETECTION_INFERENCE_DATA(frame, confidence)
 
         frame_data = np.array([])
-
-        if self.input_layout == 'NCHW':
-            n, c, h, w = self.input_shape
+        input_blob = next(iter(self.input_blobs))
+        
+        if input_blob.layout == 'NCHW':
+            n, c, h, w = input_blob.shape
             # resize based on shape
             frame_data = cv2.resize(frame, (w, h))
             # convert from H,W,C to C,H,W
             frame_data = frame_data.transpose((2,0,1))
             # convert to C,H,W to N,C,H,W
-            frame_data = frame_data.reshape(self.input_shape)
+            inference_data.input_frame = frame_data.reshape(input_blob.shape)
+            # set input key name
+            inference_data.input_key = input_blob.name
+        else:
+            logging.error('!! {0}:{1}() : Unexpected input Layout {2}.  NCHW expected.'.format(self.__class__.__name__, sys._getframe().f_code.co_name, input_blob.layout))
 
-        return frame_data, self.input_key
+        return inference_data
 
-    def process_result(self, results = None, frame = None, confidence = 1):
+    def run_inference_internal(self, inference_data):
+        """
+        Execute inference
+        """
+        return self.execNet.infer(inputs={inference_data.input_key : inference_data.input_frame})
 
-        rect = {}
+    def process_result(self, results, inference_data):
+        """
+        A wrapper function to call internal result processing function
+        """
+        detection_List = self.process_humanpose_result(results, inference_data)
+        
+        return detection_List
 
-        imageH, imageW = frame.shape[:-1]
+    def process_humanpose_result(self, results, inference_data):
+        """
+        Process results for object detection results in 1x1xNx7 format
 
-        for result in results[self.output_key][0][0]:
+        The net outputs "detection_output" blob with shape: [1x1xNx7], where N is the number of detected object. 
+        For each detection, the description has the format: [image_id, label, conf, x_min, y_min, x_max, y_max], 
+        where:
 
-            if result[0] == -1:
-                break
-            
-            if result[2] < confidence:
+            image_id - ID of image in batch
+            label - ID of predicted class
+            conf - Confidence for the predicted class
+            (x_min, y_min) - Coordinates of the top left bounding box corner
+            (x_max, y_max) - Coordinates of the bottom right bounding box corner.
+
+        Returns a list of detected objects
+        """
+        detection_List = list()
+        
+        h, w = inference_data.frame_org.shape[:2]
+        
+        objects = results[self.output_blobs[0].name]
+        
+        for i in np.arange(0, objects.shape[2]):
+        
+            # check confidence level
+            if objects[0, 0, i, 2] < inference_data.confidence:
                 continue
-
-            # add 3 px padding
-            left   = np.int(imageW * result[3]) + 3
-            top    = np.int(imageH * result[4]) + 3
-            right  = np.int(imageW * result[5]) + 3
-            bottom = np.int(imageH * result[6]) + 3
-
-            rect = [left, top, right, bottom]
-
-            self.annotate_result_object_detection(frame, rect, result[2], int(result[1]))
-
-        return frame
-
-    def annotate_result_object_detection(self, frame, rect, confidence, label_id):
-
-        try:
-            if self.num_class <= 2:
-                # only Yes/No (or detected / not detected)
-                color = self.colors[0]
-                annotation_text = '{0:.1f}%'.format(float(confidence*100))
-            elif self.num_class < 20:
                 
-                if len(self.colors) >= self.num_class:
-                    # different color for each object (up to 4)
-                    color = self.colors[label_id]
-                else:
-                    color = self.colors[0]
-                annotation_text = '{0:.1f}%'.format(float(confidence*100))
-            else:
-                if len(self.classLabels) >= self.num_class:
-                    color = self.colors[0]
-                    annotation_text = '{0} {1:.1f}%'.format(self.classLabels[label_id], float(confidence*100))
-                else:
-                    color = self.colors[0]
-                    annotation_text = '{0:.1f}%'.format(float(confidence*100))
+            # use N as index for label and color
+            object_index = i
 
-        except IndexError as error:
-            logging.error('Index Error {} : {}'.format(label_id, error))
+            # compute rectangle for bounding box
+            rect = objects[0, 0, i, 3:7] * np.array([w, h, w, h])
+            (X1, Y1, X2, Y2) = rect.astype('int')
 
-        except Exception as ex:
-            logging.error('Exception finding label {} : {}'.format(label_id, ex))
+            # index, classid, confidence, rect
+            detection_Item = (object_index, objects[0, 0, i, 1], objects[0, 0, i, 2], X1, Y1, X2, Y2)
+            detection_List.append(detection_Item)
 
-        x1 = max(rect[0], 0)
-        y1 = max(rect[1], 0)
-        x2 = min(rect[2], frame.shape[1])
-        y2 = min(rect[3], frame.shape[0])
-
-        cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
-
-        cv2.putText(img = frame, 
-                    text = annotation_text, 
-                    org = (x1 + 5, y1 + int(self.draw_info.textSize[1] * 1.5)),
-                    fontFace = self.draw_info.fontName,
-                    fontScale = self.draw_info.fontScale,
-                    color     = color,
-                    thickness = self.draw_info.thickness,
-                    lineType = self.draw_info.lineType)
+        return detection_List
+    
+    def annotate_frame(self, detection_List, frame):
+        """
+        A wrapper function to call annotation function.
+        Calls generic annotation function.
+        """
+        return self.annotate_frame_common(detection_List, frame)

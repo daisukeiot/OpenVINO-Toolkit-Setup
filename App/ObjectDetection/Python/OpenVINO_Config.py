@@ -14,6 +14,7 @@ class CV2_Draw_Info():
        
 def color_list():
     colors = []
+    colors.append((0, 255, 0))
     colors.append((232, 35, 244))
     colors.append((0, 241, 255))
     colors.append((255, 236, 0))
@@ -38,6 +39,13 @@ class Input_Format(IntEnum):
     Yolo = 5
     HumanPose = 6
     Other = 7
+
+class BLOB_DATA():
+
+    def __init__(self, blob):
+        self.name = blob.name
+        self.shape = blob.shape
+        self.layout = blob.layout
 
 class Engine_State(IntFlag):
     Unknown = auto()

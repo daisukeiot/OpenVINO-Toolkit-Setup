@@ -1,173 +1,144 @@
 import sys
 import logging
-import traceback
 import numpy as np
+from OpenVINO_Config import BLOB_DATA
 import cv2
+from Process_Core import INFERENCE_PROCESS_CORE, INFERENCE_DATA
 
-from label_map import coco_80_category_map, coco_90_category_map, voc_category_map
-from OpenVINO_Config import Output_Format, Input_Format, color_list, CV2_Draw_Info
+class FASTER_RCNN_DETECTION_DETECTION_INFERENCE_DATA(INFERENCE_DATA):
 
+    def __init__(self, frame, confidence):
+        super().__init__(frame, confidence)
+        self.image_info_key = None
+        self.image_info = None
+        self.image_tensor_key = None
+        self.image_tensor = None
 
+class FASTER_RCNN_DETECTION(INFERENCE_PROCESS_CORE):
 
-#
-# For Faster RCNN models
-#
-class RCNN_Inference_Data():
-    def __init__(self,
-                 image_info,
-                 info_key,
-                 image_data,
-                 data_key):
+    def __init__(self, model_name, xml_file, bin_file):
+        super().__init__(model_name, xml_file, bin_file)
 
-        self.info_key   = info_key
-        self.image_info = image_info
-        self.data_key   = data_key
-        self.image_data = image_data
+        self.input_info = None
+        self.input_tensor = None
 
-class Object_Detection_RCNN_Processor():
-    def __init__(self, 
-                 model_name,
-                 input_format,
-                 info_key,
-                 data_key,
-                 data_shape,
-                 data_layout,
-                 output_format,
-                 output_key,
-                 output_params):
+    def load_model(self, target='CPU'):
 
-        logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
+        self._load_model(target)
 
-        self.model_name = model_name
-        self.info_key = info_key
-        self.data_key = data_key
-        self.data_shape = data_shape
-        self.data_layout = data_layout
-        self.input_format = input_format
+        if self.ieNet == None or self.execNet == None:
+            logging.error('!! {0}:{1}() : Error loading model'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
+            return False
 
-        self.output_key = output_key
-        self.output_format = output_format
+        if len(self.output_blobs) == 1:
+            output_key   = next(iter(self.ieNet.outputs))
+            self.load_label(output_key, 'num_classes')
 
-        self.prev_frame = None
-
-        self.colors = color_list()
-        self.draw_info = CV2_Draw_Info()
-
-        if 'num_classes' in output_params:
-            self.num_class = int(output_params['num_classes'])
-        else:
-            self.num_class = 0
-
-        if self.num_class == 91:
-            logging.info("Loading Coco 90 Label")
-            self.classLabels = coco_90_category_map
-        elif self.num_class == 80 or self.num_class == 81:
-            logging.info("Loading Coco 80 Label")
-            self.classLabels = coco_80_category_map
-        elif 'coco' in self.model_name:
-            logging.info("Loading Coco 90 Label")
-            self.classLabels = coco_90_category_map
-        elif self.num_class == 21 or self.num_class == 20:
-            logging.info("Loading VOC Label")
-            self.classLabels = voc_category_map
-
-        logging.info('==================================================================')
-        logging.info('Input Format  : {}'.format(self.input_format.name))
-        logging.info('    Info Key  : {}'.format(self.info_key))
-        logging.info('    Data Key  : {}'.format(self.data_key))
-        logging.info('       Shape  : {}'.format(self.data_shape))
-        logging.info('      Layout  : {}'.format(self.data_layout))
-        logging.info('Output Format : {}'.format(self.output_format.name))
-        logging.info('         Key  : {}'.format(self.output_key))
-        logging.info('  num_class   : {}'.format(self.num_class))
-
-    def process_for_inference(self, frame):
-
-        inference_Data = None
-
-        if self.data_layout == 'NCHW':
-            n, c, h, w = self.data_shape
-            # resize based on shape
-            frame_data = cv2.resize(frame, (w, h))
-            # convert from H,W,C to C,H,W
-            frame_data = frame_data.transpose((2,0,1))
-            # convert to C,H,W to N,C,H,W
-            frame_data = frame_data.reshape(self.data_shape)
-            # create image_info
-            image_info  = np.asarray([w, h, 1], dtype=np.float32)
-
-            inference_Data = RCNN_Inference_Data(image_info = image_info, info_key = self.info_key, image_data = frame_data, data_key = self.data_key)
-
-        return inference_Data
-
-
-    def process_result(self, results = None, frame = None, confidence = 1):
-        rect = {}
-
-        imageH, imageW = frame.shape[:-1]
-
-        for result in results[self.output_key][0][0]:
-
-            if result[0] == -1:
-                break
-            
-            if result[2] < confidence:
-                continue
-
-            # add 3 px padding
-            left   = np.int(imageW * result[3]) + 3
-            top    = np.int(imageH * result[4]) + 3
-            right  = np.int(imageW * result[5]) + 3
-            bottom = np.int(imageH * result[6]) + 3
-
-            rect = [left, top, right, bottom]
-
-            self.annotate(frame, rect, result[2], int(result[1]))
-
-        return frame
-
-    def annotate(self, frame, rect, confidence, label_id):
-
-        try:
-            if self.num_class <= 2:
-                # only Yes/No (or detected / not detected)
-                color = self.colors[0]
-                annotation_text = '{0:.1f}%'.format(float(confidence*100))
-            elif self.num_class < 20:
-                
-                if len(self.colors) >= self.num_class:
-                    # different color for each object (up to 4)
-                    color = self.colors[label_id]
-                else:
-                    color = self.colors[0]
-                annotation_text = '{0:.1f}%'.format(float(confidence*100))
+            if len(self.input_blobs) == 2:
+                self.input_info = [x for x in self.input_blobs if x.name == 'image_info'][0]
+                self.input_tensor = [x for x in self.input_blobs if x.name == 'image_tensor'][0]
             else:
-                if len(self.classLabels) >= self.num_class:
-                    color = self.colors[0]
-                    annotation_text = '{0} {1:.1f}%'.format(self.classLabels[label_id], float(confidence*100))
-                else:
-                    color = self.colors[0]
-                    annotation_text = '{0:.1f}%'.format(float(confidence*100))
+                logging.error('!! {0}:{1}() : Faster RCNN Model with {2} intputs.  2 inputs expected.'.format(self.__class__.__name__, sys._getframe().f_code.co_name, len(self.input_blobs)))
+        else:
+            logging.error('!! {0}:{1}() : Faster RCNN Model with {2} outputs.  1 outputs expected.'.format(self.__class__.__name__, sys._getframe().f_code.co_name, len(self.output_blobs)))
+            return False     
+        return True
 
-        except IndexError as error:
-            logging.error('Index Error {} : {}'.format(label_id, error))
+    def preprocess_internal(self, frame, confidence):
+        """
+        Convert image format for Faster RCNN inference
 
-        except Exception as ex:
-            logging.error('Exception finding label {} : {}'.format(label_id, ex))
+        Input 1 : image_tensor
+        Format  : NCHW
+        Shape   : 1 x 3 x Height x Width
 
-        x1 = max(rect[0], 0)
-        y1 = max(rect[1], 0)
-        x2 = min(rect[2], frame.shape[1])
-        y2 = min(rect[3], frame.shape[0])
+        Input 2 : image_info
+        Format  : NxC
+        Shape   : 1 x 3
+                  N = Batch size
+                  C = Vector of 3 values in format [H,W,S] Height, Width, Image Scale (Usually 1)
+        """
+        inference_data = FASTER_RCNN_DETECTION_DETECTION_INFERENCE_DATA(frame, confidence)
 
-        cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
+        if self.input_tensor.layout == 'NCHW':
+            n, c, h, w = self.input_tensor.shape
+            # resize based on shape
+            image_tensor = cv2.resize(frame, (w, h))
+            # convert from H,W,C to C,H,W
+            image_tensor = image_tensor.transpose((2,0,1))
+            # convert to C,H,W to N,C,H,W
+            inference_data.image_tensor = image_tensor.reshape(self.input_tensor.shape)
+            inference_data.image_tensor_key = self.input_tensor.name
 
-        cv2.putText(img = frame, 
-                    text = annotation_text, 
-                    org = (x1 + 5, y1 + int(self.draw_info.textSize[1] * 1.5)),
-                    fontFace = self.draw_info.fontName,
-                    fontScale = self.draw_info.fontScale,
-                    color     = color,
-                    thickness = self.draw_info.thickness,
-                    lineType = self.draw_info.lineType)
+            if self.input_info.layout == 'NC':
+                inference_data.image_info = np.asarray([w, h, 1], dtype=np.float32)
+                inference_data.image_info_key = self.input_info.name
+            else:
+                logging.error('!! {0}:{1}() : Unexpected Image Info layout {2}.  NC expected.'.format(self.__class__.__name__, sys._getframe().f_code.co_name, self.input_info.layout))
+        else:
+            logging.error('!! {0}:{1}() : Unexpected Image Layout {2}.  NCHW expected.'.format(self.__class__.__name__, sys._getframe().f_code.co_name, self.input_tensor.layout))
 
+        return inference_data
+
+    def run_inference_internal(self, inference_data):
+        """
+        Execute inference
+        """
+        results = self.execNet.infer(inputs={inference_data.image_info_key : inference_data.image_info, inference_data.image_tensor_key : inference_data.image_tensor})
+
+        return results
+
+    def process_result(self, results, inference_data):
+        """
+        A wrapper function to call internal result processing function
+        """
+        detection_List = self.process_faster_rcnn_result(results, inference_data)
+        
+        return detection_List
+
+    def process_faster_rcnn_result(self, results, inference_data):
+        """
+        Process results for object detection results in 1x1xNx7 format
+
+        The net outputs "detection_output" blob with shape: [1x1xNx7], where N is the number of detected object. 
+        For each detection, the description has the format: [image_id, label, conf, x_min, y_min, x_max, y_max], 
+        where:
+
+            image_id - ID of image in batch
+            label - ID of predicted class
+            conf - Confidence for the predicted class
+            (x_min, y_min) - Coordinates of the top left bounding box corner
+            (x_max, y_max) - Coordinates of the bottom right bounding box corner.
+        """
+        
+        detection_List = []
+        
+        h, w = inference_data.frame_org.shape[:2]
+        
+        objects = results[self.output_blobs[0].name]
+        
+        for i in np.arange(0, objects.shape[2]):
+        
+            # check confidence level
+            if objects[0, 0, i, 2] < inference_data.confidence:
+                continue
+                
+            # use N as index for label and color
+            object_index = i
+
+            # compute rectangle for bounding box
+            rect = objects[0, 0, i, 3:7] * np.array([w, h, w, h])
+            (X1, Y1, X2, Y2) = rect.astype('int')
+
+            # index, classid, confidence, rect
+            detection_Item = (object_index, objects[0, 0, i, 1], objects[0, 0, i, 2], X1, Y1, X2, Y2)
+            detection_List.append(detection_Item)
+
+        return detection_List
+
+    def annotate_frame(self, detection_List, frame):
+        """
+        A wrapper function to call annotation function.
+        Calls generic annotation function.
+        """
+        return self.annotate_frame_common(detection_List, frame)
