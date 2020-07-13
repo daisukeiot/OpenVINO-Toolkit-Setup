@@ -4,7 +4,7 @@ Verified with :
 
 - Ubuntu 18.04
 - Python 3.7.5
-- OpenVINO 2020.3.194
+- OpenVINO 2020.2.120
 
 ## Clone repo
 

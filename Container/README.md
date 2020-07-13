@@ -33,8 +33,8 @@ You may use pre-built images from my registry
 
 | Tag                                            | OS           | OpenVINO Toolkit | Size (MB) |
 |------------------------------------------------|--------------|------------------|-----------|
-| daisukeiot/openvino-container:16.04_2020.3.194 | Ubuntu 16.04 | 2020.3.194       |           |
-| daisukeiot/openvino-container:18.04_2020.3.194 | Ubuntu 18.04 | 2020.3.194       |           |
+| daisukeiot/openvino-container:16.04_2020.2.120 | Ubuntu 16.04 | 2020.2.120       |           |
+| daisukeiot/openvino-container:18.04_2020.2.120 | Ubuntu 18.04 | 2020.2.120       |           |
 
 ## Build your own images
 
@@ -181,7 +181,7 @@ cd ~/OpenVINO-Toolkit-Setup/Container/Ubuntu
 
 ```bash
 cd ~/OpenVINO-Toolkit-Setup/Container
-export OPENVINO_VER=2020.3.194
+export OPENVINO_VER=2020.2.120
 export MY_REGISTRY=<Your Registry>
 export OS_VERSION=<Ubuntu Version>
 export TAG=${MY_REGISTRY}/openvino-container:ubuntu${OS_VERSION}_openvino${OPENVINO_VER}
@@ -197,12 +197,12 @@ docker push ${TAG}
 Example :
 
 - Push to `myregistry` docker hub container registry
-- Use OpenVINO Toolkit ver 2020.3.194
+- Use OpenVINO Toolkit ver 2020.2.120
 - Use Ubuntu 18.04
 
 ```bash
 cd ~/OpenVINO-Toolkit-Setup/Container
-export OPENVINO_VER=2020.3.194
+export OPENVINO_VER=2020.2.120
 export MY_REGISTRY=myregistry
 export OS_VERSION=18.04
 export TAG=${MY_REGISTRY}/openvino-container:ubuntu${OS_VERSION}_openvino${OPENVINO_VER}
@@ -219,8 +219,8 @@ This will create a container image with Ubuntu + OpenVINO Toolkit
 
 | Tag                            | OS    | OpenVINO Toolkit | Size    | Notes |
 |--------------------------------|-------|------------------|---------|-------|
-| ubuntu16.04_openvino2020.3.194 | 16.04 | 2020.3.194       | 1.57 GB |       |
-| ubuntu18.04_openvino2020.3.194 | 18.04 | 2020.3.194       | 1.68 GB |       |
+| ubuntu16.04_openvino2020.2.120 | 16.04 | 2020.2.120       | 1.57 GB |       |
+| ubuntu18.04_openvino2020.2.120 | 18.04 | 2020.2.120       | 1.68 GB |       |
 
 ### Reference
 
@@ -245,7 +245,7 @@ Example :
 
 ```bash
 cd ~/OpenVINO-Toolkit-Setup/Container
-./build-Verify-Container.sh myregistry/openvino-container:ubuntu18.04_openvino2020.3.194
+./build-Verify-Container.sh myregistry/openvino-container:ubuntu18.04_openvino2020.2.120
 ```
 
 ### Manually build a container image with demo apps
@@ -276,12 +276,12 @@ docker build --squash --rm -f ./Common/Classification-Demo_Benchmark/Dockerfile 
 
 Example :
 
-- Use `ubuntu18.04_openvino2020.3.194`
-- Use `ubuntu18.04_openvino2020.3.194_verify` for the new image
+- Use `ubuntu18.04_openvino2020.2.120`
+- Use `ubuntu18.04_openvino2020.2.120_verify` for the new image
 
 ```bash
 cd ~/OpenVINO-Toolkit-Setup/Container
-export TAG=myregistry/openvino-container:ubuntu18.04_openvino2020.3.194
+export TAG=myregistry/openvino-container:ubuntu18.04_openvino2020.2.120
 export TAG_VERIFY=${TAG}_verify
 
 docker build --squash --rm -f ./Common/Classification-Demo_Benchmark/Dockerfile \
@@ -322,7 +322,7 @@ Run `imageclassification.sh` agains CPU with :
 
 ```bash
 cd ~/OpenVINO-Toolkit-Setup/Container
-export TAG=myregistry/openvino-container:ubuntu18.04_openvino2020.3.194
+export TAG=myregistry/openvino-container:ubuntu18.04_openvino2020.2.120
 export TAG_VERIFY=${TAG}_verify
 docker run --rm -it -e "TARGET=CPU" ${TAG_VERIFY} /home/openvino/imageclassification.sh
 ```
@@ -331,7 +331,7 @@ Run 'benchmark.sh` against GPU with :
 
 ```bash
 cd ~/OpenVINO-Toolkit-Setup/Container
-export TAG=myregistry/openvino-container:ubuntu18.04_openvino2020.3.194
+export TAG=myregistry/openvino-container:ubuntu18.04_openvino2020.2.120
 export TAG_VERIFY=${TAG}_verify
 docker run --rm -it -e "TARGET=GPU" ${TAG_VERIFY} /home/openvino/benchmark.sh
 ```
@@ -340,7 +340,7 @@ Run `benchmark.sh` against Myriad with :
 
 ```bash
 cd ~/OpenVINO-Toolkit-Setup/Container
-export TAG=myregistry/openvino-container:ubuntu18.04_openvino2020.3.194
+export TAG=myregistry/openvino-container:ubuntu18.04_openvino2020.2.120
 export TAG_VERIFY=${TAG}_verify
 docker run --rm -it ${TAG_VERIFY} /home/openvino/benchmark.sh MYRIAD
 ```

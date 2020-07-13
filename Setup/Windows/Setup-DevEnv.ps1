@@ -160,7 +160,7 @@ else
 # Install OpenVINO
 #
 #######################################################################################
-$URL_OPENVINO = "http://registrationcenter-download.intel.com/akdlm/irc_nas/16667/w_openvino_toolkit_p_2020.3.194.exe"
+$URL_OPENVINO = "http://registrationcenter-download.intel.com/akdlm/irc_nas/16613/w_openvino_toolkit_p_2020.2.117.exe"
 $PATH_OPENVINO = "C:\OV.Work\openvino.exe"
 
 Write-Host "Downloading OpenVINO ..."
