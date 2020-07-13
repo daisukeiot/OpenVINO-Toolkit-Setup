@@ -39,11 +39,13 @@ sudo -H python3.7 -m pip install 'numpy==1.16' --force-reinstall
 #
 mkdir /tmp/openvino 
 cd /tmp/openvino 
-curl -LOJ "${OPENVINO_DOWNLOAD}" 
+# curl -LOJ "${OPENVINO_DOWNLOAD}" 
+wget "${OPENVINO_DOWNLOAD}" 
 tar -xzf ./*.tgz 
 cd ${OPENVINO_PKG} 
 ./install.sh --list_components 
 sed -i 's/decline/accept/g' silent.cfg 
+sed -i 's/COMPONENTS=DEFAULTS/COMPONENTS=intel-openvino-ie-sdk-ubuntu-bionic__x86_64;intel-openvino-ie-rt-cpu-ubuntu-bionic__x86_64;intel-openvino-ie-rt-gpu-ubuntu-bionic__x86_64;intel-openvino-ie-rt-vpu-ubuntu-bionic__x86_64;intel-openvino-model-optimizer__x86_64;intel-openvino-opencv-lib-ubuntu-bionic__x86_64/g' silent.cfg 
 sudo ./install.sh -s silent.cfg 
 cd ~ 
 rm -rf /tmp/openvino 
