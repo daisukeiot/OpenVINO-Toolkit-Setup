@@ -4,7 +4,7 @@
 
 - Ubuntu 18.04
 - Python 3.7
-- OpenVINO 2020.2.120
+- OpenVINO 2020.3.194
 
 ## Ubuntu Setup
 

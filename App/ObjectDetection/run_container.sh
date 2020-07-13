@@ -3,7 +3,7 @@ if [ $# -ne 2 ]
     echo "======================================="
     echo "Please specify the container image"
     echo "  Example "
-    echo "./run_container.sh daisukeiot/openvino-container:ubuntu18.04_openvino2020.2.120_cp3.7_app"
+    echo "./run_container.sh daisukeiot/openvino-container:ubuntu18.04_openvino2020.3.194_cp3.7_app"
     echo "======================================="
     exit
 fi
