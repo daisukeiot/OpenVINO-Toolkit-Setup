@@ -37,6 +37,7 @@ RUN curl -LOJ "${OPENVINO_DOWNLOAD}" && \
     cd l_openvino_toolkit* && \
     ./install.sh --list_components && \
     sed -i 's/decline/accept/g' silent.cfg && \
+    sed -i 's/COMPONENTS=DEFAULTS/COMPONENTS=intel-openvino-ie-sdk-ubuntu-bionic__x86_64;intel-openvino-ie-rt-cpu-ubuntu-bionic__x86_64;intel-openvino-ie-rt-gpu-ubuntu-bionic__x86_64;intel-openvino-ie-rt-vpu-ubuntu-bionic__x86_64;intel-openvino-model-optimizer__x86_64;intel-openvino-opencv-lib-ubuntu-bionic__x86_64/g' silent.cfg  && \
     ./install.sh -s silent.cfg
 
 WORKDIR ${INTEL_OPENVINO_DIR}/install_dependencies
