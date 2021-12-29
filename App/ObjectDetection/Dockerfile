@@ -1,11 +1,11 @@
 ARG BASE_TAG
-
+ARG PYTHON_VERSION=3.8
 FROM ${BASE_TAG}
 
 #
 # Local variables
 #
-ARG PYTHON_BIN=python${PYTHON_VERSION}
+ARG PYTHON_BIN=python3
 
 #
 # Run as root
@@ -25,14 +25,14 @@ WORKDIR ${INTEL_OPENVINO_DIR}
 # Install Git
 #
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends git && \
+    apt-get install -y --no-install-recommends git nano && \
     rm -rf /var/lib/apt/lists/*
 
 #
 # Install OpenVINO Dependencies
 #
-RUN cd install_dependencies && \
-    ./install_openvino_dependencies.sh
+# RUN cd install_dependencies && \
+#     ./install_openvino_dependencies.sh
 
 #
 # Install dependencies for Model Downloader and Model Optimizer
@@ -63,4 +63,5 @@ EXPOSE 8080
 USER openvino
 WORKDIR /home/openvino
 
-ENTRYPOINT ["/bin/bash", "-c", "/home/openvino/startapp.sh"]
+CMD ["/bin/bash", "-c", "/home/openvino/startapp.sh"]
+# ENTRYPOINT ["/bin/bash", "-c", "/home/openvino/startapp.sh"]

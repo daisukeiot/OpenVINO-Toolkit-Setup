@@ -3,7 +3,7 @@ import sys
 import logging
 import traceback
 from OpenVINO_Config import Engine_State, Model_Flag, Output_Format, Input_Format
-from openvino.inference_engine import IECore, IENetwork, IEPlugin
+from openvino.inference_engine import IECore
 import numpy as np
 import cv2
 from pathlib import Path

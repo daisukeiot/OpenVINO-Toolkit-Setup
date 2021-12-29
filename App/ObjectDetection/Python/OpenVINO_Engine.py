@@ -2,7 +2,7 @@ import sys
 import logging
 import os
 import json
-from openvino.inference_engine import IECore, IENetwork
+from openvino.inference_engine import IECore
 from OpenVINO_Config import Engine_State, Model_Flag, OpenVINO_Model_Data
 from OpenVINO_Core import OpenVINO_Core
 import subprocess
