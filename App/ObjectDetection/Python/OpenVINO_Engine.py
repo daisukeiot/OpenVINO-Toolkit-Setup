@@ -538,11 +538,10 @@ class OpenVINO_Engine(object):
                 logging.warning('>> {0}:{1}() : {2}'.format(self.__class__.__name__, sys._getframe().f_code.co_name, model_data.errorMsg))
                 return model_data
 
-#            p_downloader = Path.home() / '.local' / 'bin' / 'omz_downloader'
-
-            p_downloader = Path(Path('./').resolve() / 'open_model_zoo/tools/model_tools/downloader.py').resolve()
+            p_downloader = (Path(self.openvino_path / 'deployment_tools' / 'tools' / 'model_downloader' / 'downloader.py').resolve())
 
             if not p_downloader.exists():
+                logging.warning(p_downloader)
                 model_data.errorMsg = 'Model Downloader not installed'
                 logging.warning('>> {0}:{1}() : {2}'.format(self.__class__.__name__, sys._getframe().f_code.co_name, model_data.errorMsg))
                 return model_data

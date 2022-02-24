@@ -21,7 +21,7 @@ sudo -H python3 -m pip install -r ./requirements.txt
 
 if [ -d ${INTEL_OPENVINO_DIR}/deployment_tools/open_model_zoo ]; then
   cd ${INTEL_OPENVINO_DIR}/deployment_tools/open_model_zoo/tools/downloader
-  sudo -H python3 -m pip install -r requirements-pytorch.in
+  python3 -m pip install -r requirements.in
   cd ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/install_prerequisites
   ./install_prerequisites.sh
 
