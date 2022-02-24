@@ -4,9 +4,9 @@ import traceback
 import numpy as np
 import cv2
 
-from label_map import coco_80_category_map, coco_90_category_map, voc_category_map
-from OpenVINO_Config import Output_Format, Input_Format, color_list, CV2_Draw_Info
-
+from label_map import coco_80_class_map, coco_90_class_map, voc_class_map
+from OpenVINO_Config import color_palette, CV2_Draw_Info
+from OpenVINO_Util import OpenVINOUtil, ModelTypes
 
 
 #
@@ -27,59 +27,42 @@ class RCNN_Inference_Data():
 class Object_Detection_RCNN_Processor():
     def __init__(self, 
                  model_name,
-                 input_format,
+                 model_type,
                  info_key,
                  data_key,
                  data_shape,
                  data_layout,
-                 output_format,
                  output_key,
                  output_params):
 
         logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
 
         self.model_name = model_name
+        self.model_type = model_type
         self.info_key = info_key
         self.data_key = data_key
         self.data_shape = data_shape
         self.data_layout = data_layout
-        self.input_format = input_format
 
         self.output_key = output_key
-        self.output_format = output_format
 
         self.prev_frame = None
 
-        self.colors = color_list()
         self.draw_info = CV2_Draw_Info()
 
-        if 'num_classes' in output_params:
-            self.num_class = int(output_params['num_classes'])
-        else:
-            self.num_class = 0
+        self.num_class, self.class_Label, self.has_background = OpenVINOUtil.get_class_label(modelType = model_type, output_param = output_params)
 
-        if self.num_class == 91:
-            logging.info("Loading Coco 90 Label")
-            self.classLabels = coco_90_category_map
-        elif self.num_class == 80 or self.num_class == 81:
-            logging.info("Loading Coco 80 Label")
-            self.classLabels = coco_80_category_map
-        elif 'coco' in self.model_name:
-            logging.info("Loading Coco 90 Label")
-            self.classLabels = coco_90_category_map
-        elif self.num_class == 21 or self.num_class == 20:
-            logging.info("Loading VOC Label")
-            self.classLabels = voc_category_map
+        self.colors = color_palette(self.num_class)
 
         logging.info('==================================================================')
-        logging.info('Input Format  : {}'.format(self.input_format.name))
-        logging.info('    Info Key  : {}'.format(self.info_key))
-        logging.info('    Data Key  : {}'.format(self.data_key))
-        logging.info('       Shape  : {}'.format(self.data_shape))
-        logging.info('      Layout  : {}'.format(self.data_layout))
-        logging.info('Output Format : {}'.format(self.output_format.name))
-        logging.info('         Key  : {}'.format(self.output_key))
-        logging.info('  num_class   : {}'.format(self.num_class))
+        logging.info('Model Type   : {}'.format(self.model_type.value))
+        logging.info('   Info Key  : {}'.format(self.info_key))
+        logging.info('   Data Key  : {}'.format(self.data_key))
+        logging.info('      Shape  : {}'.format(self.data_shape))
+        logging.info('     Layout  : {}'.format(self.data_layout))
+        logging.info(' Output Key  : {}'.format(self.output_key))
+        logging.info(' Class Label : {} ({})'.format(self.class_Label, self.num_class))
+        logging.info('  Background : {}'.format(self.has_background))
 
     def process_for_inference(self, frame):
 
@@ -122,31 +105,29 @@ class Object_Detection_RCNN_Processor():
 
             rect = [left, top, right, bottom]
 
-            self.annotate(frame, rect, result[2], int(result[1]))
+            print("Class {}".format(int(result[1])))
+            if self.has_background:
+                label_id = int(result[1]) - 1
+            else:
+                label_id = int(result[1])
+
+            self.annotate(frame, rect, result[2], label_id)
 
         return frame
 
     def annotate(self, frame, rect, confidence, label_id):
 
+        color = (255, 0, 0)
+        annotation_text = "Unknown"
+
         try:
-            if self.num_class <= 2:
-                # only Yes/No (or detected / not detected)
-                color = self.colors[0]
-                annotation_text = '{0:.1f}%'.format(float(confidence*100))
-            elif self.num_class < 20:
-                
-                if len(self.colors) >= self.num_class:
-                    # different color for each object (up to 4)
-                    color = self.colors[label_id]
-                else:
-                    color = self.colors[0]
-                annotation_text = '{0:.1f}%'.format(float(confidence*100))
+            if self.class_Label is not None:
+                color = self.colors[label_id]
+                annotation_text = '{0} {1:.1f}%'.format(self.class_Label.value[label_id], float(confidence*100))
             else:
-                if len(self.classLabels) >= self.num_class:
-                    color = self.colors[0]
-                    annotation_text = '{0} {1:.1f}%'.format(self.classLabels[label_id], float(confidence*100))
-                else:
-                    color = self.colors[0]
+                if self.num_class <= 2:
+                    # only Yes/No (or detected / not detected)
+                    color = self.colors[label_id]
                     annotation_text = '{0:.1f}%'.format(float(confidence*100))
 
         except IndexError as error:

@@ -1,5 +1,7 @@
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
 
+# we need model list (open_model_zoo/models)
+
 if [ ! -d "open_model_zoo" ]; then
   if [ -f /etc/lsb-release ]; then
     # Ubuntu
@@ -15,11 +17,18 @@ if [ ! -d "open_model_zoo" ]; then
   fi
 fi
 
-sudo -H python3.7 -m pip install -r ./requirements.txt
+sudo -H python3 -m pip install -r ./requirements.txt
 
-if [ -d ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer ]; then
-  cd ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer
-  sudo -H python3.7 -m pip install -r requirements.txt
+if [ -d ${INTEL_OPENVINO_DIR}/deployment_tools/open_model_zoo ]; then
+  cd ${INTEL_OPENVINO_DIR}/deployment_tools/open_model_zoo/tools/downloader
+  sudo -H python3 -m pip install -r requirements-pytorch.in
+  cd ${INTEL_OPENVINO_DIR}/deployment_tools/model_optimizer/install_prerequisites
+  ./install_prerequisites.sh
+
   cd ${SCRIPT_DIR}
-  sudo -H python3.7 -m pip install -r ./requirements.txt
 fi
+
+sudo cp /opt/intel/openvino/inference_engine/external/97-myriad-usbboot.rules /etc/udev/rules.d/
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+sudo ldconfig

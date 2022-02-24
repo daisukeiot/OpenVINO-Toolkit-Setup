@@ -30,8 +30,8 @@ class OpenVINO_Util(object):
 
         ie = IECore()
 
-        # for device in ie.available_devices:
-        #     logging.info('>> Device : {0}'.format(device))
+        for device in ie.available_devices:
+            logging.info('>> Device : {0}'.format(device))
 
         return ie.available_devices
 
@@ -79,7 +79,7 @@ class OpenVINO_Engine(object):
         # location to save IR files
         self.ir_dir = None
 
-        self.useModelsJson = True
+        self.useModelsJson = False
 
         self.processor = cpuinfo.get_cpu_info()['arch']
 
@@ -124,6 +124,13 @@ class OpenVINO_Engine(object):
             self.model_dir.mkdir(mode=0o777)
             self.model_dir.chmod(0o777)
 
+        self.cache_dir = Path(data_dir / 'model' / 'cache')
+
+        if not self.cache_dir.exists():
+            # create model folder
+            self.cache_dir.mkdir(mode=0o777)
+            self.cache_dir.chmod(0o777)
+
         # make sure ir folder exists
         self.ir_dir = Path(data_dir / 'ir')
 
@@ -137,7 +144,8 @@ class OpenVINO_Engine(object):
                 logging.info('>> Creating Model List')
 
             # create list of models from the toolkit
-            p_model = (Path(self.openvino_path / 'deployment_tools' / 'open_model_zoo' / 'models').resolve())
+            # p_model = (Path(p_current / 'deployment_tools' / 'open_model_zoo' / 'models').resolve())
+            p_model = Path.cwd() / 'open_model_zoo' / 'models'
 
             self.modelList.clear()
 
@@ -150,11 +158,16 @@ class OpenVINO_Engine(object):
                     model_folder = yaml_file.parent.relative_to(p_model)
                     model_flag = Model_Flag.Uninitialized
                     # open model.yml file
-                    with yaml_file.open('rb') as f:
-                        yaml_content = yaml.load(f)
+                    with yaml_file.open('r') as f:
+                        yaml_content = yaml.safe_load(f)
                         model_framework = yaml_content['framework']
                         model_postprocs = yaml_content.get('postprocessing')
                         model_files = yaml_content.get('files')
+                        task_type = yaml_content['task_type']
+
+                        #if task_type == 'sound_classification':
+                        if task_type != 'detection':
+                            continue
 
                         if model_files:
                             for item in model_files:
@@ -164,9 +177,17 @@ class OpenVINO_Engine(object):
                                 elif model_framework == 'tf':
                                     if '.pb' in item['name']:
                                         model_file = item['name']
-                                elif model_framework == 'dtdl':
+                                elif model_framework == 'dldt':
                                     if '.bin' in item['name']:
                                         model_file = item['name']
+                                elif model_framework == 'pytorch':
+                                    pass
+                                elif model_framework == 'onnx':
+                                    pass
+                                elif model_framework == 'mxnet':
+                                    pass
+                                else:
+                                    logging.info('>> Framework {}'.format(model_framework))
 
                         if model_postprocs:
                             for model_postproc in model_postprocs:
@@ -175,23 +196,25 @@ class OpenVINO_Engine(object):
                                     model_file = model_postproc['file']
                                     model_archive_format = model_postproc['format']
 
-                        model_data = OpenVINO_Model_Data(modelName = model_folder.name, 
-                                                         folderName = str(model_folder), 
-                                                         framework = model_framework, 
-                                                         task_type = yaml_content['task_type'], 
-                                                         model_file = model_file, 
-                                                         archive_format = model_archive_format,
-                                                         flag = model_flag)
+                        if model_framework != 'onnx' and "yolo" not in model_folder.name :
 
-                        model_data.dump_model_data()
-                        self.modelList.append(model_data)
+                            model_data = OpenVINO_Model_Data(modelName = model_folder.name, 
+                                                            folderName = str(model_folder), 
+                                                            framework = model_framework, 
+                                                            task_type = yaml_content['task_type'], 
+                                                            model_file = model_file, 
+                                                            archive_format = model_archive_format,
+                                                            flag = model_flag)
+
+                            model_data.dump_model_data()
+                            self.modelList.append(model_data)
         else:
             # process Json file for models
 
             if 'ARM' in self.processor:
                 models_json_file = Path(Path('./').resolve() / 'models-2019_R3.1.json')
             else:
-                models_json_file = Path(Path('./').resolve() / 'models-2020.1.120.json')
+                models_json_file = Path(Path('./').resolve() / 'models.json')
 
             logging.info('>> Model Json : {}'.format(str(models_json_file)))
 
@@ -289,13 +312,14 @@ class OpenVINO_Engine(object):
         return self.modelList
 
     def remove_dir(self, path_to_remove):
-        for f in path_to_remove.glob('**/*'):
+        p_remove = Path(path_to_remove)
+        for f in p_remove.glob('**/*'):
             if f.is_file():
                 f.unlink()
             else:
                 self.remove_dir(f)
 
-        path_to_remove.rmdir()
+        p_remove.rmdir()
 
 # Set target hardware to run inference on
 #
@@ -376,11 +400,14 @@ class OpenVINO_Engine(object):
         if self._debug:
             logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
 
-        logging.info('>> Model dir {}'.format(model_data.model_dir))
+        logging.info('>> Model dir {}'.format(model_data.folderName))
 
-        if not model_data.framework == 'dldt' and model_data.model_dir != None:
-            self.remove_dir(model_data.model_dir)
-            model_data.model_dir = None
+        if not model_data.framework == 'dldt' and model_data.download_dir != None:
+            #self.remove_dir(model_data.download_dir)
+            #model_data.download_dir = None
+            # clear cache folder
+            if Path(self.cache_dir).exists():
+                self.remove_dir(self.cache_dir)
 
 #
 # Search XML and BIN files
@@ -389,6 +416,8 @@ class OpenVINO_Engine(object):
     def search_ir_dir(self, model_data):
         if self._debug:
             logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
+
+        logging.info('>> Searching IR for {}'.format(model_data.modelName))
 
         # look for XML file
         model_xml_file = []
@@ -431,45 +460,26 @@ class OpenVINO_Engine(object):
 # For Intel model, look for ./ir/Intel/<Model Name>
 #
     def search_model_dir(self, model_data):
+
+        print("=================================================================")
         if self._debug:
             logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
 
-        model_folder_name = ""
-
         if model_data.framework == 'dldt':
-            return self.search_ir_dir(model_data)
-        else:
-            p_download_dir = self.model_dir
-            model_folder_name = model_data.model_file
+            assert(False)
+            return
 
-            if model_data.archive_format == "gztar":
-                # remove .gz.tar
-                model_folder_name = Path(model_folder_name).stem               
-                model_folder_name = Path(model_folder_name).stem               
+        model_folder = Path(self.model_dir / model_data.folderName)            
 
-            elif model_data.archive_format == "tar" or model_data.archive_format == "zip":
-                # remote .zip or .tar
-                model_folder_name = Path(model_folder_name).stem               
+        logging.info('>> Searching Model {} in {}'.format(model_data.modelName, model_folder))
 
-        # look for a folder in download folder
-        model_dir = None
-        tmp = '**/{}'.format(model_folder_name)
-
-        # for download_dir in p_download_dir.glob('**/{}'.format(model_folder_name)):
-        for download_dir in p_download_dir.glob(tmp):
-            #assert(model_dir is None, "Multiple folders found")
-            model_dir = download_dir
-
-        # make sure the folder exists
-        if model_dir is not None:
-            logging.info('>> Downloaded model found {}'.format(str(model_dir)))
-            if not model_data.framework == 'dldt':
-                model_data.model_dir = model_dir
-            else:
-                model_data.ir_dir = model_dir
-
+        if (model_folder.exists()):
+            logging.info('>> Model found : {}'.format(model_folder))
             model_data.flag |= Model_Flag.Downloaded
-            model_dir.chmod(0o777)
+            model_data.download_dir = str(model_folder)
+            model_folder.chmod(0o777)
+        else:
+            logging.warning('>> Model not found : {}'.format(model_folder))
 
         return model_data
 
@@ -480,8 +490,8 @@ class OpenVINO_Engine(object):
 # If model is already downloaded, look for ./ir folder
 #
     def search_model(self, model_data):
-        if self._debug:
-            logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
+        # if self._debug:
+        #     logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
 
         assert isinstance(model_data, OpenVINO_Model_Data), "Invalid Model Data"
 
@@ -496,6 +506,8 @@ class OpenVINO_Engine(object):
 # If the model is Intel model (IR) then into ./ir folder
 #
     def download_model(self, model_data):
+
+        print("===============================================================")
         if self._debug:
             logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
 
@@ -517,19 +529,18 @@ class OpenVINO_Engine(object):
 
         if model_data.isFlagSet(Model_Flag.Downloaded):
             if model_data.framework == 'dldt':
-                logging.info('   Model Folder found {}'.format(str(model_data.ir_dir)))
+                logging.info('   IR Model Folder found {}'.format(str(model_data.ir_dir)))
             else:
-                logging.info('   Model Folder found {}'.format(str(model_data.model_dir)))
+                logging.info('   Model Folder found {}'.format(model_data.download_dir))
         else:
-            logging.info('>> {0}:{1}() Model Folder not found'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
-
             if not self.isFlagSet(Engine_State.Has_OpenVINO_Tool):
                 model_data.errorMsg = 'OpenVINO Toolkit not installed'
                 logging.warning('>> {0}:{1}() : {2}'.format(self.__class__.__name__, sys._getframe().f_code.co_name, model_data.errorMsg))
                 return model_data
 
-            # p_downloader =  (Path(self.openvino_path / 'deployment_tools' / 'tools' / 'model_downloader' / 'downloader.py').resolve())
-            p_downloader =  Path(Path('./').resolve() / 'open_model_zoo/tools/downloader/downloader.py').resolve()
+#            p_downloader = Path.home() / '.local' / 'bin' / 'omz_downloader'
+
+            p_downloader = Path(Path('./').resolve() / 'open_model_zoo/tools/model_tools/downloader.py').resolve()
 
             if not p_downloader.exists():
                 model_data.errorMsg = 'Model Downloader not installed'
@@ -549,7 +560,9 @@ class OpenVINO_Engine(object):
                 p_target_dir = self.model_dir
 
             # download
-            downloader_cmd = 'python3.7 {} --name {} --output_dir {} --progress_format json > {}'.format(str(p_downloader), model_data.modelName, str(p_target_dir), str(logfile))
+            # downloader_cmd = 'python3 {} --name {} --output_dir {} --progress_format json > {}'.format(str(p_downloader), model_data.modelName, str(p_target_dir), str(logfile))
+            # downloader_cmd = '{} --name {} --output_dir {} --cache_dir {} --progress_format json > {}'.format(str(p_downloader), model_data.modelName, str(p_target_dir), self.cache_dir, str(logfile))
+            downloader_cmd = 'python3 {} --name {} --output_dir {} --cache_dir {} --progress_format json > {}'.format(str(p_downloader), model_data.modelName, str(p_target_dir), self.cache_dir, str(logfile))
             if self._debug:
                 logging.info(downloader_cmd)                
 
@@ -585,18 +598,11 @@ class OpenVINO_Engine(object):
                             if line_json['successful'] == True:
                                 file_count += 1
                             else:
-                                logging.error('File {} fail'.format(line_json['model_file']))
-
-                            # # check if download was success
-                            # if download_result != True:
-                            #     download_success = False
-                            #     logging.error('Download failed {}'.format(str(download_file_name)))
-                            # else:
-                            #     logging.info('Download success {}'.format(str(download_file_name)))
+                                logging.error('File {} failed'.format(line_json['model_file']))
 
             if num_files == file_count and download_result is True:
                 # check folder.  This will set Downloaded flag if a folder is found
-                self.search_model_dir(model_data)
+                self.search_model(model_data)
             else:
                 model_data.errorMsg = "Model download failed"
 
@@ -609,6 +615,8 @@ class OpenVINO_Engine(object):
     def convert_model(self, model_data):
         if self._debug:
             logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
+
+        print("===============================================================")
 
         assert isinstance(model_data, OpenVINO_Model_Data), "Invalid Model Data"
 
@@ -628,19 +636,23 @@ class OpenVINO_Engine(object):
         if model_data.isFlagSet(Model_Flag.Converted):
             logging.info('>> {0}:{1}() Found IR Files for {2}'.format(self.__class__.__name__, sys._getframe().f_code.co_name, model_data.modelName))
         else:
-            logging.info('>> {0}:{1}() Converting {2} from {3}'.format(self.__class__.__name__, sys._getframe().f_code.co_name, model_data.modelName, str(model_data.model_dir)))
+            logging.info('>> {0}:{1}() Converting {2} from {3}'.format(self.__class__.__name__, sys._getframe().f_code.co_name, model_data.modelName, model_data.download_dir))
 
-            # p_converter = (Path(self.openvino_path / 'deployment_tools' / 'tools' / 'model_downloader' / 'converter.py').resolve())
-            p_converter = Path(Path('./').resolve() / 'open_model_zoo/tools/downloader/converter.py').resolve()
+            p_converter = (Path(self.openvino_path / 'deployment_tools' / 'tools' / 'model_downloader' / 'converter.py').resolve())
+            # p_converter = Path(Path('./').resolve() / 'open_model_zoo/tools/downloader/converter.py').resolve()
+            # p_converter = Path.home() / '.local' / 'bin' / 'omz_converter'
+            # p_converter = Path(Path('./').resolve() / 'open_model_zoo/tools/model_tools/converter.py').resolve()
 
             if (p_converter.exists()):
 
-                converter_cmd = 'python3.7 {} --download_dir {} --output_dir {} --name {} --python {}'.format(
+                # converter_cmd = 'python3 {} --download_dir {} --output_dir {} --name {} --python {}'.format(
+                #converter_cmd = '{} --download_dir {} --output_dir {} --name {} --python {}'.format(
+                converter_cmd = 'python3 {} --download_dir {} --output_dir {} --name {} --python {}'.format(
                     str(p_converter),
                     str(self.model_dir),
                     str(self.ir_dir),
                     model_data.modelName,
-                    '/usr/bin/python3.7')
+                    '/usr/bin/python3')
 
                 if self._debug:
                     logging.info(converter_cmd)
@@ -649,7 +661,7 @@ class OpenVINO_Engine(object):
                 os.system(converter_cmd)
                 logging.info('<< Convert {}'.format(model_data.modelName))
 
-                model_data = self.search_ir_dir(model_data)
+                model_data = self.search_model(model_data)
 
         return model_data
 
@@ -659,6 +671,8 @@ class OpenVINO_Engine(object):
     def load_model(self, model_data):
         if self._debug:
             logging.info('>> {0}:{1}()'.format(self.__class__.__name__, sys._getframe().f_code.co_name))
+
+        print("===============================================================")
 
         assert isinstance(model_data, OpenVINO_Model_Data), "Invalid Model Data"
 

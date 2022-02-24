@@ -81,6 +81,9 @@ class VideoProcessor(object):
         self.ioLoop = None
         self.current_model_data = None
 
+        if self.videoData.get_video_type == Video_Device_Type.Youtube:
+            self.videoData._download_video
+
 #
 # Sets up Video Processor Class
 # Creates Video Stream Class for video capture
@@ -406,6 +409,7 @@ class VideoProcessor(object):
                 task = self.ioLoop.run_in_executor(None, self.inference_engine.load_model, model_data)
                 task.add_done_callback(self.model_load_callback)
             else:
+                # convert model
                 task = self.ioLoop.run_in_executor(None, self.inference_engine.convert_model, model_data)
                 task.add_done_callback(self.model_convert_callback)
         else:
