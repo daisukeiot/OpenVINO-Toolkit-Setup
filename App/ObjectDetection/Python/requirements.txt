@@ -1,5 +1,5 @@
 tornado
-numpy==1.16
+numpy==1.22.0
 pyyaml
 requests
 youtube-dl==2021.1.3
